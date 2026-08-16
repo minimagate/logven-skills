@@ -1,0 +1,4 @@
+interface:
+  display_name: "Style"
+  short_description: "Edit Logven Tailwind tokens and styles"
+  default_prompt: "Use $style to update Logven Tailwind tokens or base styles for this change."
