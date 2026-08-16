@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Web Resource"
+  short_description: "Add resourceful Logven web endpoints"
+  default_prompt: "Use $add-web-resource to add a resourceful Logven route, controller, policy, and HTTP contract."
