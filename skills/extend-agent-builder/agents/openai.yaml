@@ -1,0 +1,4 @@
+interface:
+  display_name: "Extend Agent Builder"
+  short_description: "Change the Logven agent build pipeline"
+  default_prompt: "Use $extend-agent-builder to change the Logven step builder, graph repair flow, prompts, or shape contracts."
