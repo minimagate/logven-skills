@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Agent Tool"
+  short_description: "Add validated Logven tool integrations"
+  default_prompt: "Use $add-agent-tool to add a Logven agent tool or provider integration with shapes, credentials, and boundary tests."
