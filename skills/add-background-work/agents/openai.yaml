@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Background Work"
+  short_description: "Add Logven async model workflows"
+  default_prompt: "Use $add-background-work to add asynchronous Logven work with a synchronous model entrypoint and thin job."
