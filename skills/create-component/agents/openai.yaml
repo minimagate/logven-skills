@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Component"
+  short_description: "Build the right Logven UI primitive"
+  default_prompt: "Use $create-component to choose and build the right UI primitive for this Logven change."
