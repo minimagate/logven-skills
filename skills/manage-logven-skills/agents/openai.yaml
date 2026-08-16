@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Logven Skills"
+  short_description: "Maintain the external Logven skill setup"
+  default_prompt: "Use $manage-logven-skills to update or publish Logven workflow skills."
