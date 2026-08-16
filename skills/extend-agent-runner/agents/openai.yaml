@@ -1,0 +1,4 @@
+interface:
+  display_name: "Extend Agent Runner"
+  short_description: "Change Logven agent execution safely"
+  default_prompt: "Use $extend-agent-runner to change Logven run orchestration, node execution, pause, resume, or outputs."
