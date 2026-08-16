@@ -1,0 +1,4 @@
+interface:
+  display_name: "Change Domain Model"
+  short_description: "Evolve Logven domain behavior safely"
+  default_prompt: "Use $change-domain-model to evolve this Logven model or domain object while preserving lifecycle and ownership conventions."
