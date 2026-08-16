@@ -1,0 +1,4 @@
+interface:
+  display_name: "Use Turbo"
+  short_description: "Build server-driven Logven interactions"
+  default_prompt: "Use $use-turbo to implement this Logven interaction with frames, streams, broadcasts, or small Stimulus behavior."
