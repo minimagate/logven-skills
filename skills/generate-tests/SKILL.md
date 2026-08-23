@@ -26,10 +26,17 @@ Protect the test's behavioral contract when diagnosing failures.
    - Model, plain domain object, service-like namespace, or policy: inherit
      `ActiveSupport::TestCase` and place the test under the matching `test/models/` or
      `test/policies/` path.
+   - Policy tests should prove the meaningful permission matrix and policy-scope membership,
+     including denial and isolation boundaries where they differ by role or ownership.
    - Controller or HTTP contract: inherit `ActionDispatch::IntegrationTest` under
      `test/controllers/`. Assert authentication, authorization, status/redirect, persistence,
      side effects, and other request-level functionality.
    - Route, mailer, or job: use the matching Rails non-system test API and repository location.
+     Job tests should assert delegation and resulting application state, not Active Job internals.
+   - Provider, LLM, and tool tests should isolate network boundaries and prove the relevant
+     request/response contract. Never call a live provider from tests.
+   - Development seed tests should prove the idempotent showcase dataset when seed behavior
+     changes.
    - Controller tests must stop at the HTTP/application boundary: authentication, authorization,
      status or redirect, persistence, side effects, and response format where it is an API
      contract. Do not assert HTML response bodies, rendered text, selectors, CSS classes, DOM
@@ -57,7 +64,14 @@ Protect the test's behavioral contract when diagnosing failures.
   results. Assert public effects rather than private implementation details.
 - Stub only true boundaries or nondeterminism, such as external services, time, or randomness.
   Do not stub the behavior under test.
-- Keep tests isolated and order-independent because the suite runs in parallel.
+- Reload records before asserting persisted state when persistence is part of the contract.
+- Use `assert_enqueued_with` or `perform_enqueued_jobs` for asynchronous boundaries.
+- Keep tests isolated and order-independent because the suite runs in parallel by processor
+  count. Do not depend on fixed database IDs, wall-clock races, global ordering, records from
+  another test, or shared mutable registries without cleanup.
+- Test claim, resume, and idempotency behavior when concurrent or duplicate work could create
+  duplicate children or repeat side effects.
+- Treat `test/views/shapes/fields_test.rb` as legacy coverage, not precedent for new view tests.
 
 ## Failure Integrity
 
@@ -89,8 +103,8 @@ bin/standardrb test/path/to/file_test.rb
 ```
 
 Use `bin/rails test` when the change has broad impact. Do not run `bin/rails test:system`; UI
-verification is a separate browser workflow. Report exact commands, failures, and anything left
-unverified.
+verification is a separate browser workflow. Use `bin/ci` for broad or release-ready validation.
+Report exact commands, failures, and anything left unverified.
 
 ## Do Not
 

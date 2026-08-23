@@ -1,0 +1,65 @@
+---
+name: design
+description: Design or visually refine any Logven page, component, interaction, or Tailwind styling. Use for all UI appearance work to keep the technical product compact, borderless, purposeful, consistent, and equally resolved in light and dark mode.
+---
+
+# Design
+
+Design a precise technical workspace, not a generic generated dashboard. Every visual choice must improve hierarchy, comprehension, state awareness, or interaction.
+
+## Reject UI slop
+
+Do not introduce decorative dashboard tropes: oversized hero copy, huge empty spacing, gradient blobs, glass effects, gratuitous shadows, fake metrics, ornamental charts, random pills, status dots without meaning, “online” labels without operational value, or invented metadata.
+
+Do not use eyebrow text. A small uppercase label above a heading is not hierarchy; write one clear heading instead. Uppercase remains acceptable only where the content itself is a functional compact label, such as a table column heading.
+
+Tags and badges must encode a real state, type, format, count, filter, or action-relevant distinction. If removing one would not reduce comprehension, remove it.
+
+## Build borderless surfaces
+
+- Do not add hairline borders, divider grids, or outlined cards. Separate regions with surface color, spacing, grouping, and restrained typography.
+- Preserve accessibility outlines and focus rings; they are interaction signals, not decoration.
+- Reuse the existing menu frame and specialized controls when required by their component contract, but do not spread that treatment to ordinary cards.
+- Use shadows only for true elevation such as an open popover. Ordinary cards and panels should remain flat.
+
+Favor well-rounded cards and panels. Use the named radius tokens (`rounded-card`, `rounded-well`, `rounded-panel`, `rounded-list`, `rounded-board`, and related semantic radii) rather than arbitrary radii.
+
+For nested rounded surfaces, preserve concentric corners:
+
+`outer radius = inner radius + the visible padding between them`
+
+Choose the named radius and padding pair that most closely satisfies this relationship. Apply the rule consistently on all four corners; do not place a sharply rounded inner card inside an almost equally rounded outer card.
+
+## Keep scale fine and compact
+
+- Use Geist through `font-sans`; use monospace only for code, JSON, logs, identifiers, and other technical data.
+- Keep page headings at the existing `text-title` scale. Do not add display-sized text.
+- Use `text-body`, `text-label`, and `text-card` for ordinary content; use meta/caption sizes only for genuinely secondary information.
+- Prefer medium or semibold hierarchy with good ink contrast over size inflation.
+- Keep spacing deliberate and compact. Use small gaps and padding that support scanning; avoid large dead zones, excessive section margins, and roomy cards with little content.
+- Keep copy widths readable without forcing sparse layouts.
+
+## Preserve and extend the palette correctly
+
+Start with the existing neutral, blue, green, orange, pink, purple, and red palette in `app/assets/tailwind/base/variables.css`. Reuse semantic utilities such as page, column, well, card, panel, ink, tone, status, danger, and interactive colors before adding anything.
+
+When a new distinction genuinely needs color:
+
+1. Add or extend a raw palette token.
+2. Add a purpose-named semantic token.
+3. Define light and dark values together with `light-dark(...)`.
+4. Use the semantic utility in markup.
+
+Never solve dark mode by scattering `dark:` overrides when one semantic token can express both themes. Do not assume a light surface maps to the same numeric shade in dark mode.
+
+## Let technical purpose drive composition
+
+Prioritize the information users need to operate agents: workflow order, build/run status, inputs and outputs, errors and logs, tool identity, ownership, timestamps, and available actions. Use progressive disclosure for dense execution detail, but keep the current state and next action visible.
+
+Empty, loading, paused, failed, and completed states must be designed as deliberately as the default state. Color is supportive; pair it with text or accessible labels. Keep action placement stable and controls recognizable.
+
+Preserve existing palette and component language when editing a page. Add a new pattern only when existing cards, panels, boards, tickets, badges, fields, menus, or buttons cannot express the product need.
+
+## Review before finishing
+
+Inspect the actual page in both light and dark mode, at desktop and narrow widths. Check nested corner geometry, density, contrast, focus, hover, disabled states, long technical content, empty/error states, and whether every badge or decoration earns its place. If the result resembles a template before it resembles Logven, simplify it.
