@@ -60,6 +60,13 @@ Empty, loading, paused, failed, and completed states must be designed as deliber
 
 Preserve existing palette and component language when editing a page. Add a new pattern only when existing cards, panels, boards, tickets, badges, fields, menus, or buttons cannot express the product need.
 
+## Keep the design system lean
+
+- Reuse the smallest existing visual pattern that communicates the requirement. Do not create a new design system, layout primitive, token family, or variant for one screen or hypothetical reuse.
+- Give each visual role one clear treatment. Remove nested wrappers, competing hierarchies, and class or variant proliferation that makes the page harder to change.
+- Verify only the affected flows and meaningful states in the browser. Do not add visual snapshots, DOM assertions, component tests, or exhaustive viewport/theme combinations to the automated suite.
+- Cosmetic work never justifies console logging, debug output, telemetry, or new operational logs. Express state visibly; keep actual failure logging at the existing application boundary that owns the failure.
+
 ## Review before finishing
 
 Inspect the actual page in both light and dark mode, at desktop and narrow widths. Check nested corner geometry, density, contrast, focus, hover, disabled states, long technical content, empty/error states, and whether every badge or decoration earns its place. If the result resembles a template before it resembles Logven, simplify it.

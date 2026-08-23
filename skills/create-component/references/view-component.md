@@ -13,16 +13,14 @@ writing it:
 
 - **General-purpose** — implements a reusable UI pattern (a card, a badge, a modal) with zero
   knowledge of this app's domain. `initialize` accepts plain Ruby values only.
-- **Application-specific** — bridges a domain object to one or more general-purpose components
-  or CSS-primitive classes. The canonical example from the official docs: a
-  `User::AvatarComponent` accepts a `User` ActiveRecord object and renders a general-purpose
-  `Avatar::Component`. In this app that might look like an `AgentStatusBadgeComponent` that
-  accepts an `Agent` and renders it via the `.badge`/`.badge-*` CSS-primitive classes.
+- **Application-specific** — owns a stable presentation mapping for a domain object when several
+  unrelated callers genuinely need the same mapping. It may render its markup directly or
+  compose an existing component or CSS primitive; it does not require a matching general-purpose
+  wrapper.
 
-Default to general-purpose. Reach for application-specific only when the component's whole
-purpose is translating a domain object into presentation — and even then, its job stops at that
-translation; it must not reimplement markup that a general-purpose component or CSS-primitive
-class already provides.
+Default to general-purpose. For one caller, extract plain display values in the caller. Reach for
+application-specific only after the repeated domain-to-presentation mapping is clear; its job
+stops at that mapping and it must still reuse an existing primitive when one already fits.
 
 ## File layout
 
@@ -54,15 +52,15 @@ actually needs; add/edit the generated files afterward for anything the generato
 ## `initialize` and slot rules
 
 - A **general-purpose** component's `initialize` accepts plain Ruby values only — strings,
-  symbols, numbers, booleans, arrays of plain values, or a small value object created
-  specifically for this purpose. It never accepts an `ActiveRecord` instance, `Current`, or a
-  Pundit policy object, and never calls `ActiveRecord`, `Current`, or Pundit methods internally.
+  symbols, numbers, booleans, arrays of plain values, or an existing small immutable value object
+  that makes a repeated input contract clearer. Do not create a value object merely to satisfy a
+  component. It never accepts an `ActiveRecord` instance, `Current`, or a Pundit policy object,
+  and never calls `ActiveRecord`, `Current`, or Pundit methods internally.
 - An **application-specific** component's `initialize` may accept an `ActiveRecord` model,
-  `current_user`, or the result of a policy check — but only to immediately extract what it
-  needs and delegate rendering to a general-purpose component or CSS-primitive class. It should
-  not hold onto the model to call further associations/scopes from inside the template, and it
-  must not contain business logic (nothing that computes or mutates domain state) — only the
-  presentation-facing mapping (which variant/label/icon to show).
+  but only for a proven repeated presentation mapping. It must not call associations or scopes,
+  authorize, or contain business logic that computes or mutates domain state. Pass authorization
+  outcomes as plain booleans or values from the caller. The component may own the mapping's markup
+  directly or compose an existing primitive; do not create another component solely as a relay.
 - Use ViewComponent slots for composable content areas: `renders_one :header`,
   `renders_one :footer`, `renders_many :items`, declared in the component class and consumed in
   the caller as `component.with_header { ... }` / block content.
@@ -81,15 +79,15 @@ the same pattern; do not create a semantic class merely to shorten one component
 
 ## Other conventions from the official best-practices guide
 
-- **Composition over inheritance** — if two components need to share behavior, extract a shared
-  method/module or compose one component inside another rather than building a base class for
-  them to inherit from.
+- **Composition over inheritance** — keep small duplication local until a stable shared behavior
+  is demonstrated. Then prefer composing an existing component or a small focused helper over a
+  base class or framework.
 - **Keep template logic in methods, not inline Ruby** — push anything beyond simple
   interpolation into an instance method (private is fine; it's still template-accessible) rather
   than writing conditionals/loops directly in the `.html.erb` file.
 - **Extract general-purpose components once proven, not upfront** — implement a single-use
-  version first; only pull it into a reusable general-purpose component after it's needed in a
-  second place (standard DRY "rule of three" applies before generalizing further).
+  version first. Wait for stable repetition, usually across three uses, before generalizing its
+  API; two superficially similar call sites may remain local when their responsibilities differ.
 
 ## Verification
 
@@ -104,8 +102,8 @@ test workflow.
 - Don't pass an `ActiveRecord` instance, `Current`, or a policy object into a **general-purpose**
   component's `initialize` — extract plain values in the caller first.
 - Don't let an **application-specific** component hold onto a model to traverse further
-  associations from the template, or embed business logic — it should extract what it needs and
-  delegate to a general-purpose component/CSS-primitive class immediately.
+  associations from the template, authorize, or embed business logic. Do not add a paired
+  general-purpose component unless it has its own demonstrated callers.
 - Don't promote single-owner Tailwind utilities into a CSS-primitive class before the pattern is
   shared by another independent markup owner.
 - Don't build a ViewComponent for something expressible as a single CSS class on a plain HTML

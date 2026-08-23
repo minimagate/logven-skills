@@ -4,8 +4,8 @@ This reference applies once `create-component`'s decision tree has placed a requ
 Partial category: composed markup scoped to one controller's view family, where the fragment can
 lean on the current request context when that keeps it truly one-action-local, but explicit
 inputs should be the default once the fragment is shared or its dependencies stop being obvious.
-If the fragment needs to be reusable outside that view family or tested in isolation, back up —
-that's `references/view-component.md` instead.
+If the fragment needs a reusable explicit contract outside that view family, back up — that's
+`references/view-component.md` instead.
 
 ## File layout & naming
 

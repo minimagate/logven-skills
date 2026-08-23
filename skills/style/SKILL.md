@@ -33,6 +33,18 @@ Preserve the raw token → semantic utility → base/component chain in the orde
 - Keep `@custom-variant dark` available, but do not add `.dark` overrides or toggle behavior unless requested.
 - Import every new component-family stylesheet explicitly from `application.css` after base layers.
 
+## Minimalism and code hygiene
+
+- Add the smallest token or rule that expresses a demonstrated repeated need. Do not create wrapper
+  utilities, token aliases, scales, or component families for one markup owner or future flexibility.
+- Keep every declaration in one layer and preserve a clear dependency from raw token to semantic
+  utility to consumer. Avoid duplicated selectors, specificity escalation, and values defined in
+  multiple files.
+- Do not add CSS snapshots, class assertions, rendering tests, or token-enumeration tests. Run the
+  asset build and browser-check only the affected themes, states, and viewports.
+- Styling work must not add console output, debug instrumentation, telemetry, or application logs.
+  Remove temporary diagnostics and surface meaningful state through the UI.
+
 ## Do Not
 
 - Do not add a custom class to `base/base.css`.

@@ -34,6 +34,13 @@ Do not duplicate lifecycle checks such as `draft?`, `buildable?`, or `resumable?
 
 Route nesting is not authorization. Confirm that a nested child belongs to `@project` even when its policy would otherwise allow the current user to see it through another project.
 
+## Keep request code lean
+
+- Implement the smallest conventional action. Do not add a service, command, responder, form object, or controller concern for logic that is clear and single-use at this boundary.
+- Keep actions straight-line and readable. Move reusable domain decisions to the existing model or namespace instead of accumulating condition trees, callbacks, and duplicated branches across controllers.
+- Add only request tests that prove the changed authentication, authorization, persistence, job, or response contract. Do not test Rails routing/rendering mechanics or duplicate model and policy coverage.
+- Do not dump params, sessions, records, or responses to logs, and remove temporary debug output. Let an owned domain or external-failure boundary log an actionable failure once rather than logging it again in the controller.
+
 ## Verify
 
 Add or update an `ActionDispatch::IntegrationTest` for authentication, authorization, response status or redirect, persistence, jobs, and side effects. Do not assert rendered HTML, selectors, text, partials, or CSS classes. Run the narrow controller test first.

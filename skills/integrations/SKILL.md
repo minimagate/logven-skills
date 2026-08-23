@@ -34,6 +34,15 @@ Refresh only when expired. Preserve an existing refresh token when a provider om
 
 Raise a concise error for non-success provider responses. Avoid exposing full response bodies when they may contain sensitive data.
 
+## Keep provider code lean
+
+- Implement a provider through the existing credential, API, tool, and controller contracts. Do not add a generic provider framework, middleware stack, or configuration DSL for one integration or hypothetical variation.
+- Keep OAuth lifecycle, HTTP mechanics, tool normalization, and request handling in their current owners. Do not pass raw provider hashes through layers or duplicate refresh/error logic in tools and controllers.
+- Test only stable request/response, credential isolation, refresh, and meaningful error contracts. Do not mirror an entire provider schema, test client-library internals, or enumerate equivalent response permutations.
+- Log only actionable provider failures once, with safe identifiers and concise error context. Never log successful request chatter, retries at every layer, headers, tokens, secrets, or raw request/response bodies.
+
 ## Verify without live services
 
-Test registry validation, shape contracts, credential selection, query/request construction, token refresh, success parsing, provider errors, callback signature rejection, and per-user isolation using stubbed HTTP. Never call a live provider from the test suite.
+Using stubbed HTTP, test the changed stable contract and its meaningful failure boundary. Select
+only the relevant registry, shape, credential-isolation, request construction, refresh, parsing,
+provider-error, or callback-signature cases. Never call a live provider from the test suite.

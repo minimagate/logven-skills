@@ -43,6 +43,15 @@ Do not confuse creator ownership with project membership. Agent authoring and ex
 - Reuse another policy scope when visibility is derived from it, as project membership, agents, runs, and manual node input do.
 - Make scope and predicate agree. A record obtainable from a scope should pass its corresponding visibility predicate.
 
+## Keep authorization simple
+
+- Add the smallest rule that expresses the product permission. Compose existing policies and scopes instead of introducing a role engine, permission DSL, or speculative capability layer.
+- Keep each decision in one policy and each visibility query in one scope. Do not scatter the same membership logic through controllers, views, models, and SQL fragments.
+- Test only meaningful role, ownership, lifecycle, and scope boundaries. Do not generate a Cartesian matrix of cases that merely repeats inherited predicates or Pundit behavior.
+- Do not log routine allows, denials, policy inputs, or request parameters. Add security-event logging only for an explicit operational requirement, at one established boundary, with safe minimal context.
+
 ## Test the matrix
 
-Policy tests should cover allowed and denied users, owner/admin/member distinctions, personal versus project records where relevant, lifecycle gates, and scope inclusion/exclusion. Test the actual boundary conditions; do not merely restate method names.
+Test the changed permission with an allowed and denied case, then add only the owner/admin/member,
+personal/project, lifecycle, or scope distinction that materially changes that rule. Test actual
+boundary conditions; do not enumerate unaffected roles or merely restate method names.

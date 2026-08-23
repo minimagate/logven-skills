@@ -36,8 +36,7 @@ exists before adding anything new.
    The partial/ViewComponent fork is really: **implicit vs explicit dependency on the calling
    context.** If the fragment is tightly coupled to one action's context and its inputs are
    obvious there, it's a partial. If it needs a declared contract — because it's reused
-   somewhere that doesn't set the same ivars, or needs a test that doesn't require a controller
-   — it's a ViewComponent.
+   somewhere that doesn't set the same ivars — it's a ViewComponent.
 
 3. **CSS-primitive**: see [`references/css-primitive.md`](references/css-primitive.md) for the
    `components/*.css` mechanics (naming, the `@apply`-nesting gotcha, rebuild/verify). If the
@@ -51,7 +50,7 @@ exists before adding anything new.
 
 5. **ViewComponent**: see [`references/view-component.md`](references/view-component.md) for
    the generator command, file layout, the general-purpose vs application-specific distinction,
-   `initialize`/slot rules, how to compose CSS-primitive classes, and test conventions. Load
+   `initialize`/slot rules, how to compose CSS-primitive classes, and verification conventions. Load
    that file before doing any ViewComponent work.
 
 6. **Finish**: run `bin/standardrb` on any new `.rb` files and verify the result in the browser.
@@ -64,14 +63,25 @@ exists before adding anything new.
   semantic-var/base-element layers (`@theme`, `@theme inline`, `base/base.css`) remain owned by the
   `style` skill — coordinate with it when a new color/token is needed, don't re-derive its rules
   here.
-- Every ViewComponent is either general-purpose (plain values only, never touches
-  `ActiveRecord`/`Current`/Pundit) or application-specific (may accept a model/`current_user`/a
-  policy, but only to translate it into arguments for a general-purpose component or a
-  CSS-primitive class — never to reimplement markup or hold business logic). The reference file
-  covers the boundary in detail.
+- Prefer general-purpose ViewComponents with plain-value inputs. An application-specific
+  component may accept a model only when several callers genuinely reuse the same presentation
+  mapping; it may own that markup or compose an existing primitive, but must not query, mutate,
+  authorize, or create a second wrapper component merely to satisfy a category. The reference
+  file covers the boundary in detail.
 - A partial that starts getting reused across unrelated controllers, or accumulates more than a
   couple of explicit `locals:`, has outgrown the category — move it to ViewComponent instead of
   letting it keep growing as a partial.
+
+## Minimalism and code hygiene
+
+- Build the smallest primitive that serves the current callers. Do not add wrapper components,
+  generic prop bags, speculative slots, or modifier families for possible future reuse.
+- Keep one clear owner for markup and behavior. Avoid deep partial chains, components that merely
+  forward arguments, and duplicated conditional structure across ERB, Ruby, and CSS.
+- Do not add component, rendering, DOM, snapshot, or system tests. Browser-check the changed
+  states and rely on focused non-visual tests only when behavior lives outside presentation.
+- UI composition must not add console output, debug logging, or telemetry. Surface actionable
+  failures through the existing user-facing state or the application boundary that owns them.
 
 ## What NOT to do
 
@@ -79,8 +89,8 @@ exists before adding anything new.
   `app/assets/tailwind/components/*.css`, and `app/views/**/_*.erb` for one to extend/reuse.
 - Don't build a ViewComponent for styling expressible directly as Tailwind utilities on one
   markup owner.
-- Don't reach for a partial when the fragment needs to be reusable outside its view family or
-  independently testable — that's what pushes it into ViewComponent territory instead.
+- Don't reach for a partial when the fragment needs a reusable explicit contract outside its view
+  family — that's what pushes it into ViewComponent territory instead.
 - Don't restate the `style` skill's token/base rules, or a reference file's mechanics, inline in
   this file — link to them instead so they only load into context when needed.
 - Don't add a new color/design token from within `references/css-primitive.md` — that belongs

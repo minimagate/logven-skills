@@ -42,6 +42,19 @@ Treat `logven-skills/skills/` as the source of truth. Keep `.agents/` ignored in
 
 If the link is missing or points elsewhere, retain any existing local directory as a named backup, then recreate the relative symlink from `logven/.agents/skills`. Do not delete a local skill directory until the companion checkout has been verified as complete.
 
+## Keep the skill set lean
+
+- Make the smallest edit that changes agent decisions. Do not add a new skill, router, script,
+  reference, template, or shared framework when a focused correction to an existing skill is enough.
+- Keep each convention owned by one discriminating skill and link to conditional detail instead of
+  building deep reference chains or maintaining divergent copies. Remove superseded instructions
+  rather than appending exceptions.
+- Validate metadata, links, and any executable helper proportionally. Do not add tests that merely
+  snapshot wording, headings, file counts, or other implementation details of the skill package.
+- Helper scripts must stay quiet by default: emit concise results and actionable failures only.
+  Do not add telemetry, debug traces, or logs containing prompts, repository contents, credentials,
+  or other sensitive context.
+
 ## Do Not
 
 - Do not move these workflows into `logven/.agents/skills` as tracked application files.

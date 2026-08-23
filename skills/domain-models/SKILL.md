@@ -40,6 +40,16 @@ Use intent-revealing public methods such as `commit!`, `promote!`, `complete_wit
 
 Avoid broad rescues. When translating an expected subsystem error, preserve a useful message or log; let unexpected failures reach the existing lifecycle recovery boundary.
 
+## Keep domain code cohesive
+
+- Make the smallest change in the nearest existing model or namespace. Do not add repositories, generic services, concerns, callbacks, metaprogramming, or value objects unless they give a real repeated invariant or coherent algorithm one clear owner.
+- Keep public methods narrow, transitions explicit, and queries side-effect free. Prefer readable sequential code and small private predicates over callback webs, cross-model condition chains, and duplicated state logic.
+- Test only changed invariants, transitions, and observable failure paths. Do not retest Rails associations, enum declarations, private helpers, or every combination already covered at another boundary.
+- Log only actionable lifecycle or subsystem failures at the owner that handles them. Do not log routine saves, callback entry, full record attributes, or the same exception at multiple layers.
+
 ## Verify
 
-Test validation failures, successful transitions, rollback behavior, idempotency, concurrency claims when relevant, derived shapes, ordering, and broadcasts. Use the attribute helpers in `test/test_helpers/attributes/` and the smallest suitable `ActiveSupport::TestCase`.
+Test the changed invariant or transition and its meaningful rejection path. Add rollback,
+idempotency, concurrency, shape, ordering, or broadcast coverage only when the change touches that
+contract. Use the attribute helpers in `test/test_helpers/attributes/` and the smallest suitable
+`ActiveSupport::TestCase`.

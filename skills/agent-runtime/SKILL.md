@@ -51,6 +51,13 @@ Changes to a node kind must update its STI class, kind/type maps, builder prompt
 
 Let a node runner translate subsystem-specific failures into a useful exception. `Runner::Base` records the failure on the `NodeRun`; builder recovery records the error and restores draft state. Do not silently mark failed work complete or rescue errors so broadly that status/log updates are skipped.
 
+## Keep runtime code lean
+
+- Extend the nearest existing model command, builder, runner, or node implementation. Do not add a second orchestration layer, generic event bus, or abstraction for hypothetical workflow kinds.
+- Keep execution flow linear and ownership explicit: jobs enqueue and delegate, runners coordinate, node runners execute, and models protect transitions. Do not duplicate status propagation or lifecycle branching across those layers.
+- Add only the tests needed for the changed transition or invariant. Do not multiply every status, node kind, and retry combination when one boundary test plus focused lower-level coverage proves the behavior.
+- Record only operator-actionable lifecycle facts, once, at the boundary that owns the state change. Do not add per-node-loop chatter, duplicate parent/child messages, debug traces, prompts, secrets, or full input/output payloads.
+
 ## Verify
 
 Test successful execution, invalid outputs, pause/resume, duplicate job claims, completed-work skipping, step/node uniqueness, failure propagation, build recovery, revision copying, and graph/shape invariants as applicable. Use queued `with_llm` responses instead of live LLM calls.

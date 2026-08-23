@@ -73,6 +73,20 @@ Protect the test's behavioral contract when diagnosing failures.
   duplicate children or repeat side effects.
 - Treat `test/views/shapes/fields_test.rb` as legacy coverage, not precedent for new view tests.
 
+## Keep test code hygienic
+
+- Use the existing helper and the direct public API. Do not introduce a factory DSL, shared context,
+  test harness, custom assertion, or helper abstraction unless repeated setup becomes materially
+  shorter and clearer.
+- Keep every test linear and legible: arrange, perform one meaningful action, and assert the
+  contract. Avoid branching, loops, metaprogrammed cases, deep helper chains, and setup shared by
+  unrelated scenarios.
+- Never add production logging or instrumentation merely to make a test observable. Do not assert
+  logs unless a log entry is itself an explicit operational contract, and remove temporary test
+  output used during diagnosis.
+- Prefer one strong boundary assertion over overlapping tests at multiple layers. Additional cases
+  must protect a distinct failure mode, permission boundary, invariant, or regression.
+
 ## Failure Integrity
 
 Treat a test that accurately expresses intended application behavior as the contract.

@@ -29,6 +29,13 @@ Create a new migration for changes already shared in repository history. An unsh
 
 Do not edit `db/schema.rb` by hand. Run the migration so Rails updates it, then inspect the schema diff for only the intended version and structure changes.
 
+## Keep schema changes lean
+
+- Express the final schema with the smallest Rails migration. Do not introduce migration helpers, custom DSLs, temporary application models, callbacks, or abstractions for a one-off schema operation.
+- Keep each migration readable from top to bottom and limited to one coherent schema change. Avoid conditional environment branches, runtime dependencies, and cross-migration control flow.
+- Validate the resulting schema and only the application invariants affected by it. Do not add tests that reproduce Rails migration behavior or preserve disposable development-data permutations.
+- Do not add progress output, per-row messages, debug logging, or audit chatter to migrations. These migrations are schema-only; report failures through the migration command itself.
+
 ## Verify
 
 Run `bin/rails db:migrate`, the relevant model tests, and a rollback/reapply check when reversibility is not obvious. For a brand-new or reset database path, use `bin/rails db:test:prepare` or the repository setup command and confirm constraints appear in `db/schema.rb`.
