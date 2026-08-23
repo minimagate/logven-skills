@@ -3,7 +3,7 @@
 This reference should be used once `create-component`'s decision tree has already placed a
 request in the ViewComponent category: the UI needs composed/structured markup (multiple
 elements, variants, slots), as opposed to a single tag/class (which belongs to the CSS-primitive
-category — hand off to the `style` skill instead).
+category — follow `references/css-primitive.md` instead).
 
 ## The two flavors
 
@@ -16,8 +16,8 @@ writing it:
 - **Application-specific** — bridges a domain object to one or more general-purpose components
   or CSS-primitive classes. The canonical example from the official docs: a
   `User::AvatarComponent` accepts a `User` ActiveRecord object and renders a general-purpose
-  `Avatar::Component`. In this app that might look like a `WorkflowStatusBadgeComponent` that
-  accepts a `Workflow` and renders it via the `.badge`/`.badge-*` CSS-primitive classes.
+  `Avatar::Component`. In this app that might look like an `AgentStatusBadgeComponent` that
+  accepts an `Agent` and renders it via the `.badge`/`.badge-*` CSS-primitive classes.
 
 Default to general-purpose. Reach for application-specific only when the component's whole
 purpose is translating a domain object into presentation — and even then, its job stops at that

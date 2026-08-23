@@ -6,6 +6,8 @@ description: Plan, write, repair, or review tests for any Logven Rails code chan
 # Generate Tests
 
 Write the smallest maintainable Minitest coverage that proves requested application behavior.
+Mandatory rule: generated tests must use the minimum lines of code possible. Do not add setup,
+helpers, assertions, cases, or abstractions that are not required to prove the contract.
 Test logic and non-visual application contracts only. Never test presentation or browser behavior,
 even when the request concerns UI code. Verify UI changes in the browser instead of encoding their
 appearance or DOM structure in the test suite.
@@ -36,7 +38,7 @@ Protect the test's behavioral contract when diagnosing failures.
      render-based tests. If presentation code contains important business rules, move those rules
      to a non-presentation object when that is in scope and test the public logic there.
 4. Arrange only the records and inputs required for the scenario, perform one meaningful action,
-   and assert observable outcomes. Cover the requested happy path and material failure or
+   and assert observable outcomes. Keep each test in its shortest clear form. Cover the requested happy path and material failure or
    authorization boundary without building a combinatorial suite.
 5. Run the changed test file, then the smallest relevant directory or broader suite warranted by
    the change. Run Standard on changed Ruby test files.

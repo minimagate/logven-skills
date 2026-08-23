@@ -10,7 +10,7 @@ that's `references/view-component.md` instead.
 ## File layout & naming
 
 - Location: alongside the views that use it, under `app/views/<controller>/`, prefixed with an
-  underscore — `app/views/dashboards/_summary.html.erb` for a `DashboardsController` partial.
+  underscore — `app/views/agents/_summary.html.erb` for an `AgentsController` partial.
 - A partial shared across multiple controllers' views (rare — if it's shared across *unrelated*
   controllers, prefer a ViewComponent instead) lives in `app/views/shared/` or
   `app/views/application/` for layout-level fragments like flash messages.
@@ -20,16 +20,16 @@ that's `references/view-component.md` instead.
 ## Data: implicit vs explicit
 
 - A partial automatically sees whatever instance variables the triggering controller action set
-  (`@workflow`, `current_user`, etc.), but treat that as a convenience for one-action-local
+  (`@agent`, `current_user`, etc.), but treat that as a convenience for one-action-local
   fragments rather than the default contract for shared markup.
 - Prefer explicit `locals:` for anything not obviously implied by the controller action,
   especially when the same partial is rendered from more than one action:
-  `<%= render "form", locals: {workflow: @workflow} %>`. This keeps the sharing intentional —
-  a partial reused across two actions that both set `@workflow` is fine; one that silently
+  `<%= render "form", locals: {agent: @agent} %>`. This keeps the sharing intentional —
+  a partial reused across two actions that both set `@agent` is fine; one that silently
   depends on an ivar only *one* of its callers sets is a bug waiting to happen.
-- Collection rendering: `<%= render @workflows %>` (looks up `_workflow.html.erb`, exposes each
-  element as `workflow`), or the explicit form
-  `<%= render partial: "workflow", collection: @workflows %>` when the collection's element
+- Collection rendering: `<%= render @agents %>` (looks up `_agent.html.erb`, exposes each
+  element as `agent`), or the explicit form
+  `<%= render partial: "agent", collection: @agents %>` when the collection's element
   class doesn't match the partial name.
 
 ## What NOT to do
