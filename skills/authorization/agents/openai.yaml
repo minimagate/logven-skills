@@ -1,0 +1,4 @@
+interface:
+  display_name: "Authorization"
+  short_description: "Define Logven access and ownership rules"
+  default_prompt: "Use $authorization to implement the access and ownership rules for this Logven change."

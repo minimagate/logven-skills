@@ -1,0 +1,4 @@
+interface:
+  display_name: "Routing"
+  short_description: "Map Logven resources and operation routes"
+  default_prompt: "Use $routing to add or change this Logven route."

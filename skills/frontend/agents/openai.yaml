@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend"
+  short_description: "Build Logven server-rendered interfaces"
+  default_prompt: "Use $frontend to implement this server-rendered Logven interface."

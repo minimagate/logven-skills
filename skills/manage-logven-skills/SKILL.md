@@ -25,8 +25,8 @@ Treat `logven-skills/skills/` as the source of truth. Keep `.agents/` ignored in
 ## Workflow
 
 1. Inspect `git status -sb` in both repositories before changing anything.
-2. Edit or create skills only under `logven-skills/skills/`. Preserve each skill's `SKILL.md`, optional `agents/openai.yaml`, and directly referenced resources together.
-3. Validate a changed or new skill with `quick_validate.py` from the installed `skill-creator` package. For existing Logven workflows, also verify every relative Markdown link resolves.
+2. Edit or create skills only under `logven-skills/skills/`. Every skill must include `SKILL.md` and `agents/openai.yaml`; preserve those files and directly referenced resources together.
+3. Validate a changed or new skill with `quick_validate.py` from the installed `skill-creator` package. Also verify its `agents/openai.yaml` has quoted `interface.display_name`, `interface.short_description`, and `interface.default_prompt` values, that the prompt explicitly names the skill as `$skill-name`, and that every relative Markdown link resolves.
 4. Confirm Logven's `.agents/skills` is a symlink to `../../logven-skills/skills` and that the discovered `SKILL.md` files match the companion checkout.
 5. Leave the application repository unchanged unless the requested workflow itself requires an `AGENTS.md` update or application-code change.
 

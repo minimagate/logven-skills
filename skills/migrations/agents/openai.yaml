@@ -1,0 +1,4 @@
+interface:
+  display_name: "Migrations"
+  short_description: "Change the Logven PostgreSQL schema"
+  default_prompt: "Use $migrations to implement this Logven PostgreSQL schema change."

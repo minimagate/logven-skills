@@ -1,0 +1,4 @@
+interface:
+  display_name: "Domain Models"
+  short_description: "Change Logven models and domain behavior"
+  default_prompt: "Use $domain-models to implement this Logven model or domain behavior change."

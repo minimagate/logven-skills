@@ -1,0 +1,4 @@
+interface:
+  display_name: "Controllers"
+  short_description: "Implement Logven Rails request flows"
+  default_prompt: "Use $controllers to implement this Logven Rails request flow."
