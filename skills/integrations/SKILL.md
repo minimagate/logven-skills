@@ -12,10 +12,10 @@ Keep provider concerns separated into credential lifecycle, HTTP adapter, callab
 - `Credentials::Base` is STI on `credentials` and owns encrypted access/refresh tokens, expiry, per-user/type/key uniqueness, and revocation contract.
 - A provider credential subclass defines supported keys/scopes, authorization URL, code exchange, refresh, and best-effort revocation.
 - `Apis::<Provider>` owns authenticated HTTP mechanics, refresh-before-request behavior, response parsing, and provider error translation.
-- `Tools::Base` is the runtime registry and metadata contract. Provider tool subclasses declare `tool_name`, display name, brand, description, input shape, output shape, and `run!`.
+- `Tools::Base` is the runtime registry and metadata contract. Provider tool subclasses declare `tool_name`, display name, brand, description, input shape, output shape, and `run!`. Resource-configured tools additionally normalize a build-time configuration and derive concrete shapes from its trusted snapshot.
 - Controllers initiate signed OAuth state or disconnect only the current user's credential. The callback verifies state before constantizing the credential class and persists tokens for the user encoded in that state.
 
-Do not collapse these layers into controllers or node runners. `Runner::Tool` should continue to resolve a registered tool and execute it with only the run user and merged input.
+Do not collapse these layers into controllers or node runners. `Runner::Tool` should continue to resolve a registered tool and execute it with the run user, merged input, and server-normalized resource configuration.
 
 ## Define tools as strict contracts
 
@@ -23,6 +23,7 @@ Do not collapse these layers into controllers or node runners. `Runner::Tool` sh
 - Make descriptions specific enough for the graph builder to select the tool correctly.
 - Use Logven shapes exactly: string keys, homogeneous arrays, `string`/`number`/`bool`, and trailing `?` for optional inputs.
 - Return a hash matching the declared output shape. Normalize missing provider values deliberately rather than leaking arbitrary response bodies.
+- Keep resource identifiers out of ordinary runtime input when they determine the contract. Normalize them into tool-node configuration at build time, scope them through the worker's project, and revalidate the snapshotted resource schema during execution.
 - Fetch credentials through the executing user. Never use a credential from request parameters or another user's records.
 - Validate provider input that enters protocol headers or URLs, including CR/LF injection boundaries.
 

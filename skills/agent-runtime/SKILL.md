@@ -41,7 +41,7 @@ Input nodes pause. `NodeRun#complete_with!` casts and validates human input agai
 
 - `params` nodes have no inputs and infer output from a JSON object body.
 - `input` nodes have no inputs or executable body and require a non-empty output shape.
-- `tool` nodes derive input/output shapes from the registered tool.
+- `tool` nodes derive input/output shapes from the registered tool and any server-normalized resource configuration; configuration is copied through revisions and revalidated at execution.
 - `llm` and `script` nodes require their declared input shape to be covered by upstream outputs and require a valid non-empty output shape.
 - Edges stay within one step; ready graphs remain connected and acyclic.
 
