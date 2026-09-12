@@ -20,7 +20,7 @@ Preserve these application-wide invariants:
 
 ## Shape actions consistently
 
-- Use conventional REST actions. A state-changing verb that is not CRUD belongs to a small resource controller such as `AgentBuildsController`, not a custom action on `AgentsController`.
+- Use conventional REST actions. A state-changing verb that is not CRUD belongs to a small resource controller such as `WorkerBuildsController`, not a custom action on `WorkersController`.
 - Load repeated member records in a private callback. Scope collection and member lookup through the authorized relation or parent association.
 - Prefer `params.expect(resource: [...])` in a private parameter method. Describe nested arrays and hashes explicitly; never use `permit!` or an open-ended hash for model assignment.
 - On valid form submissions, redirect to the canonical resource and use a short notice when confirmation helps. On invalid submissions, render the form with `status: :unprocessable_entity` so model errors remain available.
@@ -30,9 +30,11 @@ Preserve these application-wide invariants:
 
 ## Preserve domain and security boundaries
 
-Do not duplicate lifecycle checks such as `draft?`, `buildable?`, or `resumable?` in controllers. Authorize the requested operation, then call the model command (`build_later!`, `commit!`, `revise_for`, `start_later!`, or equivalent).
+Do not duplicate lifecycle checks such as `draft?`, `buildable?`, or `resumable?` in controllers. Authorize the requested operation, then call the model command (`build_later!`, `commit!`, `revise!`, `start_later!`, or equivalent).
 
 Route nesting is not authorization. Confirm that a nested child belongs to `@project` even when its policy would otherwise allow the current user to see it through another project.
+
+Worker authoring uses a complete request and one build endpoint. Step groups and nodes are read-only inspection resources; do not expose independent step creation, prompt editing, rebuilding, or ordering endpoints.
 
 ## Keep request code lean
 

@@ -1,47 +1,89 @@
 ---
 name: design
-description: Design or visually refine any Logven page, component, interaction, or Tailwind styling. Use for all UI appearance work to keep the technical product compact, borderless, purposeful, consistent, and equally resolved in light and dark mode.
+description: Design or visually refine any Logven page, component, interaction, or Tailwind styling. Use for all UI appearance work to keep the technical workspace compact, operational, purposeful, consistent, and equally resolved in light and dark mode.
 ---
 
 # Design
 
 Design a precise technical workspace, not a generic generated dashboard. Every visual choice must improve hierarchy, comprehension, state awareness, or interaction.
 
-## Reject UI slop
+## Start from the current interface
 
-Do not introduce decorative dashboard tropes: oversized hero copy, huge empty spacing, gradient blobs, glass effects, gratuitous shadows, fake metrics, ornamental charts, random pills, status dots without meaning, “online” labels without operational value, or invented metadata.
+Inspect the affected view together with neighboring screens, `app/assets/tailwind/base/variables.css`, and the relevant component styles before proposing a new treatment. Reuse the established page shells, section headers, data tables, cards, wells, badges, menus, buttons, and view switchers. Promote a new pattern only when the existing system cannot express the product need.
 
-Do not use eyebrow text. A small uppercase label above a heading is not hierarchy; write one clear heading instead. Uppercase remains acceptable only where the content itself is a functional compact label, such as a table column heading.
+Treat the application as an operational workspace:
 
-Tags and badges must encode a real state, type, format, count, filter, or action-relevant distinction. If removing one would not reduce comprehension, remove it.
+- Lead with the objects users act on, such as runs, workers, steps, sheets, inputs, outputs, errors, and logs.
+- Prefer one continuous work surface with clear regions over a collection of freestanding dashboard cards.
+- Keep the current state and next action visible. Put dense detail behind progressive disclosure without hiding the information needed to decide what to do next.
+- Do not add summary metrics merely to make a page resemble a dashboard. Home is a cross-project runs workspace; retain its table or kanban focus unless the product requirement genuinely changes.
 
-## Build borderless surfaces
+## Use the surface hierarchy deliberately
 
-- Do not add hairline borders, divider grids, or outlined cards. Separate regions with surface color, spacing, grouping, and restrained typography.
-- Preserve accessibility outlines and focus rings; they are interaction signals, not decoration.
-- Reuse the existing menu frame and specialized controls when required by their component contract, but do not spread that treatment to ordinary cards.
-- Use shadows only for true elevation such as an open popover. Ordinary cards and panels should remain flat.
+The interface is flat, but not divider-free. Use surface color and spacing first, then structural dividers where they clarify a real boundary: the app header, a section header, a table header, rows, sheet cells, or adjacent full-width regions. Do not outline every card, nest bordered boxes, or build decorative divider grids.
 
-Favor well-rounded cards and panels. Use the named radius tokens (`rounded-card`, `rounded-well`, `rounded-panel`, `rounded-list`, `rounded-board`, and related semantic radii) rather than arbitrary radii.
+Match geometry to the role:
 
-For nested rounded surfaces, preserve concentric corners:
+- Full-width panels, boards, lists, tables, and inspector regions remain square and edge-aligned.
+- Standalone entity cards, including kanban cards, use `rounded-card` or the role-specific card radius.
+- Inset notices and quiet wells use the tighter `rounded-well` treatment.
+- Buttons, fields, menus, and compact controls use `rounded-ctl`.
+- Popovers and toasts use `rounded-popover` plus `shadow-menu` because they are truly elevated.
+- Reserve `rounded-badge` pills for badges and tags. Selects, buttons, tabs, and ordinary containers are not pills.
 
-`outer radius = inner radius + the visible padding between them`
+Preserve accessibility outlines and focus rings; they are interaction signals, not decoration. Ordinary panels and cards remain shadowless. Do not apply the popover shadow to static content.
 
-Choose the named radius and padding pair that most closely satisfies this relationship. Apply the rule consistently on all four corners; do not place a sharply rounded inner card inside an almost equally rounded outer card.
-
-## Keep scale fine and compact
+## Keep scale fine and information-dense
 
 - Use Geist through `font-sans`; use monospace only for code, JSON, logs, identifiers, and other technical data.
-- Keep page headings at the existing `text-title` scale. Do not add display-sized text.
-- Use `text-body`, `text-label`, and `text-card` for ordinary content; use meta/caption sizes only for genuinely secondary information.
-- Prefer medium or semibold hierarchy with good ink contrast over size inflation.
-- Keep spacing deliberate and compact. Use small gaps and padding that support scanning; avoid large dead zones, excessive section margins, and roomy cards with little content.
-- Keep copy widths readable without forcing sparse layouts.
+- Keep page and entity headings at `text-title`. Use `text-body`, `text-label`, and `text-card` for ordinary content, and caption/meta sizes only for genuinely secondary information.
+- Prefer medium or semibold weight and good ink contrast over size inflation.
+- Keep controls and rows compact: primary actions are generally 2rem high, icon-only micro actions 1.5rem square, table headers 2.25rem, and table rows at least 2.5rem.
+- Use small, regular gaps and padding. Avoid large dead zones, oversized section margins, and roomy cards with little content.
+- Use `tabular-nums` for duration, cost, token, and comparable operational measurements.
 
-## Preserve and extend the palette correctly
+## Compose pages as operational sections
 
-Start with the existing neutral, blue, green, orange, pink, purple, and red palette in `app/assets/tailwind/base/variables.css`. Reuse semantic utilities such as page, column, well, card, panel, ink, tone, status, danger, and interactive colors before adding anything.
+Prefer full-width sections stacked in task order. A section normally has a compact header bar, an optional count or action, and content immediately below it. Keep primary entity context near the top, then the working collection, then its next action or recent activity.
+
+Worker detail pages use an inline profile summary above steps and runs rather than a persistent summary rail. Present category, tools, and build metrics as compact labeled facts; provider names are usually clearer than decorative logo tiles. Settings use stacked panels with quiet header surfaces and direct row content. Use segmented controls for a small mutually exclusive view or preference choice.
+
+The sidebar is compact navigation, not promotional chrome. Group General, Projects, and Quick actions as distinct sections with more space between groups than between items. Keep navigation icons neutral, use the established hover/selected surfaces, and preserve the project hierarchy and shortcut hints.
+
+## Treat tables as the primary dense-data pattern
+
+- Use the semantic `bg-table-header-surface`, `border-divider`, and `border-table-row-divider` roles. Do not improvise nearby neutral shades in markup.
+- Keep general data rows on one surface; do not add zebra striping unless the specialized grid already owns that behavior.
+- Make the whole row the primary target where it opens the record. Keep per-row secondary actions in a trailing micro menu.
+- Align status cells consistently. Put operational numbers in stable columns, and place secondary timestamps at the trailing edge when space allows.
+- At narrow widths, preserve the name, current status, and one useful secondary line. Hide lower-priority columns instead of squeezing the desktop table.
+- Group runs by meaningful lifecycle state when scanning by state is more useful than a single undifferentiated list. Show a compact group heading, status icon, label, and count.
+
+## Encode status consistently
+
+Status color has fixed operational meaning:
+
+- Neutral: pending, unknown, or not yet active.
+- Blue: running or actively building.
+- Orange: paused or attention-worthy without failure.
+- Red: failed, destructive, or blocking.
+- Green: completed, ready, or healthy.
+
+Use the existing semantic status, tone, and badge utilities rather than raw palette classes. Pair color with a text label or accessible name. For run lifecycle displays, reuse the segmented circular `run_status_icon`; its increasing fill communicates progression more precisely than a generic dot. Do not use a colored dot merely to decorate a label.
+
+Badges must encode a real state, type, format, count, filter, or action-relevant distinction. Use the neutral badge for inactive/default states instead of assigning blue to everything unknown. If removing a badge would not reduce comprehension, remove it.
+
+## Use controls with clear hierarchy
+
+- Reuse `.btn`, `.btn-primary`, `.btn-secondary`, `.micro-button`, `MenuComponent`, and existing field classes before composing new controls.
+- Use a primary button for the page or section's committed action. Use a micro button for compact icon-only actions such as starting a run or opening a row menu, always with an accessible label and title.
+- Keep menus dense: compact padding, short icon/text gaps, and the established raised popover surface. Destructive actions belong in the menu's danger treatment.
+- Use icon-only segmented switchers for familiar views such as table and kanban; expose the selected state with `aria-current` and supply labels and titles.
+- Keep action placement stable across empty, loading, paused, failed, and completed states.
+
+## Extend color through semantic tokens
+
+Start with the existing neutral, blue, green, orange, pink, purple, and red palette in `app/assets/tailwind/base/variables.css`. Reuse semantic page, column, well, card, panel, table, ink, tone, status, danger, and interactive utilities before adding anything.
 
 When a new distinction genuinely needs color:
 
@@ -52,21 +94,16 @@ When a new distinction genuinely needs color:
 
 Never solve dark mode by scattering `dark:` overrides when one semantic token can express both themes. Do not assume a light surface maps to the same numeric shade in dark mode.
 
-## Let technical purpose drive composition
+## Reject UI slop
 
-Prioritize the information users need to operate agents: workflow order, build/run status, inputs and outputs, errors and logs, tool identity, ownership, timestamps, and available actions. Use progressive disclosure for dense execution detail, but keep the current state and next action visible.
+Do not introduce oversized hero copy, huge empty spacing, gradient blobs, glass effects, gratuitous shadows, fake metrics, ornamental charts, random pills, status dots without meaning, “online” labels without operational value, or invented metadata.
 
-Empty, loading, paused, failed, and completed states must be designed as deliberately as the default state. Color is supportive; pair it with text or accessible labels. Keep action placement stable and controls recognizable.
+Do not use eyebrow text. A small uppercase label above a heading is not hierarchy; write one clear heading instead. Uppercase remains acceptable only where the content itself is a functional compact label, such as a table column heading.
 
-Preserve existing palette and component language when editing a page. Add a new pattern only when existing cards, panels, boards, tickets, badges, fields, menus, or buttons cannot express the product need.
-
-## Keep the design system lean
-
-- Reuse the smallest existing visual pattern that communicates the requirement. Do not create a new design system, layout primitive, token family, or variant for one screen or hypothetical reuse.
-- Give each visual role one clear treatment. Remove nested wrappers, competing hierarchies, and class or variant proliferation that makes the page harder to change.
-- Verify only the affected flows and meaningful states in the browser. Do not add visual snapshots, DOM assertions, component tests, or exhaustive viewport/theme combinations to the automated suite.
-- Cosmetic work never justifies console logging, debug output, telemetry, or new operational logs. Express state visibly; keep actual failure logging at the existing application boundary that owns the failure.
+Do not create a new design system, layout primitive, token family, or component variant for one screen or hypothetical reuse. Remove nested wrappers, competing hierarchies, and class proliferation that make the interface harder to maintain.
 
 ## Review before finishing
 
-Inspect the actual page in both light and dark mode, at desktop and narrow widths. Check nested corner geometry, density, contrast, focus, hover, disabled states, long technical content, empty/error states, and whether every badge or decoration earns its place. If the result resembles a template before it resembles Logven, simplify it.
+Inspect the actual affected flow in light and dark mode at desktop and narrow widths. Check density, contrast, focus, hover, disabled and selected states, long technical content, empty and error states, table alignment, and whether each divider, badge, icon, and decoration earns its place. Use motion-safe transitions for entry effects and keep ordinary interaction motion restrained.
+
+Verify UI changes in the browser. Do not add visual snapshots, DOM assertions, component tests, or exhaustive viewport/theme combinations to the automated suite. If the result resembles a template before it resembles Logven, simplify it.

@@ -18,7 +18,7 @@ Every authenticated controller action must continue to satisfy `verify_authorize
 - Authorize an Active Record instance for record operations.
 - Authorize the class for collection actions such as `index`.
 - Use a headless symbol for singleton capabilities such as the dashboard or settings.
-- Use a dedicated operation policy (`AgentBuildPolicy`, `StepOrderPolicy`, and peers) when the permission is about a domain command rather than generic CRUD. Pass `policy_class:` explicitly from the controller.
+- Use a dedicated operation policy (`WorkerBuildPolicy`, `WorkerCommitPolicy`, and peers) when the permission is about a domain command rather than generic CRUD. Pass `policy_class:` explicitly from the controller.
 
 Keep policy inputs to `user` and `record`. If a rule appears to require unrelated request context, first select a better domain record.
 

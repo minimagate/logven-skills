@@ -11,15 +11,15 @@ Keep `config/routes.rb` compact, resourceful, and readable from top to bottom. I
 
 - Top-level authenticated navigation uses ordinary plural resources such as projects.
 - Project-owned controllers live in the `Projects` module while URLs remain under `/projects/:project_id`; express this with `scope module: :projects` inside `resources :projects`.
-- Use singular `resource` for one conceptual operation per parent, including build, commit, revision, step order, settings, session, and OAuth callback.
-- Use plural `resources` for collections and member records such as agents, steps, runs, node runs, and project memberships.
+- Use singular `resource` for one conceptual operation per parent, including build, commit, revision, settings, session, and OAuth callback.
+- Use plural `resources` for collections and member records such as workers, runs, node runs, and project memberships; steps provide nesting for read-only node inspection.
 - Declare `only:` for every resource. Do not expose unused Rails actions.
 - Use `controller:` when the public resource name should differ from the implementation name, as project `members` maps to `ProjectMembershipsController`.
 - Use `as:` sparingly to make nested operation helpers read naturally and avoid collisions.
 
 ## Model actions as resources
 
-Do not add `member` or `collection` verbs to an already broad controller when a small operation resource gives the action its own policy and controller. Prefer `POST /agent/build` handled by a build resource over `POST /agent/build_now` handled by `AgentsController`.
+Do not add `member` or `collection` verbs to an already broad controller when a small operation resource gives the action its own policy and controller. Prefer `WorkerBuildsController#create` with a worker-nested build resource over a custom action on `WorkersController`.
 
 Nest only when the parent is part of identity, authorization context, or navigation. When a route is nested, the controller must verify the child belongs to that parent; URL structure alone does not enforce it.
 

@@ -21,7 +21,7 @@ Use strict partial locals comments for non-obvious partial APIs. Keep Ruby setup
 ## Work with Turbo
 
 - Preserve application morph refresh metadata and stable DOM identifiers.
-- Use `ApplicationRecord#turbo_id`, `details_turbo_id`, and `sort_form_id` rather than hand-building competing IDs.
+- Use `ApplicationRecord#turbo_id` and `details_turbo_id` rather than hand-building competing IDs.
 - Subscribe with `turbo_stream_from` only to records that broadcast relevant updates.
 - Use Turbo Stream templates for create/edit/update/destroy interactions that replace known fragments; keep ordinary redirects for full navigation.
 - Mark permanent elements only when their client state must survive morphing.

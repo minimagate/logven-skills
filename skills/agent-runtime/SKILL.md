@@ -1,36 +1,38 @@
 ---
 name: agent-runtime
-description: Change Logven agent building, step graphs, node execution, run state machines, jobs, manual input pauses, artifacts, or shape contracts. Use for Builder/Runner/Graphs/Shapes and Agent, Step, AgentRun, StepRun, or NodeRun lifecycle work.
+description: Change Logven worker compilation, node execution, run state machines, jobs, manual input pauses, artifacts, or shape contracts. Use for UltraBuilder/Runner/Graphs/Shapes and Worker, Step, WorkerRun, StepRun, or NodeRun lifecycle work.
 ---
 
 # Agent Runtime
 
 Preserve the distinction between definitions and executions:
 
-- `Agent -> Step -> Nodes::Base/Edge` defines an ordered, typed workflow.
-- `AgentRun -> StepRun -> NodeRun` records one user's execution, status, logs, and node output.
+- `Worker -> Step -> Nodes::Base/Edge` defines an ordered, typed workflow.
+- `WorkerRun -> StepRun -> NodeRun` records one user's execution, status, logs, and node output.
 - `Artifact` records named run-level deliverables.
 
 Read the entire affected transition path before changing it: model command, builder or runner object, job, policy, controller, Turbo broadcast consumer, and tests.
 
-## Preserve the build pipeline
+## Compile the whole worker incrementally
 
-Agents and steps begin as drafts. `Builder::Base` advances a claimed building step through details, graph construction/judgment, body generation, validation, and promotion. Graph generation may retry against syntactic and semantic feedback; it must either produce a valid ready step or restore a useful draft/error state.
+`UltraBuilder::Compiler` authors a complete worker node by node. Steps are ordered execution groups assigned during compilation; never restore independently authored step prompts, step build jobs, graph judges, or body-generation phases.
 
-- Keep jobs thin: enqueue records, then call `build_now!` or `start_now!`.
-- Claim work under the existing agent/step locks before external LLM work begins.
-- Never allow a ready agent's immutable definition to be edited in place; revision creates a draft copy of the agent, steps, nodes, and remapped edges.
-- When copying definitions, use the explicit `revision_attributes` contracts and rebuild edge references through a node map.
-- Promotion validates the whole graph and reports stable, contextual errors before committing status changes.
+- Keep the original worker request authoritative. `UltraBuilder::Context` snapshots exact tools, project sheet schemas and data actions, creates an acceptance brief, and supplies typed available outputs plus remaining requirements to each construction call. Preserve global constraints and fixed values in later nodes.
+- Explicitly use `poolside/laguna-xs-2.1` for building. Runtime LLM nodes use `LLM_MODEL` independently.
+- `WorkerBuildJob` is the single build job. Claim under the worker lock, call the provider outside transactions, and check the durable token when publishing. Worker statuses are draft, pending, building, ready, and failed. Expired claims can resume.
+- Save each accepted complete node, its edges and the worker `build_context` checkpoint in one transaction. Retry only the rejected candidate with a small explicit budget. Never delete accepted nodes for local repair or repeat completed construction after resuming.
+- Candidate acceptance owns exact node, tool, data and handoff validation; `Step#finalize!` owns connected acyclic graph validation and ordering. Steps and nodes are draft or ready, without intermediate build phases.
+- Ready worker requests are immutable. Revisions copy valid graph definitions, remap edges, retain data bindings and copy compilation context without claims. If copied definitions no longer validate against current project data, only the new revision starts with an empty graph and fresh context. Changing a draft request resets that draft's graph and context for a new compilation.
+- Use `bin/rails runner evals/ultra_builder.rb` for live fidelity and latency evaluation. Mocked tests establish application behavior, not model quality. Keep live evaluation external effects isolated.
 
 ## Preserve execution semantics
 
-`AgentRun#claim_for_start!` is the atomic gate that prevents duplicate jobs from executing the same pending run. Do not replace it with a check followed by a separate write.
+`WorkerRun#start_now!` checks pending state and queued execution uses Solid Queue concurrency controls. Preserve those guards and completed-work skipping; do not assume queue controls serialize direct model calls or `perform_now`.
 
 Runner behavior is ordered and resumable:
 
-1. Iterate agent steps in their explicit order.
-2. Find or create one `StepRun` per agent run and step.
+1. Iterate worker steps in their explicit order.
+2. Find or create one `StepRun` per worker run and step.
 3. Iterate nodes in topological order and find or initialize one `NodeRun` per step run and node.
 4. Skip completed work so retries and resumes do not repeat it.
 5. Propagate paused or failed status and logs upward; complete parents only while still running.
@@ -49,7 +51,7 @@ Changes to a node kind must update its STI class, kind/type maps, builder prompt
 
 ## Handle failures at the right boundary
 
-Let a node runner translate subsystem-specific failures into a useful exception. `Runner::Base` records the failure on the `NodeRun`; builder recovery records the error and restores draft state. Do not silently mark failed work complete or rescue errors so broadly that status/log updates are skipped.
+Let a node runner translate subsystem-specific failures into a useful exception. `Runner::Base` records the failure on the `NodeRun`; compiler recovery records the error, marks the worker failed and preserves accepted work. Do not silently mark failed work complete or rescue errors so broadly that status/log updates are skipped.
 
 ## Keep runtime code lean
 
