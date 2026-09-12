@@ -1,6 +1,6 @@
 ---
 name: generate-tests
-description: Plan, write, repair, or review tests for any Logven Rails code change. Use whenever a task changes Rails application code, asks about tests, coverage, or regressions, or requires deciding what belongs in Minitest. Enforce minimal logic and HTTP-contract tests; never add UI, DOM, rendered-markup, ViewComponent, system, or browser tests.
+description: Plan, write, repair, or review tests for any Rails code change. Use whenever a task changes Rails application code, asks about tests, coverage, or regressions, or requires deciding what belongs in Minitest. Enforce minimal logic and HTTP-contract tests; never add UI, DOM, rendered-markup, ViewComponent, system, or browser tests.
 ---
 
 # Generate Tests
@@ -17,7 +17,7 @@ Protect the test's behavioral contract when diagnosing failures.
 
 1. Establish the intended behavior from the request, application code, and existing tests. Read
    `test/test_helper.rb`, the nearest related tests, and relevant helpers before writing code.
-   Consult the official testing links in `docs/links.md` when framework behavior matters.
+   Consult official Rails testing documentation when framework behavior matters.
 2. Run the narrow existing test file first when practical. Distinguish a pre-existing failure
    from one introduced by the change.
 3. Decide whether the change has a non-visual behavioral contract worth testing. Purely visual,
@@ -33,7 +33,7 @@ Protect the test's behavioral contract when diagnosing failures.
      side effects, and other request-level functionality.
    - Route, mailer, or job: use the matching Rails non-system test API and repository location.
      Job tests should assert delegation and resulting application state, not Active Job internals.
-   - Provider, LLM, and tool tests should isolate network boundaries and prove the relevant
+   - External provider and tool tests should isolate network boundaries and prove the relevant
      request/response contract. Never call a live provider from tests.
    - Development seed tests should prove the idempotent showcase dataset when seed behavior
      changes.
@@ -48,17 +48,17 @@ Protect the test's behavioral contract when diagnosing failures.
    and assert observable outcomes. Keep each test in its shortest clear form. Cover the requested happy path and material failure or
    authorization boundary without building a combinatorial suite.
 5. Run the changed test file, then the smallest relevant directory or broader suite warranted by
-   the change. Run Standard on changed Ruby test files.
+   the change. Run the repository's configured Ruby linter on changed Ruby test files.
 
 ## Repository Conventions
 
 - Use Minitest's `test "behavior" do` style and `require "test_helper"`.
 - Mirror source namespaces and paths in `test/`.
-- Create records with helpers from `test/test_helpers/attributes/` where they fit; keep scenario-
-  specific values in the test when that makes the behavior clearer. Do not introduce fixtures.
-- Use `sign_in_as` for authenticated request tests.
-- Use `with_llm([...])` for deterministic LLM interactions. It intentionally fails on missing or
-  unused responses; do not weaken that contract.
+- Create records with existing test helpers where they fit; keep scenario-specific values in the
+  test when that makes the behavior clearer. Do not introduce fixtures.
+- Use the application's existing authentication helper for authenticated request tests.
+- Use the application's deterministic provider helpers for external interactions. Preserve any
+  contract that rejects missing or unused stubbed responses.
 - Prefer precise assertions such as `assert_difference`, `assert_no_difference`,
   `assert_changes`, `assert_raises`, `assert_predicate`, exact persisted values, and policy scope
   results. Assert public effects rather than private implementation details.
@@ -71,7 +71,7 @@ Protect the test's behavioral contract when diagnosing failures.
   another test, or shared mutable registries without cleanup.
 - Test claim, resume, and idempotency behavior when concurrent or duplicate work could create
   duplicate children or repeat side effects.
-- Treat `test/views/shapes/fields_test.rb` as legacy coverage, not precedent for new view tests.
+- Treat any existing legacy view coverage as legacy, not precedent for new view tests.
 
 ## Keep test code hygienic
 
@@ -113,7 +113,7 @@ Run commands from the repository root, narrowing first:
 bin/rails test test/path/to/file_test.rb
 bin/rails test test/path/to/file_test.rb:LINE
 bin/rails test test/models
-bin/standardrb test/path/to/file_test.rb
+bin/rubocop test/path/to/file_test.rb
 ```
 
 Use `bin/rails test` when the change has broad impact. Do not run `bin/rails test:system`; UI

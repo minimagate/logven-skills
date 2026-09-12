@@ -1,26 +1,26 @@
 ---
 name: controllers
-description: Implement or change Logven Rails controllers, request flows, strong parameters, nested project loading, redirects, or Turbo responses. Use for controller actions and request boundaries; use authorization for policy decisions.
+description: Implement or change Rails controllers, request flows, strong parameters, nested resource loading, redirects, or Turbo responses. Use for controller actions and request boundaries; use authorization for policy decisions.
 ---
 
 # Controllers
 
-Keep controllers as request coordinators. Put domain transitions, graph work, execution logic, and reusable validation in models or the existing namespaced domain objects under `app/models/`.
+Keep controllers as request coordinators. Put domain transitions, execution logic, and reusable validation in models or the existing namespaced domain objects under `app/models/`.
 
 ## Trace the request boundary
 
-Before editing, read `config/routes.rb`, the target controller, its policy, the relevant model method, and the nearest controller test. For project routes, also read `app/controllers/projects/base_controller.rb`.
+Before editing, read `config/routes.rb`, the target controller, its policy, the relevant model method, and the nearest controller test. For nested or namespaced routes, also read the relevant base controller.
 
 Preserve these application-wide invariants:
 
 - `ApplicationController` supplies authentication, Pundit, modern-browser enforcement, navigation helpers, `verify_authorized`, and `verify_policy_scoped` for every `index` action.
 - Authenticated actions authorize a record, class, or headless symbol. An `index` action both authorizes its class or collection contract and calls `policy_scope`.
 - Unauthenticated authentication and OAuth endpoints opt out explicitly. Do not broaden a skip to make a new action pass.
-- Controllers under `Projects` inherit from `Projects::BaseController`, use its `@project` context, and load nested records through that project whenever an association exists.
+- Namespaced controllers inherit from their established base controller, use its parent-resource context, and load nested records through that parent whenever an association exists.
 
 ## Shape actions consistently
 
-- Use conventional REST actions. A state-changing verb that is not CRUD belongs to a small resource controller such as `WorkerBuildsController`, not a custom action on `WorkersController`.
+- Use conventional REST actions. A state-changing verb that is not CRUD belongs to a small operation resource controller, not a custom action on an already broad resource controller.
 - Load repeated member records in a private callback. Scope collection and member lookup through the authorized relation or parent association.
 - Prefer `params.expect(resource: [...])` in a private parameter method. Describe nested arrays and hashes explicitly; never use `permit!` or an open-ended hash for model assignment.
 - On valid form submissions, redirect to the canonical resource and use a short notice when confirmation helps. On invalid submissions, render the form with `status: :unprocessable_entity` so model errors remain available.
@@ -30,11 +30,9 @@ Preserve these application-wide invariants:
 
 ## Preserve domain and security boundaries
 
-Do not duplicate lifecycle checks such as `draft?`, `buildable?`, or `resumable?` in controllers. Authorize the requested operation, then call the model command (`build_later!`, `commit!`, `revise!`, `start_later!`, or equivalent).
+Do not duplicate lifecycle checks in controllers. Authorize the requested operation, then call the corresponding model command.
 
-Route nesting is not authorization. Confirm that a nested child belongs to `@project` even when its policy would otherwise allow the current user to see it through another project.
-
-Worker authoring uses a complete request and one build endpoint. Step groups and nodes are read-only inspection resources; do not expose independent step creation, prompt editing, rebuilding, or ordering endpoints.
+Route nesting is not authorization. Confirm that a nested child belongs to the loaded parent even when its policy would otherwise allow the current user to see it through another parent.
 
 ## Keep request code lean
 

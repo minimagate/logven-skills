@@ -1,6 +1,6 @@
 ---
 name: routing
-description: Add or change Logven Rails routes, resource nesting, URL helpers, project-scoped modules, or operation endpoints. Use when mapping HTTP resources to controllers; keep routes resourceful and aligned with controller ownership.
+description: Add or change Rails routes, resource nesting, URL helpers, namespaced modules, or operation endpoints. Use when mapping HTTP resources to controllers; keep routes resourceful and aligned with controller ownership.
 ---
 
 # Routing
@@ -9,17 +9,17 @@ Keep `config/routes.rb` compact, resourceful, and readable from top to bottom. I
 
 ## Follow the current map
 
-- Top-level authenticated navigation uses ordinary plural resources such as projects.
-- Project-owned controllers live in the `Projects` module while URLs remain under `/projects/:project_id`; express this with `scope module: :projects` inside `resources :projects`.
-- Use singular `resource` for one conceptual operation per parent, including build, commit, revision, settings, session, and OAuth callback.
-- Use plural `resources` for collections and member records such as workers, runs, node runs, and project memberships; steps provide nesting for read-only node inspection.
+- Top-level authenticated navigation uses ordinary plural resources.
+- Parent-owned controllers live in a matching module while URLs remain nested under the parent; express this with `scope module:` inside the parent `resources` block.
+- Use singular `resource` for one conceptual operation per parent.
+- Use plural `resources` for collections and member records.
 - Declare `only:` for every resource. Do not expose unused Rails actions.
-- Use `controller:` when the public resource name should differ from the implementation name, as project `members` maps to `ProjectMembershipsController`.
+- Use `controller:` when the public resource name should differ from the implementation name.
 - Use `as:` sparingly to make nested operation helpers read naturally and avoid collisions.
 
 ## Model actions as resources
 
-Do not add `member` or `collection` verbs to an already broad controller when a small operation resource gives the action its own policy and controller. Prefer `WorkerBuildsController#create` with a worker-nested build resource over a custom action on `WorkersController`.
+Do not add `member` or `collection` verbs to an already broad controller when a small operation resource gives the action its own policy and controller. Prefer a dedicated operation resource over a custom verb handled by the parent controller.
 
 Nest only when the parent is part of identity, authorization context, or navigation. When a route is nested, the controller must verify the child belongs to that parent; URL structure alone does not enforce it.
 

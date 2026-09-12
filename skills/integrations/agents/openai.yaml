@@ -1,4 +1,0 @@
-interface:
-  display_name: "Integrations"
-  short_description: "Connect Logven with external providers"
-  default_prompt: "Use $integrations to add or change this external provider integration in Logven."

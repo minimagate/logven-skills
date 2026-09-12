@@ -1,11 +1,13 @@
 ---
 name: frontend
-description: Implement Logven server-rendered UI with ERB, ViewComponent, Turbo, Stimulus, Importmap, and Tailwind. Use for views, partials, components, Turbo Streams, browser behavior, or accessibility; pair visual changes with the design skill.
+description: Implement server-rendered Rails UI with ERB, ViewComponent, Turbo, Stimulus, Importmap, and Tailwind. Use for views, partials, components, Turbo Streams, browser behavior, or accessibility; pair visual changes with the design skill.
 ---
 
 # Frontend
 
-Logven is server-rendered Rails. Use ERB and Rails helpers for markup, Turbo for navigation/replacement/refresh, and small Stimulus controllers for behavior the server cannot express. Do not add a client state framework, JSX layer, npm build, or parallel component system.
+The application is server-rendered Rails. Use ERB and Rails helpers for markup, Turbo for navigation/replacement/refresh, and small Stimulus controllers for behavior the server cannot express. Do not add a client state framework, JSX layer, npm build, or parallel component system.
+
+Avoid JavaScript whenever the same behavior can be implemented clearly with native HTML, CSS, Rails, or Turbo. Add JavaScript only when it provides necessary behavior that those tools cannot express, and keep it progressively enhanced so the underlying server-rendered flow remains usable whenever practical.
 
 Before any visual change, read `../design/SKILL.md` completely and apply it with this skill.
 
@@ -21,7 +23,7 @@ Use strict partial locals comments for non-obvious partial APIs. Keep Ruby setup
 ## Work with Turbo
 
 - Preserve application morph refresh metadata and stable DOM identifiers.
-- Use `ApplicationRecord#turbo_id` and `details_turbo_id` rather than hand-building competing IDs.
+- Reuse the application's established DOM-ID helper methods rather than hand-building competing IDs.
 - Subscribe with `turbo_stream_from` only to records that broadcast relevant updates.
 - Use Turbo Stream templates for create/edit/update/destroy interactions that replace known fragments; keep ordinary redirects for full navigation.
 - Mark permanent elements only when their client state must survive morphing.
@@ -37,7 +39,7 @@ Import browser dependencies through `config/importmap.rb`; there is no `package.
 
 ## Style at the correct layer
 
-Keep a single-owner design in Tailwind utilities in its ERB. Promote stable classes to `app/assets/tailwind/components/` only when multiple independent markup owners share the pattern. Add raw palette tokens, named semantic colors/radii/spacing, and base/component rules in their established layers; avoid arbitrary values when a named token or scale utility fits.
+Keep a single-owner design in Tailwind utilities in its ERB. Promote stable classes to the application's shared component stylesheet only when multiple independent markup owners share the pattern. Add raw palette tokens, named semantic colors/radii/spacing, and base/component rules in their established layers; avoid arbitrary values when a named token or scale utility fits.
 
 ## Keep frontend code lean
 
@@ -48,4 +50,4 @@ Keep a single-owner design in Tailwind utilities in its ERB. Promote stable clas
 
 ## Verify in the browser
 
-Do not add rendering, selector, CSS-class, ViewComponent, or system tests. Run the asset build, then verify the actual interaction in a browser at the established 1400x1400 desktop size and a narrow viewport. Check light/dark themes, keyboard access, focus, loading/error/empty states, Turbo updates, and console errors.
+Do not add rendering, selector, CSS-class, ViewComponent, or system tests. Run the asset build, then verify the actual interaction in a browser at the established desktop size and a narrow viewport. Check light/dark themes, keyboard access, focus, loading/error/empty states, Turbo updates, and console errors.

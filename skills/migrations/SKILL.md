@@ -1,19 +1,19 @@
 ---
 name: migrations
-description: "Create or revise Logven PostgreSQL schema migrations, indexes, foreign keys, defaults, or constraints. Use for database structure changes. This application is development-only: keep migrations schema-only and never add data backfills or staged rollout choreography."
+description: "Create or revise Rails schema migrations, indexes, foreign keys, defaults, or constraints. Use for database structure changes. This application is development-only: keep migrations schema-only and never add data backfills or staged rollout choreography."
 ---
 
 # Migrations
 
-Logven is currently an on-premises, development-only application with no production dataset to preserve. Optimize migrations for a clean, correct schema—not for rolling upgrades across live versions.
+This is currently a development-only application with no production dataset to preserve. Optimize migrations for a clean, correct schema—not for rolling upgrades across live versions.
 
 ## Keep every migration simple
 
 - Use `ActiveRecord::Migration[8.1]` and prefer a reversible `change` method with Rails' migration DSL.
 - Create tables with the final intended columns, nullability, defaults, timestamps, references, foreign keys, and indexes.
 - Add or remove columns, references, indexes, and constraints directly. Prefer explicit names for composite or partial indexes when the generated name would be unclear.
-- Put durable invariants in PostgreSQL: foreign keys for ownership, unique indexes for uniqueness, and partial indexes for conditional uniqueness such as one project owner.
-- Match existing storage choices: PostgreSQL, `jsonb` for structured persisted objects that benefit from PostgreSQL semantics, and readable string statuses.
+- Put durable invariants in the database: foreign keys for ownership, unique indexes for uniqueness, and adapter-supported conditional indexes for conditional uniqueness.
+- Match the application's existing database adapter and storage choices. Use native structured-data types when they provide useful semantics, and readable string statuses.
 
 ## Never backfill development data
 
