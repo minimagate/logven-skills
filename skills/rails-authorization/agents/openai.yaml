@@ -1,4 +1,4 @@
 interface:
   display_name: "Rails Authorization"
-  short_description: "Pundit policies and scopes the Logven way"
+  short_description: "Pundit policies and scopes"
   default_prompt: "Use $rails-authorization to add or change this permission rule."
