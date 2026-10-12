@@ -1,4 +1,4 @@
 interface:
   display_name: "Rails Frontend"
   short_description: "Build server-rendered Rails interfaces"
-  default_prompt: "Use $rails-frontend to implement this accessible Rails interface with ERB, Turbo, Stimulus, and the existing frontend stack."
+  default_prompt: "Use $rails-frontend to implement this accessible Rails interface with ERB, Turbo, Stimulus, and the project's existing frontend stack."
