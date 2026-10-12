@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Cleanliness"
+  short_description: "Find dead code and leftovers in the change"
+  default_prompt: "Use $review-cleanliness to review the given diff through this lens only."

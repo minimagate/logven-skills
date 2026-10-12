@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Overengineering"
+  short_description: "Flag machinery beyond the current need"
+  default_prompt: "Use $review-overengineering to review the given diff through this lens only."
