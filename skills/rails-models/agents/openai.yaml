@@ -1,4 +1,4 @@
 interface:
   display_name: "Rails Models"
-  short_description: "Logven model and domain-object rules"
-  default_prompt: "Use $rails-models to implement this model behavior the Logven way."
+  short_description: "Model and domain-object rules"
+  default_prompt: "Use $rails-models to implement this model behavior following the project's conventions."
