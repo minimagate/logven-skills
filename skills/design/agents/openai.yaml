@@ -1,4 +1,0 @@
-interface:
-  display_name: "Design"
-  short_description: "Refine Logven interfaces and interactions"
-  default_prompt: "Use $design to refine this Logven interface or interaction."

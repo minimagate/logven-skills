@@ -1,6 +1,6 @@
 ---
 name: rails-structure
-description: Use when deciding where Rails code belongs in Logven, how to name it, which namespace it takes, when to extract it, or how Zeitwerk loads it. Hands off to rails-models for records and validations, rails-controllers for routes and actions, and frontend for views and JS.
+description: Use when deciding where Rails code belongs in Logven, how to name it, which namespace it takes, when to extract it, or how Zeitwerk loads it. Hands off to rails-models for records and validations, rails-controllers for routes and actions, and rails-frontend for views and JS.
 ---
 
 # Rails Structure

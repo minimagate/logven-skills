@@ -12,8 +12,8 @@ Keep workflow source files in `skills/`; do not track `.agents/` or the symlink 
 
 ## Skills
 
-- **Workflow**: `plan`, `plan-feature`, `delegate`, `verify-and-commit`, `pull-request`
+- **Workflow**: `plan`, `plan-feature`, `feature-sequencing`, `delegate`, `verify-and-commit`, `pull-request`
 - **Principles**: `principles` (minimalism and dependency rules)
-- **Review**: `review`, `review-overengineering`, `review-over-standardisation`, `review-conventions`, `review-cleanliness`, `review-correctness`
+- **Review**: `review`, `review-overengineering`, `review-over-standardisation`, `review-conventions`, `review-cleanliness`, `review-correctness`, `review-maintainer`
 - **Plan critics**: `plan-simplicity`, `plan-future-proofing`, `plan-edge-cases`, `plan-fit`
-- **Rails**: `design`, `frontend`, `generate-tests`
+- **Rails**: `rails-structure`, `rails-models`, `rails-controllers`, `rails-authorization`, `rails-migrations`, `rails-frontend`, `rails-design`, `rails-tests`

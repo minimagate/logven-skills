@@ -13,7 +13,7 @@ Check that the diff follows the rules the repo has written down and the patterns
 - Leave abstraction size, dead code, correctness and security to other lenses and do not report them.
 - Read the repo guidelines (AGENTS.md, CLAUDE.md or equivalent) you were pointed to before reviewing, and read the neighbouring files of each changed file.
 - Review only the diff scope you were given, plus the code that the diff touches.
-- Check against the Logven written rules: `../rails-structure/SKILL.md`, `../rails-models/SKILL.md`, `../rails-controllers/SKILL.md`, `../rails-authorization/SKILL.md`, `../rails-migrations/SKILL.md`, `../frontend/SKILL.md`, `../design/SKILL.md` and `../generate-tests/SKILL.md`.
+- Check against the Logven written rules: `../rails-structure/SKILL.md`, `../rails-models/SKILL.md`, `../rails-controllers/SKILL.md`, `../rails-authorization/SKILL.md`, `../rails-migrations/SKILL.md`, `../rails-frontend/SKILL.md`, `../rails-design/SKILL.md` and `../rails-tests/SKILL.md`.
 
 ## What to look for
 

@@ -1,9 +1,9 @@
 ---
-name: design
+name: rails-design
 description: Design or visually refine any Logven page, component, interaction, or Tailwind styling. Use for all UI appearance work to keep the technical workspace compact, operational, purposeful, consistent, and equally resolved in light and dark mode.
 ---
 
-# Design
+# Rails Design
 
 Design a precise technical workspace, not a generic generated dashboard. Every visual choice must improve hierarchy, comprehension, state awareness, or interaction.
 

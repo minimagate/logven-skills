@@ -1,6 +1,6 @@
 ---
 name: rails-controllers
-description: Use when adding or changing Rails controllers, routes, strong params, responses or Turbo Stream templates. Hands off policies to rails-authorization, domain logic to rails-models and views to frontend.
+description: Use when adding or changing Rails controllers, routes, strong params, responses or Turbo Stream templates. Hands off policies to rails-authorization, domain logic to rails-models and views to rails-frontend.
 ---
 
 # Rails Controllers

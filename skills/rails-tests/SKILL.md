@@ -1,9 +1,9 @@
 ---
-name: generate-tests
+name: rails-tests
 description: Plan, write, repair, or review tests for any Rails code change. Use whenever a task changes Rails application code, asks about tests, coverage, or regressions, or requires deciding what belongs in Minitest. Enforce minimal logic and HTTP-contract tests; never add UI, DOM, rendered-markup, ViewComponent, system, or browser tests.
 ---
 
-# Generate Tests
+# Rails Tests
 
 Write the smallest maintainable Minitest coverage that proves requested application behavior.
 Mandatory rule: generated tests must use the minimum lines of code possible. Do not add setup,

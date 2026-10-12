@@ -39,7 +39,7 @@ Every other skill that touches design, scope or dependencies defers to these rul
 - Do not log the same failure again at every layer above it.
 - Leave no debug output behind.
 - Test meaningful behavior at its narrowest public boundary.
-- Never test framework behavior or the same contract twice. See `../generate-tests/SKILL.md`.
+- Never test framework behavior or the same contract twice. See `../rails-tests/SKILL.md`.
 
 ## Conflicts
 

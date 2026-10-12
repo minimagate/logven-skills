@@ -1,15 +1,15 @@
 ---
-name: frontend
-description: Implement server-rendered Rails UI with ERB, ViewComponent, Turbo, Stimulus, Importmap, and Tailwind. Use for views, partials, components, Turbo Streams, browser behavior, or accessibility; pair visual changes with the design skill.
+name: rails-frontend
+description: Implement server-rendered Rails UI with ERB, ViewComponent, Turbo, Stimulus, Importmap, and Tailwind. Use for views, partials, components, Turbo Streams, browser behavior, or accessibility; pair visual changes with the rails-design skill.
 ---
 
-# Frontend
+# Rails Frontend
 
 The application is server-rendered Rails. Use ERB and Rails helpers for markup, Turbo for navigation/replacement/refresh, and small Stimulus controllers for behavior the server cannot express. Do not add a client state framework, JSX layer, npm build, or parallel component system.
 
 Avoid JavaScript whenever the same behavior can be implemented clearly with native HTML, CSS, Rails, or Turbo. Add JavaScript only when it provides necessary behavior that those tools cannot express, and keep it progressively enhanced so the underlying server-rendered flow remains usable whenever practical.
 
-Before any visual change, read `../design/SKILL.md` completely and apply it with this skill.
+Before any visual change, read `../rails-design/SKILL.md` completely and apply it with this skill.
 
 ## Choose the smallest UI owner
 
