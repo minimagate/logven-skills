@@ -27,6 +27,12 @@ Agree the scope and approach with the user before any code is written.
 - Split work into independent scoped changes with disjoint files, so briefs can run in parallel later.
 - Keep each change small enough to review as one commit.
 
+## Escalate big features
+
+- If the request introduces a new domain concept, changes the schema, adds an external integration or public contract, or spans several areas, say so.
+- Offer `plan-feature` for multi-agent planning.
+- Start it only after the user confirms, because it costs considerably more.
+
 ## Gate
 
 - Wait for explicit agreement before moving to `delegate`.
