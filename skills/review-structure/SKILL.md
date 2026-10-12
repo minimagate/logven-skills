@@ -27,7 +27,7 @@ Ask the structural questions that reviewers repeatedly block on, and report only
 8. Are routes standard resources, with no custom verbs, member routes or slugs, and is a conditional operation inside `update` split into its own controller?
 9. Is a new page needed, or would the existing form do the job?
 10. Is structured data stored as rows and real foreign keys, rather than JSON blobs, parsed markdown or redundant columns?
-11. Is each deleted helper, wrapper, nested-attributes call, controller split or `svg_tag` justified in the diff as safe to remove?
+11. Is each deleted helper, wrapper, nested-attributes call, controller split or shared helper justified in the diff as safe to remove?
 12. Does a lifecycle change (archive, share, version) or a tool-found quick fix state its intended behaviour?
 13. Is behaviour explicit, rather than thread-locals, `prepend`, YAML keyed by tag, env switches or status symbols that callers must `case` on?
 14. Is a helper, base class, module, CSS class or ViewComponent used only once where a native element or inline class would do? Is a mode flag added to a partial?
