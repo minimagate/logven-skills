@@ -1,0 +1,4 @@
+interface:
+  display_name: "How We Work"
+  short_description: "Entrypoint: roles, loop and which skill to load"
+  default_prompt: "Use $how-we-work to orient and route this task through the plan, delegate, verify and review loop."
