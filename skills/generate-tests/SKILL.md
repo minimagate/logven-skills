@@ -31,7 +31,7 @@ Protect the test's behavioral contract when diagnosing failures.
    - Controller or HTTP contract: inherit `ActionDispatch::IntegrationTest` under
      `test/controllers/`. Assert authentication, authorization, status/redirect, persistence,
      side effects, and other request-level functionality.
-   - Route, mailer, or job: use the matching Rails non-system test API and repository location.
+   - Mailer or job: use the matching Rails non-system test API and repository location.
      Job tests should assert delegation and resulting application state, not Active Job internals.
    - External provider and tool tests should isolate network boundaries and prove the relevant
      request/response contract. Never call a live provider from tests.
@@ -72,6 +72,12 @@ Protect the test's behavioral contract when diagnosing failures.
 - Test claim, resume, and idempotency behavior when concurrent or duplicate work could create
   duplicate children or repeat side effects.
 - Treat any existing legacy view coverage as legacy, not precedent for new view tests.
+- Every controller gets at least one request test per page and one per action branch (valid and invalid), even if it only does `get path; assert_response :ok`; this is the test that catches a missing template. Assert status, redirect, persistence, jobs and authorization, never HTML.
+- One test file per class, mirroring the source path (`test/models/workers/builder/plan_test.rb`). An extracted plain Ruby object gets its own test in the same change, and a deleted feature's tests are deleted with it.
+- Every policy has a policy test. Name test classes after their unit (`TablePolicyTest`, not a generic name), and reference app classes with a leading `::` inside nested test modules.
+- Build records with the `*_attributes(**overrides)` builders in `test/test_helpers/attributes/`.
+- Stub LLM calls with `with_ruby_llm`, not `with_llm`; un-stubbed LLM calls raise.
+- Prefer explicit per-case assertions over data-driven graders. Evals live in `evals/`, outside CI, and assert on final output.
 
 ## Keep test code hygienic
 
@@ -131,3 +137,4 @@ Report exact commands, failures, and anything left unverified.
 - Do not add redundant tests solely to raise coverage.
 - Do not modify unrelated tests or user-owned working-tree changes.
 - Do not make a correct intended-behavior test less strict to obtain a green run.
+- Do not add route-recognition tests; controller tests already prove routes work.

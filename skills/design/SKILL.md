@@ -56,6 +56,7 @@ The sidebar is compact navigation, not promotional chrome. Group General, Projec
 - Keep general data rows on one surface; do not add zebra striping unless the specialized grid already owns that behavior.
 - Make the whole row the primary target where it opens the record. Keep per-row secondary actions in a trailing micro menu.
 - Align status cells consistently. Put operational numbers in stable columns, and place secondary timestamps at the trailing edge when space allows.
+- Before adding a table grid template, reuse an existing class or token; do not add another near-identical arbitrary `grid-cols-[...]` string.
 - At narrow widths, preserve the name, current status, and one useful secondary line. Hide lower-priority columns instead of squeezing the desktop table.
 - Group runs by meaningful lifecycle state when scanning by state is more useful than a single undifferentiated list. Show a compact group heading, status icon, label, and count.
 
@@ -84,6 +85,9 @@ Badges must encode a real state, type, format, count, filter, or action-relevant
 ## Extend color through semantic tokens
 
 Start with the existing neutral, blue, green, orange, pink, purple, and red palette in `app/assets/tailwind/base/variables.css`. Reuse semantic page, column, well, card, panel, table, ink, tone, status, danger, and interactive utilities before adding anything.
+
+- Raw palette values in `base/variables.css` already use `light-dark(...)`; semantic tokens alias palette tokens and inherit dark mode, so markup never needs `dark:` variants (there are none).
+- Palette values, semantic colors, radii, spacing, text sizes and shadows live in the two `@theme` blocks of `app/assets/tailwind/base/variables.css`; component CSS lives in `app/assets/tailwind/components/`. Add tokens there, not in templates.
 
 When a new distinction genuinely needs color:
 
