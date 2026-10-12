@@ -12,7 +12,8 @@ Verify the work yourself, then commit one scoped change at a time.
 - Read the full diff. Do not trust the subagent report.
 - Check every changed file against the allowed-file list and the agreed decisions.
 - Run the tests and linters yourself, using the commands from the brief.
-- UI changes: also run `bin/rails tailwindcss:build`, then check the affected flow in a browser in light and dark, at desktop and narrow widths, including empty, loading and error states and keyboard access. Do it yourself or ask the user, and report what was not checked.
+- UI changes: also run `bin/rails tailwindcss:build`, then check the affected flow in a browser (in light and dark if the app supports both), at desktop and narrow widths, including empty, loading and error states and keyboard access. Do it yourself or ask the user, and report what was not checked.
+- For mail or documents, check the mailer preview or the generated file rather than asserting its content in tests.
 - If anything is off, send it back through `delegate` with a sharper brief. Do not fix it in the main thread.
 
 ## Commit

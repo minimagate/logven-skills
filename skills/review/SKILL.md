@@ -16,6 +16,7 @@ Coordinate read-only reviewer subagents, one per lens, then verify and synthesiz
 ## Scope
 
 - Determine the exact diff: branch against its base, uncommitted changes, or the named files.
+- If the base branch is unclear, ask before dispatching reviewers.
 - Give every reviewer the same diff scope, as an exact command or file list.
 - Give every reviewer the paths of the repo guideline files (contributor docs, style and architecture notes, agent instruction files).
 

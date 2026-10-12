@@ -1,11 +1,11 @@
 ---
 name: feature-sequencing
-description: Use when ordering and slicing work into commits and PRs, and commit message conventions; PR text lives in `pull-request`. Read by plan, plan-feature and verify-and-commit for layer order, plumbing slices, commit naming and PR scope.
+description: Use when ordering and slicing work into commits and PRs, and commit message conventions; PR text lives in `pull-request`. Read by plan, plan-feature and verify-and-commit for defaults for ordering, slicing and commit naming; the project skill overrides them.
 ---
 
 # Feature Sequencing
 
-Order, slice and describe a feature the way the project's history does: bottom-up, one concern per commit, UI last. Follow `../principles/SKILL.md` for scope.
+Order, slice and describe a feature bottom-up, one concern per commit, UI last. Follow `../principles/SKILL.md` for scope.
 
 ## Order of work
 
@@ -16,7 +16,7 @@ Order, slice and describe a feature the way the project's history does: bottom-u
 5. Integration with existing systems (background jobs, external services, other modules), then any LLM prompts or content files. Prompt and content edits get their own commits.
 6. HTTP layer as one plumbing slice: controller, policy, route, near-empty views, controller and policy tests.
 7. UI last, but complete and compliant: build the real interface with `../rails-frontend/SKILL.md` and `../rails-design/SKILL.md` (tokens, light and dark, states, keyboard access). Do not ship a rough placeholder UI.
-8. Hardening tail: N+1 queries, stricter validation, "Testing everything", lint, dead code.
+8. Hardening tail: N+1 queries, stricter validation, lint, dead code.
 
 ## Shape of the feature
 
@@ -34,13 +34,12 @@ Order, slice and describe a feature the way the project's history does: bottom-u
 - End with an "Out of scope / next steps (in order)" list. Use it to cut follow-up PRs.
 - Decide product semantics (archived, shared, versioned, who sees what) in the plan, before coding.
 - Flag new non-null or identity columns on existing tables. Migrations are schema-only.
-- For LLM features, write validation rules and clear messages first, then prompts, then evals outside CI.
 
 ## Commits
 
-- One concern per commit, named for the concern. Subjects are short, 2-6 words, with no conventional-commit prefix.
-- Put housekeeping (lint, dead code, schema fixes, brakeman) in its own commit.
-- Tests ride in the same commit as the code they cover. A batch "Testing everything" commit after a plumbing slice is acceptable.
+- One concern per commit, named for the concern. Subjects are short and descriptive (a handful of words), no prefix unless the project uses one.
+- Put housekeeping (lint, dead code, schema fixes) in its own commit.
+- Tests ride in the same commit as the code they cover.
 - Add a body only for a one-line principle, such as "Permission-related logic lives in permissions". Never a changelog.
 
 ## Pull requests
