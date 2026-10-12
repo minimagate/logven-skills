@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Logven"
+  short_description: "Logven-specific names, paths and decisions"
+  default_prompt: "Use $project-logven for Logven's project-specific conventions alongside the general rails-* skills."
