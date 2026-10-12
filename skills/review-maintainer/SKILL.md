@@ -32,11 +32,12 @@ Ask the questions the lead reviewer repeatedly asks of Logven code, and report o
 14. Is a helper, base class, module, CSS class or ViewComponent used only once where a native element or inline class would do? Is a mode flag added to a partial?
 15. Do the tests cover each new page and action branch, without route-recognition tests or leftover tests for a deleted feature?
 16. Does the diff bring unrelated `schema.rb` changes, a new dependency or env loader, edits to a module another open PR deletes, or justification comments on ordinary code?
+17. Is a new interface a rough placeholder (missing states, tokens or dark mode) rather than a complete one that follows `../rails-design/SKILL.md`?
 
 ## What is NOT a finding
 
 - Formatting, naming taste with no collision, and comment wording.
-- Thin tests on a deliberately rough first slice that the diff says is rough.
+- Thin tests on an early slice of a larger planned feature, when the diff states what follows.
 - Small Tailwind visual choices.
 - Known debt that the diff names and parks with a stated deferral.
 - A small duplication that avoids coupling.

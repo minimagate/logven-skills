@@ -15,7 +15,7 @@ Order, slice and describe a feature the way Logven history does: bottom-up, one 
 4. Domain objects or concerns, each with its own test.
 5. Integration with existing systems (runner, builder, jobs), then prompts. Prompt `.md` edits get their own commits.
 6. HTTP layer as one plumbing slice: controller, policy, route, near-empty views, controller and policy tests.
-7. UI last and minimal. Say in the PR description when it is rough.
+7. UI last, but complete and compliant: build the real interface with `../rails-frontend/SKILL.md` and `../rails-design/SKILL.md` (tokens, light and dark, states, keyboard access). Do not ship a rough placeholder UI.
 8. Hardening tail: N+1 queries, stricter validation, "Testing everything", lint, dead code.
 
 ## Shape of the feature
