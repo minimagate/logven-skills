@@ -26,7 +26,7 @@ Project-specific names, paths and decisions live in the project skill (`project-
 - Keep durable invariants in the database: foreign keys for ownership, unique indexes for uniqueness. A uniqueness validation alone is not concurrency-safe.
 - Store status columns as strings backed by a model constant. Do not use database enums.
 - Prefix namespaced tables with their module when the project namespaces its tables. Changing a namespace prefix is a rename migration.
-- Name migrations for the action (`AddSettingsToUsers`, `CreateMeters`). Keep one coherent schema change per migration.
+- Name migrations for the action (`AddSettingsToUsers`, `CreateInvoices`). Keep one coherent schema change per migration.
 
 ## History and schema.rb
 

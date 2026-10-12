@@ -11,7 +11,7 @@ Project-specific names, paths and decisions live in the project skill (`project-
 
 ## Order inside a model
 
-- Declare in this order: concerns (soft delete, shared capabilities), constants, `default_scope`, associations, `enum`, `normalizes` and validations, callbacks, nested attributes and broadcasts, class methods, public instance methods, then `private`.
+- Declare in this order: concerns (shared capabilities), constants, `default_scope`, associations, `enum`, `normalizes` and validations, callbacks, nested attributes and broadcasts, class methods, public instance methods, then `private`.
 - Choose `dependent:` from real ownership. Do not default to `:destroy`.
 - Declare string statuses with `enum :status, STATUSES.keys.index_with(&:itself)`, keeping `STATUSES` on the model.
 - Add scopes rarely. Prefer a class method.
@@ -31,8 +31,7 @@ Project-specific names, paths and decisions live in the project skill (`project-
 - Use real foreign keys. Store ids and expose names at the interface, translating in the accessor.
 - Drop columns that duplicate an existing concept, such as `created_by` when the creator is the owner role.
 - Store structured data as rows and associations, not JSON blobs or markdown parsed by heading.
-- Soft-delete domain entities. Hard delete only to purge data.
-- Check `dependent: :destroy` chains for loss of history before adding them.
+- Soft delete only where the project skill says so (it implies a library or column convention nobody should add silently); otherwise delete deliberately and check `dependent:` chains for lost history.
 - Back uniqueness validations with a unique index and required ownership with a foreign key (see `rails-migrations`).
 
 ## Plain Ruby domain objects
@@ -43,6 +42,13 @@ Project-specific names, paths and decisions live in the project skill (`project-
 - Do not convert exceptions into return values.
 - Make representations unambiguous, and have validators check real formats.
 
+## Mail, files and background work
+
+- Send mail with `deliver_later` after the state change commits (`after_commit` or a `verb_later!` method), never inside the request when the user must see the result synchronously.
+- The domain object that renders a document (for example an invoice PDF) is a plain object under `app/models` named for its role, not a service.
+- Attach generated files with Active Storage.
+- Mark state (for example `sent_at`) in the same transaction as the enqueue decision, and make the job idempotent.
+
 ## Callbacks and broadcasts
 
 - Use callbacks only for local bookkeeping that must run on every save.
@@ -52,7 +58,7 @@ Project-specific names, paths and decisions live in the project skill (`project-
 
 ## Reuse
 
-- Route a shared capability (such as tracking) through its existing concern.
+- Route a shared capability (such as search) through its existing concern.
 - Put id helpers on `ApplicationRecord`.
 - Do not add a parallel mechanism beside these.
 
