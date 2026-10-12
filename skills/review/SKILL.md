@@ -27,11 +27,12 @@ Each lens is a skill that a reviewer reads and applies:
 - `review-cleanliness`
 - `review-over-standardisation`
 - `review-correctness`
+- `review-maintainer`
 
 Choose lenses by diff size and risk:
 - Small diff (a few files, no logic change): conventions and cleanliness.
-- Normal diff: all five.
-- Large diff: all five, one reviewer per lens per area.
+- Normal diff: all six.
+- Large diff: all six, one reviewer per lens per area.
 
 Dispatch one reviewer per lens in parallel. State which lenses ran and why.
 
