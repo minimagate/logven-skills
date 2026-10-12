@@ -10,10 +10,10 @@ Briefs must follow the philosophy in `../principles/SKILL.md`.
 
 ## Model choice
 
-- Default to the cheapest capable model.
-- If the same brief fails twice, retry once on the middle tier with a sharper brief.
-- Never use the strongest available model for implementation. That tier is for review.
-- (Claude: Haiku / Sonnet / Opus)
+- Every subagent (implementer, explorer, critic, reviewer) runs on the cheapest capable model.
+- If the same brief fails twice, retry once on the middle tier with a sharper brief. This is the only exception.
+- Do not use the strongest available model for any subagent.
+- (Claude: Haiku, latest version; middle tier Sonnet. For another model family, use that family's cheapest and middle tiers.)
 
 ## Brief contents (required)
 

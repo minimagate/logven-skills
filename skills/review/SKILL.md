@@ -9,9 +9,10 @@ Coordinate read-only reviewer subagents, one per lens, then verify and synthesiz
 
 ## Roles
 
-- Reviews are done only by subagents on the strongest available model.
+- Reviews are done only by subagents on the cheapest capable model; never the orchestrator.
 - Reviewers are read-only: no file edits, no git write commands.
 - The orchestrator scopes, dispatches, verifies, filters and synthesizes.
+- Because reviewers are cheap, keep each to one lens and a small diff scope, require evidence and falsification in every finding, and spot-check high-severity findings yourself before presenting them.
 
 ## Scope
 

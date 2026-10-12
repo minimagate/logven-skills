@@ -23,7 +23,7 @@ Start with `how-we-work`; it routes each situation to the skill below.
 1. Plan. Use `plan` for small changes, or `plan-feature` for big features: parallel explorers, then critics, then triage to a lean plan. The user agrees the plan before any code.
 2. Delegate. Subagents on the cheapest capable model implement from self-contained briefs.
 3. Verify and commit. The orchestrator reads the full diff, runs tests and linters, and commits one scoped change at a time.
-4. Review. Lens reviewers run in parallel on the strongest available model: small diffs run conventions, cleanliness and correctness; larger diffs run all six (the five general lenses plus `review-structure`). The orchestrator verifies their findings and synthesizes them.
+4. Review. Lens reviewers run in parallel on the cheapest capable model: small diffs run conventions, cleanliness and correctness; larger diffs run all six (the five general lenses plus `review-structure`). The orchestrator verifies their findings and synthesizes them.
 5. Pull request. Written from the branch's commits and diff, with checks reported factually.
 
 The six lenses are `review-overengineering`, `review-over-standardisation`, `review-conventions`, `review-cleanliness`, `review-correctness` and `review-structure`.
@@ -86,7 +86,7 @@ Invariants:
 - Keep skills tight, about 40 to 70 lines. Say each rule once, and link `principles` instead of restating it.
 - Reference other skills by relative path, such as `../name/SKILL.md`.
 - After renames or edits, check that every `../<name>/SKILL.md` link resolves.
-- Model tiers are written abstractly (cheapest capable for implementation, strongest available for review); the only mapping to concrete model names is a single line in `delegate`.
+- Model choice is written abstractly: every subagent runs on the cheapest capable model; the only mapping to concrete model names is a single line in `delegate`.
 - Project-specific names belong in the project skill, never in the general skills.
 - Examples in general skills use neutral names (orders, invoices).
 - When a skill is added, renamed or removed, update the table in the same change, so every skill in `skills/` appears exactly once.

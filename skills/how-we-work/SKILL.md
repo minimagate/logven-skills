@@ -16,7 +16,7 @@ If your brief assigns you implementation, exploration, critique or review, stop 
 - **Orchestrator** (main thread): analyzes and plans with the user, briefs subagents, verifies their diffs, commits and synthesizes results. Writes no code.
 - **Implementers**: subagents on the cheapest capable model, working from self-contained briefs. They never run git.
 - **Explorers**: subagents on the cheapest capable model, doing read-only fact gathering.
-- **Critics and reviewers**: subagents on the strongest available model, read-only. Never the orchestrator.
+- **Critics and reviewers**: subagents on the cheapest capable model, read-only, one lens each. Never the orchestrator.
 
 ## The loop
 
