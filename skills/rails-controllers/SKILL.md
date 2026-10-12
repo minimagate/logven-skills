@@ -5,19 +5,19 @@ description: Use when adding or changing Rails controllers, routes, strong param
 
 # Rails Controllers
 
-Keep Logven's Rails controllers thin: load, authorize, call the model and render, following [principles](../principles/SKILL.md).
+Keep Rails controllers thin: load, authorize, call the model and render, following [principles](../principles/SKILL.md).
+Project-specific names, paths and decisions live in the project skill (`project-<name>`); where it differs from this skill, it wins.
 
 ## Controllers stay thin
 
-- Load nested records through the parent: `@project.workflows.find`, never `Workflow.find`.
+- Load nested records through the parent: `@account.invoices.find`, never `Invoice.find`.
 - Route nesting is not authorization. See `../rails-authorization/SKILL.md`.
 - Authorize every authenticated action with its matching action. `index` also calls `policy_scope`.
-- Use base controllers for shared loading: `Projects::BaseController` sets the project, `Projects::Workers::Workflows::BaseController` sets the workflow.
-- Use the `ApplicationController` macros (`navigation`, `section`, `assistant_context`) instead of ad-hoc matching.
-- Keep each controller under 80 lines.
+- Use base controllers for shared loading: `Accounts::BaseController` sets the account.
+- Keep controllers short (a screen or so); extract to the model.
 - Move derived data into a model method and give the view one object (`@summary`), not many instance variables.
-- Use one success path and one failure path: `if @build.update` redirects with a short notice, otherwise `render :edit, status: :unprocessable_entity`.
-- Do not add `turbo_frame_request?` forks or `respond_to` scaffolding.
+- Use one success path and one failure path: `if @approval.update` redirects with a short notice, otherwise `render :edit, status: :unprocessable_entity`.
+- Do not add `respond_to` scaffolding or format forks.
 
 ## Params
 
@@ -30,23 +30,21 @@ Keep Logven's Rails controllers thin: load, authorize, call the model and render
 
 - Give every `resources` and `resource` an `only:` option.
 - Use plain id URLs. No slugs and no clever constraints.
-- Model each state change as a small singular resource with its own controller and policy: `resource :build`, `:commit`, `:revision`, `:rerun`, each with `only: %i[create]`.
+- Model each state change as a small singular resource with its own controller and policy: `resource :approval`, with `only: %i[create]`.
 - Do not add `member` or `collection` verbs, or extra custom actions, to a broad controller.
-- Put parent-owned controllers in a matching module with `scope module: :projects`. Use `controller:` or `as:` sparingly.
+- Put parent-owned controllers in a matching module (`Billing::InvoicesController`). Use `controller:` or `as:` sparingly.
 - Reuse the existing page and form before adding a page or route. A different operation gets its own controller, not a conditional inside `update`.
 - When a route changes, update controllers, redirects, `form_with` arrays, links, Turbo templates and tests in the same change.
 
 ## Responses
 
 - Redirect for ordinary flows.
-- Return `head :no_content` for autosave.
 - For in-place updates, name Turbo Stream templates after the action (`create`, `update`, `destroy`). They render the same `_show` and `_form` partials as the full pages.
-- Place templates under the resource they render: `projects/workers/workflows/specs/_form`, not `projects/workers/workflows/_spec_form`.
-- Do not use Turbo Frames in Logven.
+- Place templates under the resource they render: `billing/invoices/approvals/_form`, not `billing/invoices/_approval_form`.
 - Do not log params or records. Let the owning boundary log a failure once.
 
 ## Verify
 
 - `bin/rails routes` to confirm route names, nesting and `only:` options.
 - `bin/rails test test/controllers/<path>` for each touched controller.
-- `bin/standardrb` on the changed files.
+- The project's linter on the changed files.

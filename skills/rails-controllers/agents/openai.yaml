@@ -1,4 +1,4 @@
 interface:
   display_name: "Rails Controllers"
   short_description: "Thin controllers and resourceful routes"
-  default_prompt: "Use $rails-controllers to implement this request flow and its routes the Logven way."
+  default_prompt: "Use $rails-controllers to implement this request flow and its routes."
