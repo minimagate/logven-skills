@@ -1,4 +1,4 @@
 interface:
   display_name: "Rails Migrations"
-  short_description: "Schema-only reversible migrations"
-  default_prompt: "Use $rails-migrations to write this schema change the Logven way."
+  short_description: "Structure-only reversible migrations"
+  default_prompt: "Use $rails-migrations to write this schema change as a reversible, structure-only migration."
