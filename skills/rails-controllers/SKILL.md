@@ -5,43 +5,40 @@ description: Use when adding or changing Rails controllers, routes, strong param
 
 # Rails Controllers
 
-Keep Rails controllers thin: load, authorize, call the model and render, following [principles](../principles/SKILL.md).
-Project-specific names, paths and decisions live in the project skill (`project-<name>`); where it differs from this skill, it wins.
+Keep controllers thin: load, authorize, call the model and render, following the [Principles](../how-we-work/SKILL.md) section.
+
+Project-specific names, paths and decisions live in the project skill (`project-<name>`); where it differs, it wins.
 
 ## Controllers stay thin
 
-- Load nested records through the parent: `@account.invoices.find`, never `Invoice.find`.
-- Route nesting is not authorization. See `../rails-authorization/SKILL.md`.
-- Authorize every authenticated action with its matching action. `index` also calls `policy_scope`.
-- Use base controllers for shared loading: `Accounts::BaseController` sets the account.
-- Keep controllers short (a screen or so); extract to the model.
-- Move derived data into a model method and give the view one object (`@summary`), not many instance variables.
-- Use one success path and one failure path: `if @approval.update` redirects with a short notice, otherwise `render :edit, status: :unprocessable_entity`.
-- Do not add `respond_to` scaffolding or format forks.
+- Load nested records through the parent, as rails-authorization (Scoping) describes. Route nesting is not authorization.
+- Authorize every action; `index` also calls `policy_scope` (rails-authorization).
+- Use base controllers for shared loading (`Accounts::BaseController` sets the account).
+- Keep controllers short (a screen or so) and extract to the model. The view gets one object (`@summary`) built from model methods (rails-models), not many ivars.
+- One success path, one failure path: `if @approval.update` redirects with a short notice, otherwise `render :edit, status: :unprocessable_entity`.
+- No `respond_to` scaffolding or format forks.
 
 ## Params
 
-- Permit through one private `*_params` method built on `params.expect(model: [...])`.
+- Permit through one private `*_params` built on `params.expect(model: [...])`; `new` reuses it.
 - Declare nested arrays and hashes explicitly. Never use `permit!`.
-- Have `new` reuse the same params method as `create`.
 - Keep param keys identical across sibling forms.
 
 ## Routes
 
-- Give every `resources` and `resource` an `only:` option.
-- Use plain id URLs. No slugs and no clever constraints.
-- Model each state change as a small singular resource with its own controller and policy: `resource :approval`, with `only: %i[create]`.
-- Do not add `member` or `collection` verbs, or extra custom actions, to a broad controller.
+- Give every `resources` and `resource` an `only:` option. Use plain id URLs: no slugs, no clever constraints.
+- Model each state change as a singular resource with its own controller and policy: `resource :approval, only: %i[create]`.
+- No `member`, `collection` or extra custom actions on a broad controller.
 - Put parent-owned controllers in a matching module (`Billing::InvoicesController`). Use `controller:` or `as:` sparingly.
-- Reuse the existing page and form before adding a page or route. A different operation gets its own controller, not a conditional inside `update`.
-- When a route changes, update controllers, redirects, `form_with` arrays, links, Turbo templates and tests in the same change.
+- Reuse the existing page and form before adding a route. A different operation gets its own controller, not a conditional inside `update`.
+- A route change updates controllers, redirects, `form_with` arrays, links, Turbo templates and tests in the same change.
 
 ## Responses
 
 - Redirect for ordinary flows.
-- For in-place updates, name Turbo Stream templates after the action (`create`, `update`, `destroy`). They render the same `_show` and `_form` partials as the full pages.
+- In-place updates use Turbo Stream templates named after the action (`create`, `update`, `destroy`) that render the same `_show` and `_form` partials as the full pages.
 - Place templates under the resource they render: `billing/invoices/approvals/_form`, not `billing/invoices/_approval_form`.
-- Do not log params or records. Let the owning boundary log a failure once.
+- Do not log params or records. The owning boundary logs a failure once.
 
 ## Verify
 

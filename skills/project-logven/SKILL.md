@@ -1,15 +1,15 @@
 ---
 name: project-logven
-description: Use only when working in the Logven repo. Project-specific names, paths, helpers and decisions. Read with the general rails-* skills and principles; it overrides general defaults where they differ.
+description: Use only when working in the Logven repo. Project-specific names, paths, helpers and decisions. Read with the general rails-* skills and how-we-work; it overrides general defaults where they differ.
 ---
 
 # Project Logven
 
-Logven is a Rails app for project-owned sheets, workers, workflows and workflow runs. This file holds every fact that is true only for Logven.
+Logven is a Rails app for project-owned sheets, workers, workflows and workflow runs.
 
 ## How to use
 
-- General rules live in the `rails-*` skills and `principles`. This file holds only what is specific to Logven.
+- General rules: the `rails-*` skills and `how-we-work`.
 - Where this file and a general skill differ, this file wins.
 - Visual specifics (tokens, classes, geometry, status colors) are in [references/design.md](references/design.md).
 
@@ -24,7 +24,7 @@ Logven is a Rails app for project-owned sheets, workers, workflows and workflow 
 - Evals live in `evals/`, outside CI and `bin/rails test`.
 - Constants live on the owner: `Workflow::STATUSES`.
 - Role-noun names: `Revisioner`, `Builder::Plan`, `Runner::Host`. No namespace repetition: `Workers::Run`, not `Workers::WorkflowRun`.
-- Existing interfaces to reuse; never add a parallel registry, caster or escape hatch: the tools DSL, `Meterable` (with `include_meters_from`), Shapes `to_params` and cast, `turbo_id`, policies, chat profile constants.
+- Reuse, do not duplicate: the tools DSL, `Meterable` (with `include_meters_from`), Shapes `to_params` and cast, `turbo_id`, policies, chat profile constants.
 - Concerns: `Meterable` is the model for a cohesive shared capability with a class macro.
 - Keep user-facing strings inline in English. I18n is unused.
 - LLM provider config: `OPENROUTER_*`, `OMLX_*`, `SCALEWAY_*` keys in `config/initializers/ruby_llm.rb`; profile via `LOGVEN_LLM_PROVIDER` and `LOGVEN_LLM_EFFORT` in `app/models/chat/profiled.rb`.
@@ -37,7 +37,7 @@ Logven is a Rails app for project-owned sheets, workers, workflows and workflow 
 - `ApplicationRecord` holds `turbo_id` and `details_turbo_id`.
 - State predicate example: `Workers::Workflow#active?`.
 - Transitions: `Workflow#build_now!` and `Workflow#build_later!`, guarded by a predicate.
-- The Shapes type system never raises: it returns errors. Representations are unambiguous and validators check real formats.
+- The Shapes type system never raises: it returns errors.
 - `broadcasts_refreshes_to` is for runs and builds only, never interactive cards.
 - In rescue paths write with `update_without_validation`.
 - Status columns: `enum :status, STATUSES.keys.index_with(&:itself)` with `STATUSES` on the model.
@@ -57,8 +57,7 @@ Logven is a Rails app for project-owned sheets, workers, workflows and workflow 
 
 ## Authorization
 
-- `ApplicationController` runs `verify_authorized`, and `verify_policy_scoped` on `index`. Only sessions, passwords and oauth_callbacks opt out.
-- `ApplicationPolicy` denies by default.
+- Only sessions, passwords and oauth_callbacks opt out of the `ApplicationController` authorization callbacks.
 - Operation policies via `policy_class:`: `WorkflowBuildPolicy`, `WorkflowCommitPolicy`, `WorkflowSpecPolicy`. They delegate to `WorkflowPolicy#update?` or `ProjectPolicy` and add only the domain predicate, such as `buildable_later?`.
 - A workflow is editable only while it is a draft.
 - Starting a run spends credits: require `update?`, not `show?`.
@@ -90,8 +89,8 @@ Logven is a Rails app for project-owned sheets, workers, workflows and workflow 
 - Icons: `svg_tag "icons/..."`.
 - Tone helpers: `run_status_tone`, `build_status_tone`; `badge_class_for` and `text_class_for` map tone to a class. Unknown values fall back to `:neutral`. Extend the helpers, never branch in templates.
 - Run lifecycle display: `RunStatusIconComponent`.
-- Build CSS with `bin/rails tailwindcss:build`. Verify at the established desktop size and a narrow viewport.
-- Light and dark mode are both supported through tokens (`light-dark(...)` palette, no `dark:` variants); check both. The design reference is [references/design.md](references/design.md).
+- Build CSS with `bin/rails tailwindcss:build`.
+- Light and dark via tokens (`light-dark(...)` palette, no `dark:` variants).
 
 ## Tests
 
@@ -106,12 +105,11 @@ Logven is a Rails app for project-owned sheets, workers, workflows and workflow 
 ## Commits and PRs
 
 - History style: short descriptive subjects such as `Improve sheet foreign key linking`. No prefix convention.
-- Housekeeping (lint, dead code, schema fixes, brakeman) in its own commit.
 - A batch "Testing everything" commit after a plumbing slice is acceptable.
-- Body only for a one-line principle such as "Permission-related logic lives in permissions".
-- PR descriptions: intent, the rules as bullets, out-of-scope and next steps, validation. Link issues; screenshots for visual changes.
-- Keep credentials and local env files out of commits.
 - Layer order for Logven features: migration + model, domain objects, runner/builder/jobs, prompts, HTTP plumbing slice, UI last.
+- PR descriptions link issues.
+- Keep credentials and local env files out of commits.
+- Shipping rules (commit and PR shape): `ship`.
 
 ## Known legacy exceptions (do not copy)
 

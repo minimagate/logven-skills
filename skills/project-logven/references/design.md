@@ -28,7 +28,7 @@ The concrete Logven visual vocabulary. General design discipline lives in `../..
 ## Text sizes
 
 - `text-title`: page and entity headings.
-- `text-body`, `text-label`, `text-card`: ordinary content. Caption/meta sizes for secondary information only.
+- `text-body`, `text-label`, `text-card`: ordinary content.
 - `tabular-nums` for duration, cost, token measurements.
 
 ## Sizing
@@ -39,8 +39,8 @@ The concrete Logven visual vocabulary. General design discipline lives in `../..
 ## Controls
 
 - `.btn`, `.btn-primary`, `.btn-secondary`, `.micro-button`, `MenuComponent`, existing field classes.
-- Primary button for the committed action. Micro button for compact icon-only actions (start a run, row menu), with accessible label and title.
-- Icon-only segmented switchers for table and kanban, with `aria-current`, labels and titles.
+- Micro button for compact icon-only actions (start a run, row menu).
+- Icon-only segmented switchers for table and kanban (`aria-current`, labels and titles).
 - Destructive menu items use the menu's danger treatment.
 - Icons: `svg_tag "icons/..."`. Navigation icons stay neutral.
 
@@ -62,17 +62,15 @@ The concrete Logven visual vocabulary. General design discipline lives in `../..
 ## Sidebar
 
 - Compact navigation with three groups: General, Projects, Quick actions. More space between groups than between items.
-- Neutral icons, established hover/selected surfaces, project hierarchy and shortcut hints preserved.
+- Neutral icons; project hierarchy and shortcut hints preserved.
 
 ## Tables
 
-- General data rows on one surface; no zebra striping unless the specialized grid owns it (sheet cells).
+- No zebra striping, except the sheet-cell grid.
 - Whole row is the primary target; secondary actions in a trailing micro menu.
-- Reuse an existing grid class or token before adding a `grid-cols-[...]` string.
 - Narrow widths keep name, current status and one secondary line; hide lower-priority columns.
 - Runs grouped by lifecycle state show a compact group heading with status icon, label and count.
 
 ## Rules for this system
 
-- No eyebrow text. Uppercase only for functional labels such as table column headings.
 - Raw palette values only in `base/variables.css`; add tokens there (palette, semantic, `light-dark(...)`), not in templates.

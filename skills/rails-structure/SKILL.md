@@ -5,47 +5,44 @@ description: Use when deciding where Rails code belongs in this app, how to name
 
 # Rails Structure
 
-Place and name the app's Rails code so each piece has one clear owner. Follow [principles](../principles/SKILL.md).
+Place and name Rails code so each piece has one owner, following the [Principles](../how-we-work/SKILL.md) section.
 
-Project-specific names, paths and decisions live in the project skill (`project-<name>`); where it differs from this skill, it wins.
+Project-specific names, paths and decisions live in the project skill (`project-<name>`); where it differs, it wins.
 
 ## Layout
 
-- Avoid a services layer. Put domain objects under `app/models/`, in namespaces that mix records and plain Ruby objects (`Billing::Invoice`, `Billing::Calculator`).
-- When the project namespaces its tables, add a small module file for each AR-backed namespace that sets `self.table_name_prefix`, and keep the prefix consistent with the namespace.
-- Mirror the namespace in controllers (`Orders::...`), policies, helpers and tests.
-- Put generic infrastructure in `lib/`. Put app-specific glue next to its owner (`app/models/orders/fulfillment/`).
-- Keep non-Ruby assets that one class uses (templates, SQL files) next to that class.
-- Put mailers in `app/mailers`, jobs in `app/jobs` as one-line delegators, and document renderers as plain objects under `app/models/<namespace>/` (`Billing::InvoicePdf`).
-- Define constants on the owning class (`Order::STATUSES`), never in a global constants file.
+- No services layer. Domain objects go under `app/models/` in namespaces that mix records and plain Ruby (`Billing::Invoice`, `Billing::Calculator`).
+- With namespaced tables, add a module per AR-backed namespace that sets `self.table_name_prefix`.
+- Mirror the namespace in controllers, policies, helpers and tests.
+- Generic infrastructure goes in `lib/`. App glue and non-Ruby assets (templates, SQL) sit next to their owner (`app/models/orders/fulfillment/`).
+- Mailers go in `app/mailers`. Jobs go in `app/jobs` as one-line delegators (rails-models). Document renderers are plain objects under `app/models/<namespace>/` (`Billing::InvoicePdf`), not services.
+- Constants live on the owning class (`Order::STATUSES`), never in a global file.
 
 ## Naming
 
-- Name domain objects by role noun: `Fulfiller`, `Fulfillment::Plan`, `Billing::Delivery`.
-- Do not repeat the namespace in the name: `Orders::Shipment`, not `Orders::OrderShipment`.
-- Use specific verb+noun action names: `list_records`, not `list`.
-- Do not reuse a word that already means something else, such as `Base` or `action`.
-- When a new concept needs room, rename and clean up first, as its own change.
+- Name domain objects by role noun (`Fulfiller`, `Fulfillment::Plan`). Do not repeat the namespace (`Orders::Shipment`, not `Orders::OrderShipment`).
+- Use specific verb+noun action names (`list_records`, not `list`). Avoid words that already mean something, such as `Base` or `action`.
+- When a concept needs room, rename and clean up first, as its own change.
 
 ## One owner, one file
 
-- Keep one class per file.
-- When a model grows, or holds a nested class or helper logic, extract a plain Ruby object into its own file in `app/models`, with its own test. The controller then exposes one object instead of many ivars.
-- Build objects with their collaborators (`new(user:, order:)`) and use instance methods, not class methods that take a config hash.
-- Use a concern only for one cohesive capability shared by several models, usually with a class macro (a shared concern such as `Archivable`).
-- Inline any helper, module, base class or CSS class with exactly one caller. Small duplication beats a clever helper.
+- One class per file.
+- Extract a growing model's nested class or helper logic into a plain Ruby object in `app/models`, with its own test. The controller then exposes one object, not many ivars.
+- Build objects with their collaborators (`new(user:, order:)`), expose instance methods, and do not know your callers. No class methods that take a config hash.
+- Use a concern only for one cohesive capability shared by several models, usually with a class macro (such as `Archivable`).
+- Inline any helper, module, base class or CSS class with exactly one caller.
 
 ## Reuse before inventing
 
-- Use the existing interface first: the project's DSLs, shared concerns, type/cast helpers, id helper, policies and constants. Do not add a parallel registry, caster or escape hatch.
-- Prefer explicit constants and arguments over thread-locals, `prepend` monkeypatches, YAML lookups keyed by a tag, or env-var switches.
-- Read required config with `ENV.fetch` or credentials; no silent defaults.
+- Use the existing interface first: DSLs, shared concerns, cast helpers, the id helper, policies and constants. Add no parallel registry, caster or escape hatch.
+- Prefer explicit constants and arguments over thread-locals, `prepend` monkeypatches, tag-keyed YAML lookups or env-var switches.
+- Read config with `ENV.fetch` or credentials; no silent defaults.
 
 ## Keeping the tree clean
 
-- Delete the old path, leftover files and dead code in the same change that replaces it. No aliases or compat shims.
-- Do not write comments that narrate or defend ordinary code. Comment only genuine hacks.
-- Keep pure file moves in their own change, separate from edits to lines.
+- Delete the old path, leftovers and dead code in the same change that replaces it. No aliases or shims.
+- Comment only genuine hacks; no comments that narrate ordinary code.
+- Keep pure file moves in their own change.
 - Keep user-facing strings consistent with the project's choice (inline or I18n). Do not introduce I18n piecemeal.
 
 ## Verify
