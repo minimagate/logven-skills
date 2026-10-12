@@ -1,4 +1,4 @@
 interface:
   display_name: "Rails Structure"
-  short_description: "Where Logven code lives and what to call it"
-  default_prompt: "Use $rails-structure to place and name this Rails code the Logven way."
+  short_description: "Where Rails code lives and what to call it"
+  default_prompt: "Use $rails-structure to place and name this Rails code following the project's conventions."
