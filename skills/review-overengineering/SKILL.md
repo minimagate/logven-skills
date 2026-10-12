@@ -13,6 +13,7 @@ Find machinery in the diff that the current requirement does not justify and nam
 - Leave style, naming, duplication, shared-code placement, conventions and correctness to other lenses and do not report them.
 - Read the repo guidelines (AGENTS.md, CLAUDE.md or equivalent) you were pointed to before reviewing.
 - Review only the diff scope you were given, plus the code that the diff touches.
+- Apply `../principles/SKILL.md`.
 
 ## What to look for
 
@@ -25,6 +26,7 @@ Find machinery in the diff that the current requirement does not justify and nam
 - Defensive checks for cases the framework, the type system or the callers already prevent.
 - Compatibility shims, aliases or deprecation paths for callers that do not exist in this repo.
 - Interfaces with a single implementation and no planned second one in the diff.
+- New dependencies in the diff, including `Gemfile`, `Gemfile.lock`, `config/importmap.rb` and any `package.json`, that a small own implementation or existing code could replace.
 
 ## What is NOT a finding
 

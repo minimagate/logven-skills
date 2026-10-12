@@ -13,6 +13,7 @@ Find scope and machinery in the plan that the stated requirement does not justif
 - Leave failure modes, reversibility, repo fit and naming to the other plan lenses and do not report them.
 - In revision mode, the lens also runs a one-pass bloat check: compare the revised plan against the original requirement and flag anything triage added that `../plan-feature/references/triage-rubric.md` does not justify.
 - Read the plan file, the fact sheet and the repo guidelines (AGENTS.md, CLAUDE.md or equivalent) you were pointed to before critiquing.
+- Apply `../principles/SKILL.md`, especially its Dependencies section.
 
 ## What to look for
 
@@ -22,7 +23,7 @@ Find scope and machinery in the plan that the stated requirement does not justif
 - Slices that bundle unrelated work under one heading.
 - Steps that exist only for hypothetical future needs.
 - Gold-plating of edge cases the requirement does not mention.
-- New dependencies that the plan adds without showing the existing code cannot do the job.
+- New dependencies (gems, npm packages, JavaScript build steps) without a stated reason that existing code, Rails or a small own implementation cannot do the job.
 
 ## What is NOT an observation
 

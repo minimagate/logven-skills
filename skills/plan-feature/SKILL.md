@@ -14,6 +14,7 @@ Plan a large feature with parallel read-only explorers and critics, then cut the
 - Anything cheap to change later (internal structure, helpers, abstractions) stays as simple as possible.
 - Everything else is recorded as deferred, not built.
 - Apply the test in `references/triage-rubric.md`.
+- Follow `../principles/SKILL.md`; a new dependency is never a cheap hook.
 
 ## Flow
 

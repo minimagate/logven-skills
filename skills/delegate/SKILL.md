@@ -6,6 +6,7 @@ description: Use after a plan is agreed, for every implementation including smal
 # Delegate
 
 Implementation is always done by subagents. The orchestrator briefs, reviews and commits.
+Briefs must follow the philosophy in `../principles/SKILL.md`.
 
 ## Model choice
 
@@ -24,6 +25,7 @@ Subagents have no conversation context. Each brief must include:
 - **Off-limits**: files and areas not to touch.
 - **Conventions**: paths to existing files to read for style and patterns.
 - **Verification**: exact test and lint commands to run.
+- **Dependencies**: "Do not add any dependency (gem, package, JavaScript build step). If one seems needed, stop and report instead."
 - **Git**: "Do not run any git commands. Do not commit."
 - **Report back**: files changed, verification commands and results, anything skipped or uncertain, concerns.
 

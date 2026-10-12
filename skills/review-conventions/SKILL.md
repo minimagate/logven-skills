@@ -23,6 +23,7 @@ Check that the diff follows the rules the repo has written down and the patterns
 - New code that adds a second way to do something the repo already does one way, such as a second HTTP client, a second job pattern or a second form pattern.
 - Tests that contradict the repo's testing rules, such as the wrong framework, the wrong file location or a forbidden mocking style.
 - Commit or PR conventions the repo documents, when the diff includes them.
+- New dependencies or a JavaScript build step introduced against `../principles/SKILL.md` or a repo rule against them.
 
 ## What is NOT a finding
 

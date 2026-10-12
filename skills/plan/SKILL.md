@@ -26,6 +26,7 @@ Agree the scope and approach with the user before any code is written.
 - Ask only questions that are genuinely the user's to make. Resolve the rest from the code or sensible defaults and state the default you chose.
 - Split work into independent scoped changes with disjoint files, so briefs can run in parallel later.
 - Keep each change small enough to review as one commit.
+- Follow `../principles/SKILL.md`: no new dependency without a stated reason.
 
 ## Escalate big features
 

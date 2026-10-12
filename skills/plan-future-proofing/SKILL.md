@@ -27,6 +27,7 @@ Find decisions in the plan that are expensive to reverse, and name the cheapest 
 - Building for futures with no plausible trigger.
 - Any suggestion where the cost now is high and the likelihood of the future is low.
 - A two-way door that the plan already treats as two-way. Say it is safe to leave simple instead of raising it.
+- A new dependency proposed as future-proofing. Dependencies are never a cheap hook; see `../principles/SKILL.md`.
 
 ## Report
 

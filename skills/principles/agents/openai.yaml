@@ -1,0 +1,4 @@
+interface:
+  display_name: "Principles"
+  short_description: "Minimalism and dependency rules"
+  default_prompt: "Use $principles to keep this change minimal and free of unnecessary dependencies."
