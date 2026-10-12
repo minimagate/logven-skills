@@ -32,7 +32,7 @@ Shared engineering rules are in [principles](../principles/SKILL.md). Request fl
 
 ## Scoping
 
-- Look up members through the authorized parent and then `authorize`: `@project.node_runs.find(params[:id])`.
+- Look up members through the authorized parent and then `authorize`: `@project.runs.find(params[:id])`.
 - Skip `policy_scope` when `authorize` plus association scoping already covers the lookup. Use `policy_scope` in `index`.
 - Build multi-hop access with `has_many :through` on the parent, not hand-written joins.
 

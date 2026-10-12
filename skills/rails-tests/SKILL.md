@@ -1,12 +1,12 @@
 ---
 name: rails-tests
-description: Plan, write, repair, or review tests for any Rails code change. Use whenever a task changes Rails application code, asks about tests, coverage, or regressions, or requires deciding what belongs in Minitest. Enforce minimal logic and HTTP-contract tests; never add UI, DOM, rendered-markup, ViewComponent, system, or browser tests.
+description: Plan, write, repair, or review tests for any Rails code change, including questions about coverage or regressions and deciding what belongs in Minitest. Enforce minimal logic and HTTP-contract tests; never add UI, DOM, rendered-markup, ViewComponent, system, or browser tests.
 ---
 
 # Rails Tests
 
 Write the smallest maintainable Minitest coverage that proves requested application behavior.
-Mandatory rule: generated tests must use the minimum lines of code possible. Do not add setup,
+Mandatory rule: generated tests must use the minimum lines of code possible (the per-page and per-branch request tests are always required). Do not add setup,
 helpers, assertions, cases, or abstractions that are not required to prove the contract.
 Test logic and non-visual application contracts only. Never test presentation or browser behavior,
 even when the request concerns UI code. Verify UI changes in the browser instead of encoding their
@@ -17,13 +17,12 @@ Protect the test's behavioral contract when diagnosing failures.
 
 1. Establish the intended behavior from the request, application code, and existing tests. Read
    `test/test_helper.rb`, the nearest related tests, and relevant helpers before writing code.
-   Consult official Rails testing documentation when framework behavior matters.
 2. Run the narrow existing test file first when practical. Distinguish a pre-existing failure
    from one introduced by the change.
 3. Decide whether the change has a non-visual behavioral contract worth testing. Purely visual,
    markup-only, CSS, and component-composition changes require no automated test. When a logic or
    HTTP contract exists, choose the narrowest layer that proves it:
-   - Model, plain domain object, service-like namespace, or policy: inherit
+   - Model, plain domain object, or policy: inherit
      `ActiveSupport::TestCase` and place the test under the matching `test/models/` or
      `test/policies/` path.
    - Policy tests should prove the meaningful permission matrix and policy-scope membership,
@@ -119,7 +118,7 @@ Run commands from the repository root, narrowing first:
 bin/rails test test/path/to/file_test.rb
 bin/rails test test/path/to/file_test.rb:LINE
 bin/rails test test/models
-bin/rubocop test/path/to/file_test.rb
+bin/standardrb test/path/to/file_test.rb
 ```
 
 Use `bin/rails test` when the change has broad impact. Do not run `bin/rails test:system`; UI

@@ -12,7 +12,7 @@ Keep Logven's Rails controllers thin: load, authorize, call the model and render
 - Load nested records through the parent: `@project.workflows.find`, never `Workflow.find`.
 - Route nesting is not authorization. See `../rails-authorization/SKILL.md`.
 - Authorize every authenticated action with its matching action. `index` also calls `policy_scope`.
-- Use base controllers for shared loading: `Projects::BaseController` sets the project, `Workflows::BaseController` sets the workflow.
+- Use base controllers for shared loading: `Projects::BaseController` sets the project, `Projects::Workers::Workflows::BaseController` sets the workflow.
 - Use the `ApplicationController` macros (`navigation`, `section`, `assistant_context`) instead of ad-hoc matching.
 - Keep each controller under 80 lines.
 - Move derived data into a model method and give the view one object (`@summary`), not many instance variables.
@@ -41,7 +41,7 @@ Keep Logven's Rails controllers thin: load, authorize, call the model and render
 - Redirect for ordinary flows.
 - Return `head :no_content` for autosave.
 - For in-place updates, name Turbo Stream templates after the action (`create`, `update`, `destroy`). They render the same `_show` and `_form` partials as the full pages.
-- Place templates under the resource they render: `steps/_form`, not `agents/_step_form`.
+- Place templates under the resource they render: `projects/workers/workflows/specs/_form`, not `projects/workers/workflows/_spec_form`.
 - Do not use Turbo Frames in Logven.
 - Do not log params or records. Let the owning boundary log a failure once.
 

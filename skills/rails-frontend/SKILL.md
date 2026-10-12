@@ -1,6 +1,6 @@
 ---
 name: rails-frontend
-description: Implement server-rendered Rails UI with ERB, ViewComponent, Turbo, Stimulus, Importmap, and Tailwind. Use for views, partials, components, Turbo Streams, browser behavior, or accessibility; pair visual changes with the rails-design skill.
+description: Implement server-rendered Rails UI with ERB, ViewComponent, Turbo, Stimulus, Importmap, and Tailwind. Use for views, partials, components, Turbo Streams, browser behavior, or accessibility; pair visual changes with rails-design; hands controller, route and policy questions to rails-controllers and rails-authorization.
 ---
 
 # Rails Frontend
@@ -16,7 +16,7 @@ Before any visual change, read `../rails-design/SKILL.md` completely and apply i
 - Keep controller-scoped fragments as partials under that controller's view directory.
 - Use a top-level ViewComponent in `app/components/` only for reusable structured UI with multiple independent callers or a meaningful slot API.
 - Use a helper for small formatting or tag-generation logic that does not own a visual structure.
-- Keep record-derived display behavior on an existing model only when it is genuinely domain-facing and reused outside one template.
+- Derived data and state predicates live on the model and complex queries stay in the controller; see `../rails-models/SKILL.md` and `../rails-controllers/SKILL.md`.
 - Choose the lightest tool in this order: native HTML (popover, dialog, details, select), then Turbo/server action, then plain partial, then shared CSS class, then Stimulus, then ViewComponent. A component that only maps props to classes is a CSS class.
 - Partials live under the resource they render. `_show` is the canonical per-record partial, reused by show pages, streams and collections; `_row` and `_card` are list variants; `_form` and `_new_dialog` pair with dialogs.
 - Set page chrome with `content_for` (`:title`, `:page_title`, `:page_parent`, `:page_header`, `:page_header_actions`, `:body_class`).
@@ -62,4 +62,4 @@ Single-use styles stay inline Tailwind in the template. Do not add a `components
 
 ## Verify in the browser
 
-Do not add rendering, selector, CSS-class, ViewComponent, or system tests. Run the asset build, then verify the actual interaction in a browser at the established desktop size and a narrow viewport. Check light/dark themes, keyboard access, focus, loading/error/empty states, Turbo updates, and console errors.
+Do not add rendering, selector, CSS-class, ViewComponent, or system tests. Run the asset build (`bin/rails tailwindcss:build`), then verify the actual interaction in a browser at the established desktop size and a narrow viewport. Check light/dark themes, keyboard access, focus, loading/error/empty states, Turbo updates, and console errors.

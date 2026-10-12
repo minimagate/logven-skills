@@ -1,6 +1,6 @@
 ---
 name: rails-design
-description: Design or visually refine any Logven page, component, interaction, or Tailwind styling. Use for all UI appearance work to keep the technical workspace compact, operational, purposeful, consistent, and equally resolved in light and dark mode.
+description: Design or visually refine any Logven page, component, interaction, or Tailwind styling. Use for all UI appearance work to keep the technical workspace compact, operational, purposeful, consistent, and equally resolved in light and dark mode. Hands UI structure and behavior to rails-frontend.
 ---
 
 # Rails Design
@@ -70,7 +70,7 @@ Status color has fixed operational meaning:
 - Red: failed, destructive, or blocking.
 - Green: completed, ready, or healthy.
 
-Use the existing semantic status, tone, and badge utilities rather than raw palette classes. Pair color with a text label or accessible name. For run lifecycle displays, reuse the segmented circular `run_status_icon`; its increasing fill communicates progression more precisely than a generic dot. Do not use a colored dot merely to decorate a label.
+Use the existing semantic status, tone, and badge utilities rather than raw palette classes. Pair color with a text label or accessible name. For run lifecycle displays, reuse the segmented circular `RunStatusIconComponent`; its increasing fill communicates progression more precisely than a generic dot. Do not use a colored dot merely to decorate a label.
 
 Badges must encode a real state, type, format, count, filter, or action-relevant distinction. Use the neutral badge for inactive/default states instead of assigning blue to everything unknown. If removing a badge would not reduce comprehension, remove it.
 
@@ -104,7 +104,7 @@ Do not introduce oversized hero copy, huge empty spacing, gradient blobs, glass 
 
 Do not use eyebrow text. A small uppercase label above a heading is not hierarchy; write one clear heading instead. Uppercase remains acceptable only where the content itself is a functional compact label, such as a table column heading.
 
-Do not create a new design system, layout primitive, token family, or component variant for one screen or hypothetical reuse. Remove nested wrappers, competing hierarchies, and class proliferation that make the interface harder to maintain.
+Do not create a new design system, layout primitive, token family, or component variant for one screen or hypothetical reuse. Remove nested wrappers, competing hierarchies, and class proliferation that make the interface harder to maintain. The minimalism rules behind this are in [principles](../principles/SKILL.md).
 
 ## Review before finishing
 

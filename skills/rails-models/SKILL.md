@@ -16,7 +16,7 @@ Shape Logven models so each rule has one owner, the database backs it, and calle
 
 ## Domain behavior lives on the owner
 
-- Put state predicates and derived data on the model, such as `StepRun#active?`, not in controller locals or template logic.
+- Put state predicates and derived data on the model, such as `Workers::Workflow#active?`, not in controller locals or template logic.
 - Navigate with `has_many :through` instead of hand-written lookups.
 - Model a transition as a `predicate?` guard plus `verb_now!` and `verb_later!` methods, such as `Workflow#build_now!` and `Workflow#build_later!`.
 - Keep the job that runs `verb_later!` to a one-line delegator.
