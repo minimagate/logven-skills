@@ -53,11 +53,11 @@ Project-specific names, paths and decisions live in the project skill (`project-
 
 - Use Minitest's `test "behavior" do` style and `require "test_helper"`.
 - Mirror source namespaces and paths in `test/`.
-- Create records with the project's record builders where they fit; keep scenario-specific values in the
-  test when that makes the behavior clearer. Do not introduce fixtures.
+- Use the project's record setup: fixtures by default in a fresh Rails app; builders or factories only if the
+  project skill names them. Keep scenario-specific values in the test.
 - Use the application's existing authentication helper for authenticated request tests.
-- Use the project's stubbing helper for external interactions. Preserve any
-  contract that rejects missing or unused stubbed responses.
+- Stub external interactions with Minitest stubs or WebMock unless the project skill names a stubbing
+  helper. Preserve any contract that rejects missing or unused stubbed responses.
 - Prefer precise assertions such as `assert_difference`, `assert_no_difference`,
   `assert_changes`, `assert_raises`, `assert_predicate`, exact persisted values, and policy scope
   results. Assert public effects rather than private implementation details.
@@ -73,13 +73,13 @@ Project-specific names, paths and decisions live in the project skill (`project-
 - Every controller gets at least one request test per page and one per action branch (valid and invalid), even if it only does `get path; assert_response :ok`; this is the test that catches a missing template. Assert status, redirect, persistence, jobs and authorization, never HTML.
 - One test file per class, mirroring the source path (`test/models/billing/invoice_test.rb` for `app/models/billing/invoice.rb`). An extracted plain Ruby object gets its own test in the same change, and a deleted feature's tests are deleted with it.
 - Every policy has a policy test. Name test classes after their unit (`InvoicePolicyTest`, not a generic name), and reference app classes with a leading `::` inside nested test modules.
-- Build records with the project's record builders.
-- Stub external provider calls with the project's stubbing helper; un-stubbed provider calls raise.
+- Stub external calls (HTTP, mail delivery, payment/LLM providers) with Minitest stubs or WebMock unless the project skill names a stubbing helper; a test must never reach a live provider.
+- Assert mail and jobs through `ActionMailer::TestHelper` and `ActiveJob::TestHelper` (enqueued, delivered, arguments); do not assert rendered bodies or PDF contents beyond a contract the model owns.
 - Prefer explicit per-case assertions over data-driven graders.
 
 ## Keep test code hygienic
 
-- Use the existing helper and the direct public API. Do not introduce a factory DSL, shared context,
+- Use the project's existing setup helper and the direct public API. Do not introduce a factory DSL, shared context,
   test harness, custom assertion, or helper abstraction unless repeated setup becomes materially
   shorter and clearer.
 - Keep every test linear and legible: arrange, perform one meaningful action, and assert the

@@ -9,7 +9,7 @@ Design a precise, purposeful interface, not a generic generated dashboard. Every
 
 Project-specific names, paths and decisions live in the project skill (`project-<name>`); where it differs from this skill, it wins.
 
-The concrete tokens, classes, geometry and status vocabulary are in the project's design reference (`project-<name>/references/design.md`); read it before any visual change.
+If the project has a design reference (`project-<name>/references/design.md`) holding the concrete tokens, classes, geometry and status vocabulary, read it before any visual change; otherwise derive tokens and patterns from the existing styles and keep them consistent.
 
 ## Start from the current interface
 
@@ -20,7 +20,7 @@ Treat the application as an operational workspace:
 - Lead with the objects users act on rather than with chrome or summaries.
 - Prefer one continuous work surface with clear regions over a collection of freestanding dashboard cards.
 - Keep the current state and next action visible. Put dense detail behind progressive disclosure without hiding the information needed to decide what to do next.
-- Do not add summary metrics merely to make a page resemble a dashboard. Retain a page's established table or kanban focus unless the product requirement genuinely changes.
+- Do not add summary metrics merely to make a page resemble a dashboard. Retain a page's established table or list focus unless the product requirement genuinely changes.
 
 ## Use the surface hierarchy deliberately
 
@@ -28,14 +28,14 @@ The interface is flat, but not divider-free. Use surface color and spacing first
 
 Match geometry to the role:
 
-- Full-width panels, boards, lists, tables, and inspector regions remain square and edge-aligned.
-- Standalone entity cards, including kanban cards, use the card radius.
+- Full-width panels, lists, tables, and side regions remain square and edge-aligned.
+- Standalone cards use the card radius.
 - Inset notices and quiet wells use a tighter radius.
-- Buttons, fields, menus, and compact controls use the control radius.
-- Popovers and toasts use the popover radius plus the menu shadow because they are truly elevated.
+- Compact controls (buttons, fields, menus) use the control radius.
+- Popovers and toasts use a popover radius plus a raised shadow because they are truly elevated.
 - Reserve pill radii for badges and tags. Selects, buttons, tabs, and ordinary containers are not pills.
 
-Preserve accessibility outlines and focus rings; they are interaction signals, not decoration. Ordinary panels and cards remain shadowless. Do not apply the popover shadow to static content.
+Preserve accessibility outlines and focus rings; they are interaction signals, not decoration. Ordinary panels and cards remain shadowless. Do not apply the raised shadow to static content.
 
 ## Keep scale fine and information-dense
 
@@ -44,7 +44,7 @@ Preserve accessibility outlines and focus rings; they are interaction signals, n
 - Prefer medium or semibold weight and good ink contrast over size inflation.
 - Keep controls and rows compact: primary actions, icon-only micro actions, table headers, and table rows each have one established height.
 - Use small, regular gaps and padding. Avoid large dead zones, oversized section margins, and roomy cards with little content.
-- Use `tabular-nums` for duration, cost, token, and comparable operational measurements.
+- Use `tabular-nums` for numbers that are compared down a column or across rows (amounts, durations, counts).
 
 ## Compose pages as operational sections
 
@@ -75,24 +75,24 @@ Badges must encode a real state, type, format, count, filter, or action-relevant
 - Reuse the existing button, micro-button, menu, and field classes before composing new controls.
 - Use a primary button for the page or section's committed action. Use a micro button for compact icon-only actions, always with an accessible label and title.
 - Keep menus dense: compact padding, short icon/text gaps, and the established raised popover surface. Destructive actions belong in the menu's danger treatment.
-- Use icon-only segmented switchers for familiar views such as table and kanban; expose the selected state with `aria-current` and supply labels and titles.
-- Keep action placement stable across empty, loading, paused, failed, and completed states.
+- Use icon-only segmented switchers for familiar view choices such as table and grid; expose the selected state with `aria-current` and supply labels and titles.
+- Keep action placement stable across empty, loading, failed, and completed states.
 
 ## Extend color through semantic tokens
 
 Start with the existing palette and reuse the semantic utilities (surface, ink, tone, status, danger, interactive) before adding anything.
 
-- Palette values use `light-dark(...)`; semantic tokens alias palette tokens and inherit dark mode, so markup never needs `dark:` variants.
+- One way to keep themes in step is to define palette values with `light-dark(...)` and have semantic tokens alias palette tokens, so markup never needs `dark:` variants. Follow whatever token architecture the project already uses.
 - Raw palette values live only in the token file; add tokens there, not in templates.
 
 When a new distinction genuinely needs color:
 
 1. Add or extend a raw palette token.
 2. Add a purpose-named semantic token.
-3. Define light and dark values together with `light-dark(...)`.
+3. Define every theme the app supports together (for example both values in one `light-dark(...)`).
 4. Use the semantic utility in markup.
 
-Never solve dark mode by scattering `dark:` overrides when one semantic token can express both themes. Do not assume a light surface maps to the same numeric shade in dark mode.
+If the app supports dark mode, keep light and dark parity through tokens, never scattered `dark:` overrides when one semantic token can express both themes, and do not assume a light surface maps to the same numeric shade in dark mode. If it does not support dark mode, do not add it unasked.
 
 ## Reject UI slop
 
@@ -104,6 +104,6 @@ Do not create a new design system, layout primitive, token family, or component 
 
 ## Review before finishing
 
-Inspect the actual affected flow in light and dark mode at desktop and narrow widths. Check density, contrast, focus, hover, disabled and selected states, long technical content, empty and error states, table alignment, and whether each divider, badge, icon, and decoration earns its place. Use motion-safe transitions for entry effects and keep ordinary interaction motion restrained.
+Inspect the actual affected flow (in light and dark mode if the app supports both) at desktop and narrow widths. Check density, contrast, focus, hover, disabled and selected states, long technical content, empty and error states, table alignment, and whether each divider, badge, icon, and decoration earns its place. Use motion-safe transitions for entry effects and keep ordinary interaction motion restrained.
 
 Verify UI changes in the browser. Do not add visual snapshots, DOM assertions, component tests, or exhaustive viewport/theme combinations to the automated suite. If the result resembles a template before it resembles the product, simplify it.

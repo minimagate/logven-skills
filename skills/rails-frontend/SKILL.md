@@ -21,7 +21,7 @@ Before any visual change, read `../rails-design/SKILL.md` completely and apply i
 - Derived data and state predicates live on the model and complex queries stay in the controller; see `../rails-models/SKILL.md` and `../rails-controllers/SKILL.md`.
 - Choose the lightest tool in this order: native HTML (popover, dialog, details, select), then Turbo/server action, then plain partial, then shared CSS class, then Stimulus, then ViewComponent. A component that only maps props to classes is a CSS class.
 - Partials live under the resource they render. Follow the project's partial naming; common conventions are `_show` as the canonical per-record partial reused by show pages, streams and collections, and `_form` for the form.
-- Set page chrome through the project's `content_for` keys rather than ad-hoc layout logic.
+- If the project defines `content_for` keys for page chrome, use them rather than ad-hoc layout logic.
 
 Keep Ruby setup short and local; move complex queries to the controller and reusable domain calculations to models.
 
@@ -29,8 +29,8 @@ Every partial that takes arguments gets a strict locals comment (`<%# locals: (x
 
 ## Work with Turbo
 
-- Preserve application morph refresh metadata and stable DOM identifiers.
-- Take every Turbo target id from the project's id helper (one method per record); composite ids append a suffix such as `-details`, `-destroy` or `-editor`. Never hand-write a literal id string or call `dom_id` directly, in any stream template or partial.
+- Keep the layout's morph/refresh meta tags intact when present, and keep DOM identifiers stable.
+- Take every Turbo target id from one helper: `dom_id` in a fresh Rails app, or the project's own id helper if the project skill names one; never hand-write id strings. Composite ids append a suffix such as `-details`, `-destroy` or `-editor`. The same id must be used by the stream template and the partial.
 - Subscribe with `turbo_stream_from` only to records that broadcast relevant updates.
 - Use Turbo Stream templates for create/edit/update/destroy interactions that replace known fragments; keep ordinary redirects for full navigation.
 - Use one stream template per controller action (`create`, `update`, `destroy`) that renders the same partials (`_show`, `_form`) as the full pages. Whether Turbo Frames are used is a project decision.
@@ -60,8 +60,8 @@ Single-use styles stay inline Tailwind in the template. Do not add a `components
 - Keep templates declarative, partial/component inputs explicit, and each Stimulus controller responsible for one behavior. Do not spread the same state across ERB condition trees, data attributes, multiple controllers, and CSS selectors.
 - Do not add automated presentation coverage or duplicate non-visual contracts already tested in models, policies, or controllers. Browser-check only the affected interaction and meaningful states.
 - Remove `console.log`, temporary instrumentation, and event chatter before finishing. Frontend failures should become purposeful UI state or be reported once by the existing server-side boundary, never by logging DOM content or user data.
-- Map state to tone through the project's tone helpers, and tone to a class through its class helpers. Extend those helpers rather than branching in templates; unknown values fall back to a neutral tone.
+- If the project defines tone helpers, map state to tone through them, and tone to a class through its class helpers. Extend those helpers rather than branching in templates; unknown values fall back to a neutral tone.
 
 ## Verify in the browser
 
-Do not add rendering, selector, CSS-class, ViewComponent, or system tests. Run the project's asset build (for example `bin/rails tailwindcss:build`), then verify the actual interaction in a browser at the established desktop size and a narrow viewport. Check light/dark themes, keyboard access, focus, loading/error/empty states, Turbo updates, and console errors.
+Do not add rendering, selector, CSS-class, ViewComponent, or system tests. Run the project's asset build (for example `bin/rails tailwindcss:build`), then verify the actual interaction in a browser at the established desktop size and a narrow viewport. Check light/dark themes (if the app supports both), keyboard access, focus, loading/error/empty states, Turbo updates, and console errors.
