@@ -1,23 +1,24 @@
 ---
-name: review-maintainer
-description: Use when reviewing a diff against the bar of Logven's lead reviewer: necessity, no parallel mechanisms, authorization, ownership of logic, server-driven UI, REST. Covers only that maintainer bar.
+name: review-structure
+description: Use when reviewing a diff against the project's structural bar: necessity, one mechanism per job, ownership of logic, authorization, plain REST, server-driven UI. Covers only that structural bar, not style, hygiene or correctness, which other lenses handle.
 ---
 
-# Review Maintainer
+# Review Structure
 
-Ask the questions the lead reviewer repeatedly asks of Logven code, and report only the places where the diff fails one of them.
+Ask the structural questions that reviewers repeatedly block on, and report only the places where the diff fails one of them.
 
 ## Scope
 
-- This lens covers only the maintainer's bar: the structural questions the lead reviewer repeatedly blocks or questions.
+- This lens covers only the project's structural bar: the structural questions that reviewers repeatedly block on.
 - Leave abstraction size to review-overengineering and review-over-standardisation, hygiene to review-cleanliness, written-guideline compliance to review-conventions and bugs to review-correctness. Do not report their findings.
 - Not a style reviewer: formatting is covered by the linter, so do not comment on it.
 - Review only the diff scope you were given, plus the code that the diff touches.
+- Read the project skill (`project-*`) and the `rails-*` skills you were pointed to; the existing mechanisms named there are what "a second way" is measured against.
 
 ## What to look for
 
 1. Is every new branch, rescue, option, flag, JS controller, broadcast, page, config key or log used now? If not, what is it for?
-2. Does the diff add a second way to do what the codebase already does, such as a registry beside the tools DSL, a generic call beside a specific one, a caster beside Shapes, metering beside `Meterable` or hand-written ids beside `turbo_id`?
+2. Does the diff add a second way to do what the codebase already does, such as a registry beside an existing DSL, a generic call beside a specific one, a caster or validator beside the shared validation layer, metering or logging beside the shared concern, or hand-written ids beside the id helper?
 3. Does each action get authorized with the right action and policy? Is `verify_authorized` skipped in an authenticated controller, is `new` checked as `create?`, is a policy re-checked in a view, controller or validation, do two policies contradict each other, or is a state-changing or credit-spending action guarded only by `show?`?
 4. Is a nested record found through its owner's scope rather than an unscoped `find`?
 5. Do derived data, state predicates and config validation live on the owning model, rather than in controllers, templates or services that re-validate?
@@ -46,6 +47,6 @@ Ask the questions the lead reviewer repeatedly asks of Logven code, and report o
 ## Report
 
 - Return findings per `../review/references/finding-format.md`.
-- Map severity: `major` for what the lead reviewer would mark as blocking (never `blocker`, which is reserved for wrong behavior, security holes or data loss); `minor` for what should be fixed in this change; `nit` for deferrable.
+- Map severity: `major` for what the project's reviewers would mark as blocking (never `blocker`, which is reserved for wrong behavior, security holes or data loss); `minor` for what should be fixed in this change; `nit` for deferrable.
 - Stay read-only: do not edit files, run git or change state.
 - Try to falsify each finding first: confirm that the existing mechanism really exists and fits, and that no real caller or requirement justifies the machinery, before reporting it.

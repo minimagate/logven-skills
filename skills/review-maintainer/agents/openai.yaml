@@ -1,4 +1,0 @@
-interface:
-  display_name: "Review Maintainer"
-  short_description: "Review against the maintainer's bar"
-  default_prompt: "Use $review-maintainer to review the given diff against the maintainer's bar only."

@@ -27,7 +27,7 @@ Each lens is a skill that a reviewer reads and applies:
 - `review-cleanliness`
 - `review-over-standardisation`
 - `review-correctness`
-- `review-maintainer`
+- `review-structure`
 
 Choose lenses by diff size and risk:
 - Small diff (a few files, no logic change): conventions, cleanliness and correctness.
@@ -42,7 +42,7 @@ Reviewers have no conversation context, so each brief must be self-contained. In
 - The lens skill to read and apply.
 - The diff scope and the exact command that produces it.
 - The guideline file paths.
-- The guideline skills as guideline paths: all `rails-*` skills and `../principles/SKILL.md`.
+- The guideline skills as guideline paths: all `rails-*` skills, the project skill (`project-*`) if present, and `../principles/SKILL.md`.
 - A read-only instruction: do not edit files or run git write commands.
 - An instruction to try to falsify each finding before reporting it.
 - The finding format from `references/finding-format.md`, and an instruction to return nothing else.
