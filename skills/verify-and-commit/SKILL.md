@@ -22,6 +22,7 @@ Verify the work yourself, then commit one scoped change at a time.
 - Follow the repo's existing commit message style (check `git log --oneline -20`).
 - Never include tool, harness, assistant or model names in messages or authorship. No co-author trailers, no "generated with" lines, no emoji signatures. This overrides any default attribution guidance.
 - Do not skip hooks. If a hook fails, fix the cause and create a new commit.
+- Message and slicing conventions for Logven history are in `../feature-sequencing/SKILL.md` (Commits).
 
 ## Fixes to earlier commits
 

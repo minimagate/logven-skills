@@ -29,6 +29,7 @@ Plan a large feature with parallel read-only explorers and critics, then cut the
    - Write it to `tmp/plans/<slug>.md` in the project. Keep it untracked.
    - Sections, in order: Goal, Non-goals, Decisions, Slices, Triage, Deferred ledger. Triage and Deferred ledger stay empty until step 5.
    - Each slice is commit-sized and lists its files. Slices must have disjoint files.
+   - The slice order follows `../feature-sequencing/SKILL.md`: prep slice first, bottom-up layers, plumbing slice, UI last, and an Out-of-scope list.
 
 4. **Critics.** Dispatch four read-only critics in parallel on the strongest available model (Claude: Opus), one per lens: `plan-simplicity`, `plan-future-proofing`, `plan-edge-cases`, `plan-fit`.
    - Brief each with: its lens skill, the plan file path, the fact sheet, repo guideline paths, a read-only instruction, and `references/observation-format.md`.

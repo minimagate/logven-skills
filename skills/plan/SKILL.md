@@ -27,6 +27,7 @@ Agree the scope and approach with the user before any code is written.
 - Split work into independent scoped changes with disjoint files, so briefs can run in parallel later.
 - Keep each change small enough to review as one commit.
 - Follow `../principles/SKILL.md`: no new dependency without a stated reason.
+- Order and slice the work per `../feature-sequencing/SKILL.md`; the Logven guideline skills (`../rails-structure/SKILL.md`, `../rails-models/SKILL.md`, `../rails-controllers/SKILL.md`, `../rails-authorization/SKILL.md`, `../rails-migrations/SKILL.md`) say where code belongs.
 
 ## Escalate big features
 
