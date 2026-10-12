@@ -1,4 +1,4 @@
 interface:
   display_name: "Rails Design"
-  short_description: "Refine Logven interfaces and interactions"
-  default_prompt: "Use $rails-design to refine this Logven interface or interaction."
+  short_description: "Refine Rails interfaces and interactions"
+  default_prompt: "Use $rails-design to refine this Rails interface or interaction."
