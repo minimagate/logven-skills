@@ -1,6 +1,6 @@
 ---
 name: project-logven
-description: Logven's project-specific names, paths, helpers and decisions. Read together with the general rails-* skills and principles whenever working in the Logven repo; it overrides general defaults where they differ.
+description: Use only when working in the Logven repo. Project-specific names, paths, helpers and decisions. Read with the general rails-* skills and principles; it overrides general defaults where they differ.
 ---
 
 # Project Logven
@@ -41,6 +41,7 @@ Logven is a Rails app for project-owned sheets, workers, workflows and workflow 
 - `broadcasts_refreshes_to` is for runs and builds only, never interactive cards.
 - In rescue paths write with `update_without_validation`.
 - Status columns: `enum :status, STATUSES.keys.index_with(&:itself)` with `STATUSES` on the model.
+- Soft delete: `Discard::Model` on `User`, `Project`, `Workers::Workflow` and `Assistant::Chat` (a default scope of kept records). Hard delete only to purge data.
 
 ## Controllers and routes
 
@@ -90,6 +91,7 @@ Logven is a Rails app for project-owned sheets, workers, workflows and workflow 
 - Tone helpers: `run_status_tone`, `build_status_tone`; `badge_class_for` and `text_class_for` map tone to a class. Unknown values fall back to `:neutral`. Extend the helpers, never branch in templates.
 - Run lifecycle display: `RunStatusIconComponent`.
 - Build CSS with `bin/rails tailwindcss:build`. Verify at the established desktop size and a narrow viewport.
+- Light and dark mode are both supported through tokens (`light-dark(...)` palette, no `dark:` variants); check both. The design reference is [references/design.md](references/design.md).
 
 ## Tests
 
