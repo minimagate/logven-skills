@@ -1,21 +1,21 @@
-# B. What Paolo changes when he pushes onto Michelangelo's PRs
+# B. What the maintainer changes when he pushes onto Michelangelo's PRs
 
-Source: `B-paolo-commits-on-mikes-prs.md` (15 PRs, 155 non-merge Paolo commits). I read the diffs with `git show` in `logvenhq/logven`. Paolo is `psguazz`; Michelangelo is `minimagate`/`michelangelogubinelli`.
+Source: `B-maintainer-commits-on-mikes-prs.md` (15 PRs, 155 non-merge commits by the maintainer). I read the diffs with `git show` in `logvenhq/logven`. Michelangelo's handles are `minimagate`/`michelangelogubinelli`.
 
 ## 0. Scope and caveats (read first)
 
-Not every Paolo commit on a Michelangelo PR corrects Michelangelo's work. I sorted them like this:
+Not every commit by the maintainer on a Michelangelo PR corrects Michelangelo's work. I sorted them like this:
 
 | Bucket | PRs / commits | Treated as |
 |---|---|---|
-| **Direct corrections**: Paolo commits made after Michelangelo's commits, rewriting his code | #65 (3), #69 (1), #129 (1), #140 (5), #143 (11), #144 (7), #148 (about 45 of 68, from `9c522e6b` to `e1b28691`), #155 (1), #157 (4), #160 (3), #177 (`597e1fec`, `9b1746fc`), #182 (2) | **Primary evidence** |
-| Paolo's own feature work that sits under or merges into Michelangelo's branch | #52 (Paolo built the shapes form; Michelangelo's `forms ui v1` came after), #161 (all 11 Paolo commits come before Michelangelo's), #177 (the first 15 Paolo commits plus `f4c77846`..`e9c53baf`, which are his `workflow_tabs`/`profiles`/`editing_specs` branches) | Context only, not counted as corrections |
+| **Direct corrections**: the maintainer's commits made after Michelangelo's commits, rewriting his code | #65 (3), #69 (1), #129 (1), #140 (5), #143 (11), #144 (7), #148 (about 45 of 68, from `9c522e6b` to `e1b28691`), #155 (1), #157 (4), #160 (3), #177 (`597e1fec`, `9b1746fc`), #182 (2) | **Primary evidence** |
+| The maintainer's own feature work that sits under or merges into Michelangelo's branch | #52 (the maintainer built the shapes form; Michelangelo's `forms ui v1` came after), #161 (all 11 of the maintainer's commits come before Michelangelo's), #177 (the first 15 of the maintainer's commits plus `f4c77846`..`e9c53baf`, which are his `workflow_tabs`/`profiles`/`editing_specs` branches) | Context only, not counted as corrections |
 | Prompt and eval tuning in #148 (`b6d8437c`, `ee6ac583`, `12f4fdab`, `1d4a1da7`, `afea7b5a`, `621839c9`, …) | | Experiments, not corrections |
 | Merges with main, `Fixing CI`, `Linting`, `Silly brakeman`, `Updating brakeman` | | Skipped as trivial |
 
-PR #148 ("Vanilla-Icecream") is effectively a co-written rewrite. Michelangelo pushed 20 commits that introduced the `run()` sandbox, the Manifest, the Workbook, the tool class attributes and the Host. Paolo then pushed about 45 commits that restructured nearly all of it. That makes it the richest single source of evidence.
+PR #148 ("Vanilla-Icecream") is effectively a co-written rewrite. Michelangelo pushed 20 commits that introduced the `run()` sandbox, the Manifest, the Workbook, the tool class attributes and the Host. The maintainer then pushed about 45 commits that restructured nearly all of it. That makes it the richest single source of evidence.
 
-Where review comments exist (A-paolo-comments.md), they line up with the commits. On #65 and #140 he first commented in Italian and then pushed the fixes himself.
+Where review comments exist (A-maintainer-comments.md), they line up with the commits. On #65 and #140 he first commented in Italian and then pushed the fixes himself.
 
 ---
 
@@ -145,7 +145,7 @@ end
 - #143 `d6c76ac9` removes the up-front `abort "Set LOGVEN_LLM_API_KEY or LOGVEN_LLM_URL…"` guard in `eval_command.rb`.
 
 ### R13. Comments: delete narrative and justification comments. [S, with nuance]
-**Rule: do not write comments that explain or defend a design choice ("Keeping the authorized relation as the input makes…", "OpenAI's strict mode rejects…", "LOGVEN_LLM_PROFILE switches every stage…"). Make the code readable instead.** Paolo deleted such comments in:
+**Rule: do not write comments that explain or defend a design choice ("Keeping the authorized relation as the input makes…", "OpenAI's strict mode rejects…", "LOGVEN_LLM_PROFILE switches every stage…"). Make the code readable instead.** The maintainer deleted such comments in:
 - #69 `28ec7098`: 3-line comment on `AgentRun.summary`
 - #144 `af7e973b`: 5-line comment on `apply_graph`
 - #144 `da567a54`: comment on `LlmStage`
@@ -156,14 +156,14 @@ end
 - #182 `6612c69a`: 6-line class comment on `Turn`, plus "Returns how the turn ended…"
 - #182 `25f15b1e`: `Submit` and `finish_with` comments
 
-Nuance: Paolo does write a comment where code is a genuine hack. In #157 `dcbfdee4` he adds comments on the `ModelStub`/`ModelStoreStub` monkeypatches in the test helper, and in #148 `7954dcd3` he comments `format_errors`. So the bar is "no explanatory prose for ordinary code".
+Nuance: the maintainer does write a comment where code is a genuine hack. In #157 `dcbfdee4` he adds comments on the `ModelStub`/`ModelStoreStub` monkeypatches in the test helper, and in #148 `7954dcd3` he comments `format_errors`. So the bar is "no explanatory prose for ordinary code".
 
 ### R14. Tests: explicit, colocated with the class, with a smoke test per page. [S]
 - They move with extracted code: #69 (`agent_run_summary_test.rb`), #160 (`markdown_renderer_test.rb`), #148 `50b1fb25` (one file per caller), #182 (`turn_test.rb`).
 - Deleted together with deleted features: #65 (transfer policy tests), #144 (`available_inputs` tests), #148 `cfb2f764` (seed tests), `176ec032` (`run_input_test.rb`), `e20bd7c9` (`manifest_test.rb`, -154).
 - Explicit per-case assertions beat data-driven graders (#143 `1eb2b1ba`, `002279ad` "Exploding eval cases": one 483-line `project_prompt_cases.rb` becomes 17 `*_eval.rb` files).
 - Test-only code moves out of production code: #143 `f141f158` moves `create_benchmark_project` from `db/seeds/asteria_aerospace.rb` into `BaseEval#seed_project`.
-- From the related review (A-paolo-comments, just above #65): "almeno uno per pagina… `get index_whatever_path; assert_response :ok`" and one test per branch of an action.
+- From the related review (A-maintainer-comments, just above #65): "almeno uno per pagina… `get index_whatever_path; assert_response :ok`" and one test per branch of an action.
 
 ### R15. UI and CSS specifics. [M]
 - **Tailwind utilities inline for one-off styles; no `@layer components` class used once** (#140 `cf6101d5`). Arbitrary values are fine (`[border-color:color-mix(...)]`, `[&::-webkit-details-marker]:hidden`, `group-open:rotate-180`, `empty:before:content-['Thinking…']`).
@@ -246,7 +246,7 @@ See R15. In short: inline Tailwind utilities for single-use styling; share real 
 | G18 | LLM prompts: do not resend information already in context, and do not add hints the model cannot act on. | Medium | `945641f6`, `56cd0904`, `e9bbad87` |
 | G19 | Do not background work the caller must see synchronously. | Weak | `50d9d316` |
 
-### Candidate review-checklist items (to run on a diff before asking Paolo)
+### Candidate review-checklist items (to run on a diff before asking the maintainer)
 
 1. **Dead weight:** Is any new method, option, constant, column or JS action unused, or used only by its own test? Delete it. (Strong: `87ec2f2a`, `e1b28691`, `a5838de6`, `f8dc23f8`)
 2. **Parallel mechanism:** Does this diff add a second way to do something the codebase already does (registry vs DSL, generic vs specific calls, own caster vs Shapes, own renderer)? (Strong: `20d8d7b3`, `5d144876`, `176ec032`, `a76487c3`)
@@ -268,5 +268,5 @@ See R15. In short: inline Tailwind utilities for single-use styling; share real 
 
 ### Not supported by the evidence (so do not claim it)
 - I saw no corrections about performance or N+1. `5d144876` only updates `includes` after a model change, and `7ba3d2ed` adjusts `includes`.
-- I saw no corrections about security hardening by Paolo. He reverted a security-motivated policy addition (`b90db06b`) on product-design grounds, not because it was insecure.
+- I saw no corrections about security hardening by the maintainer. He reverted a security-motivated policy addition (`b90db06b`) on product-design grounds, not because it was insecure.
 - I saw no strong colour or design-token corrections. His CSS changes are structural (inline vs component), not palette.

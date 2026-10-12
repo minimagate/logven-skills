@@ -1,8 +1,8 @@
-# C: How Paolo (psguazz) structures and builds big features in logvenhq/logven
+# C: How the maintainer structures and builds big features in logvenhq/logven
 
-Sources: `C-paolo-own-prs.md` (PR descriptions, commit lists, Michelangelo's comments) plus read-only git on `/Users/michelangelogubinelli/Github/logven` (`git log --stat` on each PR's merge range `M^1..M^2`, `git show`, and the current code on main). Shas are the ones on main. Some PRs were rebased before merging, so a few shas in the input file differ. For example, #88's "Builder -> StepBuilder" is `f988cd84` on main and `0e73ad80` in the input.
+Sources: `C-maintainer-own-prs.md` (PR descriptions, commit lists, Michelangelo's comments) plus read-only git on `/Users/michelangelogubinelli/Github/logven` (`git log --stat` on each PR's merge range `M^1..M^2`, `git show`, and the current code on main). Shas are the ones on main. Some PRs were rebased before merging, so a few shas in the input file differ. For example, #88's "Builder -> StepBuilder" is `f988cd84` on main and `0e73ad80` in the input.
 
-Volume: Paolo has about 930 commits (`psguazz` plus `Paolo Sguazzabia`) and Michelangelo about 515. All PRs are merged with merge commits (no squash), so per-commit slicing is preserved and visible.
+Volume: the maintainer has about 930 commits and Michelangelo about 515. All PRs are merged with merge commits (no squash), so per-commit slicing is preserved and visible.
 
 ---
 
@@ -30,7 +30,7 @@ Volume: Paolo has about 930 commits (`psguazz` plus `Paolo Sguazzabia`) and Mich
 
 ### F5. Sheets ("Shelf foundation" #98, then #108 actions, then #110 foreign keys)
 - **#98 order:** `4b0601db` "Basic shelf tables" (three migrations and three tiny models, no logic). `c9e025cd` "Managing sheets" (controller, policy, index/new/show views, route, controller test, policy test and test attributes helper, all in one commit). `e5677529` "Managing records" (same slice for the child resource). "Sheet shapes" (migration and model), then `5e7f7448` "Testing everything" (model tests only). Then UI increments: "Rendering records", "Adding records and fields", "Editing records", "Editing fields". The PR is presented as "A very rough first draft of a table... Obviously very much a WIP... But the data is there, is editable, and validated."
-- **#108** was started by Michelangelo with terse lowercase commits (`a61467d2` "data instrument", `568891b3` "data block", `940f430c` "ui", `428da812` "local env"). Paolo continued **in the same PR**: `a2e95264` "Renaming classes" (`DataInstrument` → `SheetActions`), "Simpler references", "Renaming get", `1d4b1824` "Connecting nodes and sheets" (migration), "Simpler tool runner", "Simpler data tools", tests, and `5cc8cfc1` "No local env", which deletes Michelangelo's initializer.
+- **#108** was started by Michelangelo with terse lowercase commits (`a61467d2` "data instrument", `568891b3` "data block", `940f430c` "ui", `428da812` "local env"). The maintainer continued **in the same PR**: `a2e95264` "Renaming classes" (`DataInstrument` → `SheetActions`), "Simpler references", "Renaming get", `1d4b1824` "Connecting nodes and sheets" (migration), "Simpler tool runner", "Simpler data tools", tests, and `5cc8cfc1` "No local env", which deletes Michelangelo's initializer.
 - **#110 order:** preparatory normalization first (`e5622955` "Case insensitive names", `59285533` "Normalizing names properly" with a migration, `431cdffd` "Normalizing sheet names, too"). Then `69df9a42` "Foreign key model" (migration, model and test), "Stronger validation", "Exposing foreign keys in shapes" (domain), `2c50c632` "Record associations" (second model and migration), "Building data object with foreign keys". After that the HTTP layer: `27c10ac2` "Adding/removing references" (controller, policy, turbo_stream views, route and a 99-line controller test). UI comes last ("Showing references", "Controls"), followed by hardening ("Validation/sanitization", `dcf5c09f` "N+1 queries", "Fixing/adding tests"). The description says "UI is very basic". The follow-up #114 "Fk UI cleanup" is a separate small PR.
 
 ### F6. Namespacing (#123, +14908/-14629, 415 files, 31 commits)
@@ -46,13 +46,13 @@ Volume: Paolo has about 930 commits (`psguazz` plus `Paolo Sguazzabia`) and Mich
 - **#133:** migrate the old LLM layer to RubyLLM and then delete it (`d2e8ce12` "Removing LLM module").
 
 ### F8. "Chocolate": restructuring Michelangelo's code-based workers (#149, +3890/-3044, 67 commits, stacked on #148)
-- **Context:** Michelangelo's #148 `vanilla-icecream` was a fast big-bang rewrite. It had 21 commits in about 1 day (`893a69a3` "Remove graph workflow builder and runner", `29199bda` "Add sandboxed run() runtime for workflows", `ad7473f7` "Add workbook-to-code workflow builder", `1eccd74e` "Show workbook, permissions, code and calls in the workflow UI", "eval suite", "final cleanup", `2cd2e2da` "Tidy the run() workflow change for review"). Paolo stacked #149 on it and reshaped it.
+- **Context:** Michelangelo's #148 `vanilla-icecream` was a fast big-bang rewrite. It had 21 commits in about 1 day (`893a69a3` "Remove graph workflow builder and runner", `29199bda` "Add sandboxed run() runtime for workflows", `ad7473f7` "Add workbook-to-code workflow builder", `1eccd74e` "Show workbook, permissions, code and calls in the workflow UI", "eval suite", "final cleanup", `2cd2e2da` "Tidy the run() workflow change for review"). The maintainer stacked #149 on it and reshaped it.
 - **His stated goals (description):** "Clear separation between runtime (a thin wrapper around MiniRacer...) and runner (... app-related)"; "Explicit models for everything"; "Adherence to the standards of the app (shapes, meters, chat helpers rather than custom logic everywhere)"; "Overall cleanup".
 - **Order:** `9c522e6b` "Reversible migrations" first. He rewrote Michelangelo's `def up; drop_table...` into `def change` with full `drop_table ... do |t| ... end` bodies. Then "Restoring tool dsl", "Respecting meter interface", "Shape params" (reuse of existing domain systems). Then explicit models: `489b7190` "Explicit workers refs" (`workers_table_refs` and `workers_tool_refs` tables) and `40c08332` "Explicit calls" (three tables, `tool_calls`, `table_calls`, `llm_calls`, each `include Meterable`). Then splitting: "Breaking up builder", `bed13c00` "Separating generic runtime and app specific stuff" (moves the sandbox to `lib/runtime/{session,child,error}.rb` with app glue in `app/models/workers/runner/`), "Breaking up runner host". Then removals ("Removing old manifest", "Dropping workbook", "Removing redundant code"), renames ("Renaming runs", "Renaming revisioner"), "Tests tests tests", and finally prompt and eval tuning.
 - **Michelangelo's review found 10 correctness issues on this PR:** lost input casting, `list_records` silently capped at 50, a blocking `build_now!` in a tool, an aborted savepoint in dry runs, string-interpolated error arrays, deterministic sampling hiding branches, a `worflow_refs` typo plus `dependent: :destroy` erasing call history, a Zeitwerk-hostile registry, and three near-duplicate partials.
 
 ### F9. Workflow tabs, then spec editing (stack #166 → #167 → #170 → #171, merged together via #171)
-- **#166 (Paolo's part):** `b0aaab2d` "Workflow tabs controller" adds `Workflows::BaseController` (with `section`, `assistant_context` and `set_workflow` scoped via `@project.workflows.find`) and one singular-resource controller per tab (`resource :spec`, `resource :code`, `resource :details`, `resources :runs`, `resources :revisions`). Then "Consolidating names", then one commit per page ("Spec page", "Code and runs pages", "Revisions page"), then "Using tab pages". The description: "This is very basic and is meant to be a scaffolding that needs to be extended rather than a final version. To do: [ ] ..." Michelangelo then added about 45 UI commits on the same branch.
+- **#166 (the maintainer's part):** `b0aaab2d` "Workflow tabs controller" adds `Workflows::BaseController` (with `section`, `assistant_context` and `set_workflow` scoped via `@project.workflows.find`) and one singular-resource controller per tab (`resource :spec`, `resource :code`, `resource :details`, `resources :runs`, `resources :revisions`). Then "Consolidating names", then one commit per page ("Spec page", "Code and runs pages", "Revisions page"), then "Using tab pages". The description: "This is very basic and is meant to be a scaffolding that needs to be extended rather than a final version. To do: [ ] ..." Michelangelo then added about 45 UI commits on the same branch.
 - **#170:** `2e0b4fa1` "Basic plumbing" (specs controller, edit view, route, controller test). Then "HTML everywhere", "Splitting inputs and specs", `f13c5c57` "Spec permissions" (a separate `WorkflowSpecPolicy`, with commit body "Permission-related logic lives in permissions"), then `4a0af18d` "Spec draft flow" (migration), "Autosaving form", "Extracting details form".
 - **#171** uses expand/contract inside one PR: `855249de` "Writing spec sections" adds the new columns, then `48c47d24` "Removing full spec fields" drops the old ones, then "Updating seeds and helpers".
 
@@ -105,7 +105,7 @@ Volume: Paolo has about 930 commits (`psguazz` plus `Paolo Sguazzabia`) and Mich
 - Authorization lives in Pundit policies, one per action resource where needed (`WorkflowBuildPolicy`, `WorkflowCommitPolicy`, `WorkflowSpecPolicy`). Commit body of `f13c5c57`: "Permission-related logic lives in permissions".
 - Jobs are one-line wrappers around a model `_now!` method, with SolidQueue `limits_concurrency` (#77 replaced custom claiming with "native SolidQueue concurrency controls").
 - Generic infrastructure goes in `lib/` and app-specific glue in `app/models` (`lib/runtime` vs `workers/runner`, #149).
-- He prefers native HTML/CSS over JS and components: #60 "Theming without JS", #73 native select "so we can get rid of some components/controllers", #97 native popover ("No reason for this except that I like using native html/css functionality"). ViewComponents in `app/components` are mostly Michelangelo's (6 of 8 files); Paolo uses resource partials.
+- He prefers native HTML/CSS over JS and components: #60 "Theming without JS", #73 native select "so we can get rid of some components/controllers", #97 native popover ("No reason for this except that I like using native html/css functionality"). ViewComponents in `app/components` are mostly Michelangelo's (6 of 8 files); the maintainer uses resource partials.
 
 ### Refactor vs feature
 - Refactors are their own PRs, or their own leading commits inside a feature PR. He deletes the old path in the same PR once the new path works: #9 "Removing benchmark code"; #133 "Removing LLM module"; #149 "Removing old manifest" and "Dropping workbook"; #77 removed custom claiming; #131 "Removing unused views"; #128 deleted generated `models_controller`.
@@ -130,7 +130,7 @@ Volume: Paolo has about 930 commits (`psguazz` plus `Paolo Sguazzabia`) and Mich
 
 ## 3. Commit message and PR description style
 
-### Commit subjects (Paolo)
+### Commit subjects (the maintainer)
 - 2-3 words in about 75% of commits. Gerund-first in about 60% (484 of 814): "Validating shapes", "Renaming runs", "Breaking up builder". Comparative or adjective-first in about 11% ("Simpler slug", "Safer whitelists", "More explicit guards", "Stricter policy checks", "Explicit calls").
 - No conventional-commit prefixes (0 of 814).
 - Informal and candid: "Type inference?!", "RELOADING THE WORKFLOW", "What", "Stupid gems", "Massive CVE", "Various fixes that I haven't read", "Gotta go fast", "Dumb change to reset GH", "MORE renames".
@@ -140,7 +140,7 @@ Volume: Paolo has about 930 commits (`psguazz` plus `Paolo Sguazzabia`) and Mich
 - 36 conventional-commit subjects (`feat(runs): structure run activity data`).
 - Some early terse lowercase subjects ("data instrument", "ui", "local env", "gemma", "login", "fix").
 
-### PR descriptions (Paolo)
+### PR descriptions (the maintainer)
 - **Opening one-liner of intent:** "Mini type system for some strong validation for the builder." (#6); "Adding a "meta builder" to break down a big task into steps." (#88); "Grouping the `workers` and `sheets` objects into their explicit modules..." (#123).
 - **Bullet list of behavioral rules,** often nested: #87 ("Drafts can be destroyed for real; ready agents can only be archived... an agent is "active" if it's the last version _and_ is not archived"); #44 lists one broadcast rule per model.
 - **"The point of X is Y" layering explanation** (#24): "The point of the interface in `settings` is to manage the credential models / The point of the credential models is to manage the tokens / The point of the API helpers is... / The point of a tool is... / The point of a tool node is...".
@@ -182,7 +182,7 @@ Volume: Paolo has about 930 commits (`psguazz` plus `Paolo Sguazzabia`) and Mich
 
 ## 5. Candidate planning rules and review-checklist items
 
-### Planning rules (to emulate Paolo when planning a big feature)
+### Planning rules (to emulate the maintainer when planning a big feature)
 1. **Start with a "prep" slice:** list the renames and cleanups needed so the new concept has a clear name. Do them first, as their own commits (or PR) with no behavior change. *(#88, #29, #110, #6)*
 2. **Plan layers bottom-up:** migration+model → domain object or concern (+tests) → integration (runner/builder/jobs) → prompts → controller+policy+route ("plumbing") → UI. Mark UI as minimal or rough unless UI is the point. *(#80, #98, #110, #76)*
 3. **Name a "plumbing" commit that fixes the public interface** (class skeletons, routes, policy, controller test) before filling the logic. *(7 plumbing commits)*
@@ -202,7 +202,7 @@ Volume: Paolo has about 930 commits (`psguazz` plus `Paolo Sguazzabia`) and Mich
 4. **Policies match the intended role split.** Starting runs and other credit-spending actions check `update?`, not `show?`. *Evidence: #87 comment on run policy.*
 5. **Form and param round-trip:** list params use `[]`, optional `?` keys are preserved, and input is cast via Shapes before validation. *Evidence: #47 comments (two bugs), #149 casting comment, #127 "we don't have tests that submit the forms as they are".*
 6. **No silent truncation or pagination caps** in tool and data layers. *Evidence: #149 `list_records` limit 50.*
-7. **Transactions and rescue paths:** no writes inside an aborted savepoint; rescues use safe log updates. *Evidence: #149 savepoint comment; Paolo's own fix `049d20cb` "Safe log updates in rescues".*
+7. **Transactions and rescue paths:** no writes inside an aborted savepoint; rescues use safe log updates. *Evidence: #149 savepoint comment; the maintainer's own fix `049d20cb` "Safe log updates in rescues".*
 8. **Long work is not run synchronously from a request or tool call** (use `*_later!`). *Evidence: #149 `build_now!` comment; #9 note on blocking threads.*
 9. **Avoid side-effect registries that fight Zeitwerk;** prefer an explicit list or `eager_load_dir`. *Evidence: #149 registry comment; #29 `c30f3eec` "Cleaner tool loading".*
 10. **Check `dependent: :destroy` chains** for loss of history or audit data. *Evidence: #149 TableRef → calls comment.*
@@ -216,6 +216,6 @@ Volume: Paolo has about 930 commits (`psguazz` plus `Paolo Sguazzabia`) and Mich
 ---
 
 ### Caveats
-- Some commits inside Paolo's PRs are Michelangelo's (#108 first five; #166 about 45 UI commits; #47 `8cbebf7e` and others from the merged `shapes-form-ui`). They are attributed by author above.
+- Some commits inside the maintainer's PRs are Michelangelo's (#108 first five; #166 about 45 UI commits; #47 `8cbebf7e` and others from the merged `shapes-form-ui`). They are attributed by author above.
 - "Michelangelo's style" here is inferred from his commits in shared PRs (#108, #148, #166) and his review comments in the input. His own PR descriptions were not in this input (they are in file A).
-- In #166, Michelangelo's commits "Prefer explicit run detail views over clever loops", "Restore per-type call partials" and "Move the run data renderer back to runs" look like responses to Paolo's feedback. That is inferred from the subjects and was not verified against review text.
+- In #166, Michelangelo's commits "Prefer explicit run detail views over clever loops", "Restore per-type call partials" and "Move the run data renderer back to runs" look like responses to the maintainer's feedback. That is inferred from the subjects and was not verified against review text.

@@ -1,12 +1,12 @@
-# Paolo (psguazz) as reviewer: principles from his review comments
+# The maintainer as reviewer: principles from his review comments
 
-Source: `A-paolo-comments.md`. It holds about 80 inline comments, 3 review bodies and 2 issue comments, spread over 25 of Michelangelo's PRs (#10 to #159). I read all of it.
+Source: `A-maintainer-comments.md`. It holds about 80 inline comments, 3 review bodies and 2 issue comments, spread over 25 of Michelangelo's PRs (#10 to #159). I read all of it.
 Extra context, labelled where used:
 - the per-PR JSON in `scratchpad/prs/`, for review states and for Michelangelo's replies;
-- Paolo's own replies on his PRs #56, #81, #87 and #149. In those threads Michelangelo reviewed Paolo, which is the only place the two argued back and forth;
+- The maintainer's own replies on his PRs #56, #81, #87 and #149. In those threads Michelangelo reviewed the maintainer, which is the only place the two argued back and forth;
 - the current `config/routes.rb` and `app/controllers` in the logven repo.
 
-Language: Paolo writes in Italian up to #143 and in English on #159. Quotes are kept in the original. A short English gloss is given where the meaning is not obvious.
+Language: the maintainer writes in Italian up to #143 and in English on #159. Quotes are kept in the original. A short English gloss is given where the meaning is not obvious.
 
 Strength labels:
 - **[strong]**: 4 or more instances across at least 3 PRs.
@@ -238,10 +238,10 @@ He doesn't nitpick variable names, line length or comment wording. Every comment
 
 ## 4. Pushback and changes of mind
 
-**Michelangelo pushing back on Paolo's comments on Michelangelo's own PRs:** none appears in the data. Michelangelo's only replies there are 👍🏻 or explanations of intent: #17 ("questa ui l'ho fatta con codex perchè... volevo capire meglio insieme", "I made this UI with Codex because I wanted us to work it out together"), #5, #44. Michelangelo complies, often with a follow-up PR (#32 → #37 moved editing to the server, #122 → #129).
+**Michelangelo pushing back on the maintainer's comments on Michelangelo's own PRs:** none appears in the data. Michelangelo's only replies there are 👍🏻 or explanations of intent: #17 ("questa ui l'ho fatta con codex perchè... volevo capire meglio insieme", "I made this UI with Codex because I wanted us to work it out together"), #5, #44. Michelangelo complies, often with a follow-up PR (#32 → #37 moved editing to the server, #122 → #129).
 
-**Paolo defending his choices when Michelangelo reviewed Paolo's PRs** (outside the input file; useful for his reasoning):
-- #87: Michelangelo suggested members shouldn't start runs. Paolo replied that "read only" means you can't change the project but you can use it. Michelangelo: "okok nice". On a lineage backfill migration: "We have no agents anywhere, and we keep blasting the dev db" (pragmatism: no backfills before production data exists).
+**The maintainer defending his choices when Michelangelo reviewed the maintainer's PRs** (outside the input file; useful for his reasoning):
+- #87: Michelangelo suggested members shouldn't start runs. The maintainer replied that "read only" means you can't change the project but you can use it. Michelangelo: "okok nice". On a lineage backfill migration: "We have no agents anywhere, and we keep blasting the dev db" (pragmatism: no backfills before production data exists).
 - #149, six replies:
   - "Fetching all the records by default is insane. We should assume these tables to be massive."
   - "Tables are meant to be soft deleted".
@@ -252,8 +252,8 @@ He doesn't nitpick variable names, line length or comment wording. Every comment
 - #56: he rejected a focus-restoration finding: "Tabbing works just fine in practice." He trusts observed behaviour over hypothetical findings.
 
 **Possible change of mind (moderate confidence):**
-- #46: Paolo suggested a top-level `agents` resource with a project dropdown in the agent form, "Questo ci darebbe anche modo di spostarli facilmente" ("this would also let us move them easily").
-- #65: when Michelangelo implemented project_id changes inside `AgentsController#update`, Paolo said "Questo va tolto -- nel contesto più 'grosso' dei progetti in realtà non ha senso cambiare il project_id insieme ai dettagli" ("this has to go; in the bigger context of projects it makes no sense to change project_id together with the details").
+- #46: the maintainer suggested a top-level `agents` resource with a project dropdown in the agent form, "Questo ci darebbe anche modo di spostarli facilmente" ("this would also let us move them easily").
+- #65: when Michelangelo implemented project_id changes inside `AgentsController#update`, the maintainer said "Questo va tolto -- nel contesto più 'grosso' dei progetti in realtà non ha senso cambiare il project_id insieme ai dettagli" ("this has to go; in the bigger context of projects it makes no sense to change project_id together with the details").
 - The final routes nest everything under `projects` (`scope module: :projects`).
 - So his #46 "top-level agents" idea was dropped. The constant part is "no slugs, standard resources".
 
