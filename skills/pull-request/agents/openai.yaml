@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pull Request"
+  short_description: "Write a PR from branch commits and diff"
+  default_prompt: "Use $pull-request to write a factual PR title and description from the branch's commits and diff against the base."

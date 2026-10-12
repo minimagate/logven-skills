@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verify and Commit"
+  short_description: "Verify subagent diffs, then commit cleanly"
+  default_prompt: "Use $verify-and-commit to review a subagent's diff, run checks, and commit one scoped change at a time."

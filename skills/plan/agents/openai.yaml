@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plan"
+  short_description: "Agree a code plan before any edits"
+  default_prompt: "Use $plan to analyze the code and agree the scope and changes with the user before writing any code."
