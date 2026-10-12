@@ -1,4 +1,0 @@
-interface:
-  display_name: "Plan Fit"
-  short_description: "Check plan fit with the existing repo"
-  default_prompt: "Use $plan-fit to critique the given plan through this lens only."

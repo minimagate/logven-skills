@@ -1,4 +1,0 @@
-interface:
-  display_name: "Plan Edge Cases"
-  short_description: "Flag unhandled failure modes and states"
-  default_prompt: "Use $plan-edge-cases to critique the given plan through this lens only."

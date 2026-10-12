@@ -1,4 +1,0 @@
-interface:
-  display_name: "Review Over-Standardisation"
-  short_description: "Flag premature sharing and uniformity"
-  default_prompt: "Use $review-over-standardisation to review the given diff through this lens only."

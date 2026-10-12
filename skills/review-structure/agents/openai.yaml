@@ -1,4 +1,0 @@
-interface:
-  display_name: "Review Structure"
-  short_description: "Review against the structural bar"
-  default_prompt: "Use $review-structure to review the given diff against the project's structural bar only."

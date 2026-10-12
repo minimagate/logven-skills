@@ -20,13 +20,13 @@ The link lives in each project checkout; each app's own facts live in its `proje
 
 Start with `how-we-work`; it routes each situation to the skill below.
 
-1. Plan. Use `plan` for small changes, or `plan-feature` for big features: parallel explorers, then critics, then triage to a lean plan. The user agrees the plan before any code.
-2. Delegate. Subagents on the cheapest capable model implement from self-contained briefs.
-3. Verify and commit. The orchestrator reads the full diff, runs tests and linters, and commits one scoped change at a time.
-4. Review. Lens reviewers run in parallel on the cheapest capable model: small diffs run conventions, cleanliness and correctness; larger diffs run all six (the five general lenses plus `review-structure`). The orchestrator verifies their findings and synthesizes them.
-5. Pull request. Written from the branch's commits and diff, with checks reported factually.
+1. Plan. Use `plan` to agree scope and approach. Big features use its multi-agent mode: parallel explorers, then four critics from `plan/references/critics.md`, then triage to a lean plan. The user agrees the plan before any code.
+2. Delegate. Delegation briefs are a section of `how-we-work`. Subagents on the cheapest capable model implement from self-contained briefs.
+3. Verify and commit. Also a section of `how-we-work`. The orchestrator reads the full diff, runs tests and linters, and commits one scoped change at a time.
+4. Review. `review` runs lens reviewers in parallel on the cheapest capable model: small diffs run conventions, cleanliness and correctness; larger diffs run all six. The orchestrator verifies their findings and synthesizes them.
+5. Pull request. `ship` writes it from the branch's commits and diff, with checks reported factually.
 
-The six lenses are `review-overengineering`, `review-over-standardisation`, `review-conventions`, `review-cleanliness`, `review-correctness` and `review-structure`.
+The six lenses are `overengineering`, `over-standardisation`, `conventions`, `cleanliness`, `correctness` and `structure`, defined in `review/references/lenses.md`.
 
 Invariants:
 
@@ -40,25 +40,10 @@ Invariants:
 
 | Group | Skill | Use it for |
 |---|---|---|
-| Entrypoint | `how-we-work` | Start here: the roles, the plan/delegate/verify/review loop and which skill to load next |
-| Workflow | `plan` | Agreeing scope and approach before any code, for small changes |
-| Workflow | `plan-feature` | Multi-agent planning for big features: new concepts, schema, integrations, contracts |
-| Workflow | `feature-sequencing` | Ordering and slicing work into commits and PRs; commit and PR naming |
-| Workflow | `delegate` | Briefing a subagent for every implementation, including small fixes |
-| Workflow | `verify-and-commit` | Checking the subagent's diff, running checks, committing one scoped change |
-| Workflow | `pull-request` | Writing a PR title and description from the branch's commits and diff |
-| Principles | `principles` | Shared minimalism, dependency and future-proofing rules; cited, not restated |
-| Plan critics | `plan-simplicity` | Scope and machinery beyond the stated requirement |
-| Plan critics | `plan-future-proofing` | Decisions that are expensive to reverse |
-| Plan critics | `plan-edge-cases` | Failure modes and unusual states the plan ignores |
-| Plan critics | `plan-fit` | Placement, duplication, repo rules and slice ordering |
-| Review | `review` | Coordinating the six lens reviewers, then verifying and synthesizing |
-| Review | `review-overengineering` | Machinery the requirement does not justify |
-| Review | `review-over-standardisation` | Premature sharing and uniformity that couples code |
-| Review | `review-conventions` | Compliance with written repo rules and neighbouring patterns |
-| Review | `review-cleanliness` | Dead code, leftovers and scope creep the diff introduces |
-| Review | `review-correctness` | Wrong results, authorization gaps, races and data loss |
-| Review | `review-structure` | The project's structural bar: necessity, one mechanism per job, ownership, authorization, REST |
+| Entrypoint | `how-we-work` | Start here: roles, the plan/delegate/verify/review loop, routing, principles, delegation briefs, verify and commit |
+| Workflow | `plan` | Agreeing scope and approach before any code; multi-agent mode with critics for big features |
+| Workflow | `review` | Coordinating lens reviewers, then verifying and synthesizing |
+| Workflow | `ship` | Ordering and slicing work into commits and PRs; commit messages; PR text |
 | Rails guidelines | `rails-structure` | Where code lives, how it is named and namespaced |
 | Rails guidelines | `rails-models` | Active Record models, state, associations, validations, callbacks |
 | Rails guidelines | `rails-controllers` | Thin controllers, routes, strong params, responses |
@@ -75,18 +60,18 @@ Invariants:
 2. Write the project's `AGENTS.md`: what the repo contains and its commands.
 3. Copy `skills/how-we-work/references/project-skill-template.md` to `skills/project-<name>/SKILL.md` in this repo (it is the same checkout the project links to), plus `agents/openai.yaml` as shown in the template's comment, and commit it here. Fill it as you learn the app, and keep project facts there only.
 4. The `rails-*` skills are opinionated defaults for Rails 8 with Hotwire, Tailwind, Pundit, minimal dependencies and no npm build. A project skill can override any of them.
-5. For a non-Rails stack, keep the workflow, planning, review and `principles` skills and skip the `rails-*` ones.
+5. For a non-Rails stack, keep `how-we-work`, `plan`, `review` and `ship` and skip the `rails-*` ones.
 
-`delegate` briefs list the `rails-*` skills for the layers touched, the project skill and `principles`.
+Delegate briefs (in `how-we-work`) list the `rails-*` skills for the layers touched, the project skill and the Principles section.
 
 ## Editing skills
 
 - Each skill is `skills/<name>/SKILL.md` with `name` and `description` frontmatter. The description says when to trigger the skill and what it hands off to.
 - Each skill also has an `agents/openai.yaml`.
-- Keep skills tight, about 40 to 70 lines. Say each rule once, and link `principles` instead of restating it.
+- Keep skills tight; put long checklists (lenses, critics, design tokens) in `references/`. Say each rule once, and link the Principles section of `how-we-work` instead of restating it.
 - Reference other skills by relative path, such as `../name/SKILL.md`.
 - After renames or edits, check that every `../<name>/SKILL.md` link resolves.
-- Model choice is written abstractly: every subagent runs on the cheapest capable model; the only mapping to concrete model names is a single line in `delegate`.
+- Model choice is written abstractly: every subagent runs on the cheapest capable model; the only mapping to concrete model names is a single line in the Delegate section of `how-we-work`.
 - Project-specific names belong in the project skill, never in the general skills.
 - Examples in general skills use neutral names (orders, invoices).
 - When a skill is added, renamed or removed, update the table in the same change, so every skill in `skills/` appears exactly once.

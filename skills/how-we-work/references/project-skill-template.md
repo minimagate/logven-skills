@@ -1,6 +1,6 @@
 ---
 name: project-<name>
-description: Use only when working in the <Name> repo. <Name>'s project-specific names, paths, helpers and decisions. Read together with the general rails-* skills and principles; it overrides general defaults where they differ.
+description: Use only when working in the <Name> repo. <Name>'s project-specific names, paths, helpers and decisions. Read together with the general rails-* skills and how-we-work; it overrides general defaults where they differ.
 ---
 
 <!--
@@ -21,7 +21,7 @@ Optionally add references/design.md for the design system.
 
 ## How to use
 
-- General rules live in the `rails-*` skills and `principles`. This file holds only what is specific to <Name>.
+- General rules live in the `rails-*` skills and `how-we-work`. This file holds only what is specific to <Name>.
 - Where this file and a general skill differ, this file wins. Visual specifics go in [references/design.md](references/design.md) if present.
 
 ## Structure and naming

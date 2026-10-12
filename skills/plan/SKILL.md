@@ -1,6 +1,6 @@
 ---
 name: plan
-description: Use in the main thread when a user request to build, fix, change or design something arrives, before any delegation; not for implementation subagents. Analyze and agree the plan with the user before handing off to delegate.
+description: Use when a request to build, fix, change or design something arrives, before any delegation; not for implementation subagents. Small changes: analyze in the main thread and agree the plan with the user before handing off to delegate. Big features (new domain concept, schema change, external integration, public contract, or work across several areas): say so, offer multi-agent planning, and run it only after the user confirms.
 ---
 
 # Plan
@@ -9,9 +9,9 @@ Agree the scope and approach with the user before any code is written.
 
 ## Phase rules
 
-- The main thread only analyzes and plans. Write no code and make no edits in this phase.
+- The main thread only analyzes and plans. Write no code and make no edits.
 - Read the relevant code first: routes, models, callers, nearest tests, and repo guidelines (AGENTS.md, CLAUDE.md, CONTRIBUTING).
-- Do not start implementation, scaffolding or "quick prototypes" to explore.
+- No implementation, scaffolding or "quick prototypes" to explore.
 
 ## Output (exactly four parts)
 
@@ -24,21 +24,60 @@ Agree the scope and approach with the user before any code is written.
 
 - Give a recommendation, not an exhaustive survey of options.
 - Do not re-litigate decisions the user already made. Build on them.
-- Ask only questions that are genuinely the user's to make. Resolve the rest from the code or sensible defaults and state the default you chose.
-- Split work into independent scoped changes. Parallel slices need disjoint files, so briefs can run in parallel later.
-- Any new dependency is an explicit user decision: list it under Open decisions.
-- Keep each change small enough to review as one commit.
-- Follow `../principles/SKILL.md`: no new dependency without a stated reason.
-- Order and slice the work per `../feature-sequencing/SKILL.md`; the project's guideline skills (the `rails-*` skills and the project skill `project-*`; `../rails-structure/SKILL.md`, `../rails-models/SKILL.md`, `../rails-controllers/SKILL.md`, `../rails-authorization/SKILL.md`, `../rails-migrations/SKILL.md`, `../rails-frontend/SKILL.md`, `../rails-design/SKILL.md`, `../rails-tests/SKILL.md`) say where code belongs.
+- Ask only questions that are genuinely the user's to make. Resolve the rest from the code or sensible defaults, and state each default you chose.
+- Split work into independent scoped changes. Parallel slices need disjoint files. Keep each change small enough to review as one commit.
+- Order and slice per `../ship/SKILL.md`. The guideline skills `../rails-*/SKILL.md` and the project skill `../project-*/SKILL.md` say where code belongs.
+- Follow `../how-we-work/SKILL.md` (Principles): no new dependency without a stated reason. Any new dependency is an explicit user decision: list it under Open decisions.
 
 ## Escalate big features
 
 - If the request introduces a new domain concept, changes the schema, adds an external integration or public contract, or spans several areas, say so.
-- Offer `plan-feature` for multi-agent planning.
+- Offer multi-agent planning (below).
 - Start it only after the user confirms, because it costs considerably more.
+
+## Big features (multi-agent)
+
+Read-only explorers and critics run in parallel, then the result is cut down to the simplest plan that meets the requirement. The core principle (future-proofing means cheap options, not machinery) is in `../how-we-work/SKILL.md` (Principles, Future-proofing).
+
+1. **Confirm.** Get the user's agreement, because the run costs tokens. State how many explorers and critics will run and which model tier. Do not start without a yes.
+
+2. **Explore.** Dispatch several read-only explorers in parallel on the cheapest capable model. Each maps one area: current code, callers, schema, tests, or repo guidelines (AGENTS.md, CLAUDE.md). Explorers return facts with `path:line` and no opinions; opinions are discarded. Merge the results into one fact sheet. Drop duplicates and any claim without a `path:line`.
+
+3. **Base plan.** Draft the simplest plan that satisfies the stated requirement, in dialogue with the user. Write it to `tmp/plans/<slug>.md` in the project, untracked.
+   - Sections, in order: Goal, Non-goals, Decisions, Slices, Out of scope / deleted, Triage, Deferred ledger. Triage and Deferred ledger stay empty until step 5.
+   - Each slice is commit-sized and lists its files. Slices meant to run in parallel must have disjoint files; sequential slices may overlap.
+   - Slice order follows `../ship/SKILL.md`: prep slice first, bottom-up layers, plumbing slice, UI last, and an Out-of-scope list.
+
+4. **Critics.** Dispatch four read-only critics in parallel on the cheapest capable model, one per lens: Simplicity, Future-proofing, Edge cases, Fit. Brief each with its lens name and `references/critics.md`, the plan file path, the fact sheet, repo guideline paths (the `rails-*` skills as paths under the project's skills directory, for example `.agents/skills/`, plus the project skill `project-*` if present), and a read-only instruction.
+
+5. **Triage.** Label every observation Adopt, Cheap hook, Defer with trigger, or Reject, using the Triage rubric in `references/critics.md`. Record each label in the plan's Triage section.
+   - Spot-check doubtful observations against the code before accepting them.
+   - Where critics conflict (usually Simplicity against Future-proofing), show both sides to the user with your recommendation. Never resolve it silently.
+   - Write each deferred item into the Deferred ledger with its trigger.
+
+6. **Bloat check.** Run one pass only. Send the revised plan to the Simplicity critic in revision mode, with the original requirement, the revised plan and the triage table, to catch plan creep introduced by triage. Apply or reject each cut and record the decision. Any cut of an Adopt or Cheap hook item goes to the user instead of being decided silently. Even if the critic finds more, stop here and surface the rest as a user decision.
+
+7. **Present and gate.** See Presenting and Gate below.
+
+8. **Hand off.** The approved slices become the briefs for the `delegate` procedure in `../how-we-work/SKILL.md`, one commit per slice. Copy from the plan file; do not retype it.
+
+## Briefs
+
+- Every explorer and critic brief is self-contained. Subagents have no conversation context.
+- Each brief names the exact files or directories to read, the requirement in full, and the read-only instruction.
+- Paste the same requirement text into every brief. Do not paraphrase it between agents.
+
+## Presenting
+
+- Lead with the decisions that are theirs, each with your recommendation.
+- Then the revised plan, the triage table (observation, label, one-line reason), and the Deferred ledger.
+- Name the model tiers and the number of agents that ran, so cost is visible.
+- Do not dump raw critic output. Present the triaged result.
+- Keep the plan short. If it grows past about one page, cut it before presenting it.
+- Reject any explorer or critic output that edits files.
 
 ## Gate
 
-- Wait for explicit agreement before moving to `delegate`.
+- Applies to small and big plans. Wait for explicit agreement before moving to `delegate`.
 - Approval covers only the plan as written. If scope, files or decisions change, re-plan and get agreement again.
 - Do not treat silence or a partial "ok" as approval of new items.

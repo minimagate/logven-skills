@@ -1,4 +1,0 @@
-interface:
-  display_name: "Delegate"
-  short_description: "Brief subagents to implement agreed plans"
-  default_prompt: "Use $delegate to brief a subagent with a self-contained implementation brief for an agreed plan."

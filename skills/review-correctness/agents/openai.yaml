@@ -1,4 +1,0 @@
-interface:
-  display_name: "Review Correctness"
-  short_description: "Check behaviour, safety and data integrity"
-  default_prompt: "Use $review-correctness to review the given diff through this lens only."

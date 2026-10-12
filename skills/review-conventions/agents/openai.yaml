@@ -1,4 +1,0 @@
-interface:
-  display_name: "Review Conventions"
-  short_description: "Check repo guideline and pattern compliance"
-  default_prompt: "Use $review-conventions to review the given diff through this lens only."

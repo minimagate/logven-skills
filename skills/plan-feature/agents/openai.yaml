@@ -1,4 +1,0 @@
-interface:
-  display_name: "Plan Feature"
-  short_description: "Multi-agent planning for big features"
-  default_prompt: "Use $plan-feature to plan this large feature with parallel explorers and critics, then triage into a lean plan."
