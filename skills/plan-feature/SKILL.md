@@ -32,7 +32,7 @@ Plan a large feature with parallel read-only explorers and critics, then cut the
    - The slice order follows `../feature-sequencing/SKILL.md`: prep slice first, bottom-up layers, plumbing slice, UI last, and an Out-of-scope list.
 
 4. **Critics.** Dispatch four read-only critics in parallel on the strongest available model, one per lens: `plan-simplicity`, `plan-future-proofing`, `plan-edge-cases`, `plan-fit`.
-   - Brief each with: its lens skill, the plan file path, the fact sheet, repo guideline paths (the `rails-*` skills, as paths under `skills/`, plus the project skill `project-*` if present), a read-only instruction, and `references/observation-format.md`.
+   - Brief each with: its lens skill, the plan file path, the fact sheet, repo guideline paths (the `rails-*` skills, as paths under the project's skills directory, for example `.agents/skills/`, plus the project skill `project-*` if present), a read-only instruction, and `references/observation-format.md`.
    - Critics return observations only. They never rewrite the plan.
 
 5. **Triage.** Label every observation Adopt, Cheap hook, Defer with trigger, or Reject, using `references/triage-rubric.md`. Record each label in the plan's Triage section.

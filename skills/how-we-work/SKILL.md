@@ -1,6 +1,6 @@
 ---
 name: how-we-work
-description: Entrypoint. Use at the start of any coding session or task in a repo that has these skills, in the main thread, to learn the roles, the plan -> delegate -> verify -> review loop and which skill to load next. Not for implementation or review subagents: they follow their brief.
+description: Entrypoint. Use at the start of a coding session in a repo that has these skills, in the main thread, to learn the roles, the plan -> delegate -> verify -> review loop and which skill to load next. Not for implementation or review subagents: they follow their brief.
 ---
 
 # How We Work
@@ -31,7 +31,7 @@ If your brief assigns you implementation, exploration, critique or review, stop 
 | Situation | Load |
 |---|---|
 | New request to build, fix or change something | `plan` |
-| Big feature: new concept, schema change, integration, public contract, several areas | `plan-feature` |
+| Big feature: new concept, schema change, integration, public contract, several areas | Load via `plan`, which escalates to `plan-feature` after the user confirms |
 | Plan agreed | `delegate` |
 | Subagent returned work | `verify-and-commit` |
 | Branch complete, or user asks for a review | `review` |
@@ -39,6 +39,7 @@ If your brief assigns you implementation, exploration, critique or review, stop 
 | Ordering or slicing work, commit or PR scope, commit messages | `feature-sequencing` |
 | Deciding where code belongs or how to write it | the `rails-*` skill for the layer: `rails-structure`, `rails-models`, `rails-controllers`, `rails-authorization`, `rails-migrations`, `rails-frontend`, `rails-design`, `rails-tests` |
 | Anything about this app's names, paths and decisions | the project skill `project-<name>` |
+| No project skill for this repo, or asked to start one | follow [references/project-skill-template.md](references/project-skill-template.md): explorers gather the facts with `path:line`, the orchestrator fills the template, `delegate` writes it, and it is committed in the shared skills repo (the project's `.agents/skills` is a link into it, so run `verify-and-commit` there) |
 
 ## Where knowledge lives (lowest to highest precedence)
 
@@ -61,5 +62,6 @@ Every `delegate` and `review` brief lists the relevant ones for the subagent, be
 
 ## At the start of a session
 
-- Inspect the working tree and git state, then read `AGENTS.md` and the project skill.
+- Inspect the working tree and git state, then read `AGENTS.md`.
+- Use only the project skill whose name matches this repo (`project-<repo-name>`). Other `project-*` skills in the directory belong to other apps: ignore them. If none matches, say so, rely on the `rails-*` defaults and `AGENTS.md`, and offer to create one.
 - Route the first request through the table above.

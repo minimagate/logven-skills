@@ -1,6 +1,6 @@
 # logven-skills
 
-Reusable agent skills for planning, building and reviewing Rails apps with a minimalist philosophy, plus per-project skills that carry each app's own conventions (currently `project-logven`).
+Reusable agent skills for planning, building and reviewing Rails apps with a minimalist philosophy, plus per-project skills that carry each app's own conventions.
 
 ## How it is wired
 
@@ -10,7 +10,7 @@ A project discovers the skills through a local link to `skills/`, which is ignor
 logven/.agents/skills -> ../../logven-skills/skills
 ```
 
-The link lives in each project checkout, so nothing project-specific is committed here.
+The link lives in each project checkout; each app's own facts live in its `project-<name>` skill in this repo. Only the project skill named after the repo applies.
 
 - The project's `AGENTS.md` says what the repo contains.
 - The general skills say how to work.
@@ -73,7 +73,7 @@ Invariants:
 
 1. Link this repo's `skills/` into the project as `.agents/skills` (see above).
 2. Write the project's `AGENTS.md`: what the repo contains and its commands.
-3. Copy `templates/project-skill.md` to `skills/project-<name>/SKILL.md`, plus `agents/openai.yaml` as shown in the template's comment. Fill it as you learn the app, and keep project facts there only.
+3. Copy `skills/how-we-work/references/project-skill-template.md` to `skills/project-<name>/SKILL.md` in this repo (it is the same checkout the project links to), plus `agents/openai.yaml` as shown in the template's comment, and commit it here. Fill it as you learn the app, and keep project facts there only.
 4. The `rails-*` skills are opinionated defaults for Rails 8 with Hotwire, Tailwind, Pundit, minimal dependencies and no npm build. A project skill can override any of them.
 5. For a non-Rails stack, keep the workflow, planning, review and `principles` skills and skip the `rails-*` ones.
 

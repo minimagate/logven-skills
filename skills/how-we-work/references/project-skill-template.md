@@ -1,5 +1,10 @@
+---
+name: project-<name>
+description: Use only when working in the <Name> repo. <Name>'s project-specific names, paths, helpers and decisions. Read together with the general rails-* skills and principles; it overrides general defaults where they differ.
+---
+
 <!--
-Copy to skills/project-<name>/SKILL.md, replace every <placeholder>, delete
+Delete this comment after copying. Copy this file to skills/project-<name>/SKILL.md, replace every <placeholder>, delete
 sections that do not apply. Record only facts true for this project. Also add skills/project-<name>/agents/openai.yaml:
 
 interface:
@@ -9,10 +14,6 @@ interface:
 
 Optionally add references/design.md for the design system.
 -->
----
-name: project-<name>
-description: <Name>'s project-specific names, paths, helpers and decisions. Read together with the general rails-* skills and principles whenever working in the <Name> repo; it overrides general defaults where they differ.
----
 
 # Project <Name>
 
@@ -25,7 +26,7 @@ description: <Name>'s project-specific names, paths, helpers and decisions. Read
 
 ## Structure and naming
 
-- <Domain namespaces, table prefixes, where infrastructure and prompts live.>
+- <Domain namespaces, table naming, where non-domain infrastructure lives.>
 - <Existing shared mechanisms to reuse instead of adding parallel ones.>
 
 ## Models
@@ -45,13 +46,13 @@ description: <Name>'s project-specific names, paths, helpers and decisions. Read
 
 ## Migrations
 
-- <Schema-only or backfill stance; migration class version; table prefixes.>
+- <Schema-only or backfill stance; migration class version; table naming.>
 - <Verify commands.>
 
 ## Frontend
 
 - <Stack and importmap pins, each with its reason.>
-- <Partial names, id helper, icon helper, tone helpers, build command.>
+- <Partial names, shared UI helpers, build command.>
 
 ## Tests
 

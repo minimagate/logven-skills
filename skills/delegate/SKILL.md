@@ -25,7 +25,7 @@ Subagents have no conversation context. Each brief must include:
 - **Allowed files**: exact paths to edit or create.
 - **Off-limits**: files and areas not to touch.
 - **Conventions**: paths to existing files to read for style and patterns.
-- **Guideline skills**: the `rails-*` skills for the layers touched (paths under `skills/`, for example `rails-models` and `rails-tests` for a model change; `rails-frontend` and `rails-design` for UI), the project skill (`project-*`) if one exists, plus `../principles/SKILL.md`; the subagent reads them before editing.
+- **Guideline skills**: the `rails-*` skills for the layers touched (paths under the project's skills directory, for example `.agents/skills/`; `rails-models` and `rails-tests` for a model change; `rails-frontend` and `rails-design` for UI), the project skill (`project-*`) if one exists, plus `../principles/SKILL.md`; the subagent reads them before editing.
 - **Verification**: exact test and lint commands to run. UI briefs also name `bin/rails tailwindcss:build`.
 - **Dependencies**: "Do not add any dependency (gem, package, JavaScript build step). If one seems needed, stop and report instead."
 - **Git**: "Do not run any git commands. Do not commit."
