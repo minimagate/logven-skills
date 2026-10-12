@@ -13,6 +13,8 @@ even when the request concerns UI code. Verify UI changes in the browser instead
 appearance or DOM structure in the test suite.
 Protect the test's behavioral contract when diagnosing failures.
 
+Project-specific names, paths and decisions live in the project skill (`project-<name>`); where it differs from this skill, it wins.
+
 ## Workflow
 
 1. Establish the intended behavior from the request, application code, and existing tests. Read
@@ -34,8 +36,6 @@ Protect the test's behavioral contract when diagnosing failures.
      Job tests should assert delegation and resulting application state, not Active Job internals.
    - External provider and tool tests should isolate network boundaries and prove the relevant
      request/response contract. Never call a live provider from tests.
-   - Development seed tests should prove the idempotent showcase dataset when seed behavior
-     changes.
    - Controller tests must stop at the HTTP/application boundary: authentication, authorization,
      status or redirect, persistence, side effects, and response format where it is an API
      contract. Do not assert HTML response bodies, rendered text, selectors, CSS classes, DOM
@@ -47,16 +47,16 @@ Protect the test's behavioral contract when diagnosing failures.
    and assert observable outcomes. Keep each test in its shortest clear form. Cover the requested happy path and material failure or
    authorization boundary without building a combinatorial suite.
 5. Run the changed test file, then the smallest relevant directory or broader suite warranted by
-   the change. Run the repository's configured Ruby linter on changed Ruby test files.
+   the change. Run the project's linter (for example `bin/standardrb` or `bin/rubocop`) on changed Ruby test files.
 
 ## Repository Conventions
 
 - Use Minitest's `test "behavior" do` style and `require "test_helper"`.
 - Mirror source namespaces and paths in `test/`.
-- Create records with existing test helpers where they fit; keep scenario-specific values in the
+- Create records with the project's record builders where they fit; keep scenario-specific values in the
   test when that makes the behavior clearer. Do not introduce fixtures.
 - Use the application's existing authentication helper for authenticated request tests.
-- Use the application's deterministic provider helpers for external interactions. Preserve any
+- Use the project's stubbing helper for external interactions. Preserve any
   contract that rejects missing or unused stubbed responses.
 - Prefer precise assertions such as `assert_difference`, `assert_no_difference`,
   `assert_changes`, `assert_raises`, `assert_predicate`, exact persisted values, and policy scope
@@ -70,13 +70,12 @@ Protect the test's behavioral contract when diagnosing failures.
   another test, or shared mutable registries without cleanup.
 - Test claim, resume, and idempotency behavior when concurrent or duplicate work could create
   duplicate children or repeat side effects.
-- Treat any existing legacy view coverage as legacy, not precedent for new view tests.
 - Every controller gets at least one request test per page and one per action branch (valid and invalid), even if it only does `get path; assert_response :ok`; this is the test that catches a missing template. Assert status, redirect, persistence, jobs and authorization, never HTML.
-- One test file per class, mirroring the source path (`test/models/workers/builder/plan_test.rb`). An extracted plain Ruby object gets its own test in the same change, and a deleted feature's tests are deleted with it.
-- Every policy has a policy test. Name test classes after their unit (`TablePolicyTest`, not a generic name), and reference app classes with a leading `::` inside nested test modules.
-- Build records with the `*_attributes(**overrides)` builders in `test/test_helpers/attributes/`.
-- Stub LLM calls with `with_ruby_llm`, not `with_llm`; un-stubbed LLM calls raise.
-- Prefer explicit per-case assertions over data-driven graders. Evals live in `evals/`, outside CI, and assert on final output.
+- One test file per class, mirroring the source path (`test/models/billing/invoice_test.rb` for `app/models/billing/invoice.rb`). An extracted plain Ruby object gets its own test in the same change, and a deleted feature's tests are deleted with it.
+- Every policy has a policy test. Name test classes after their unit (`InvoicePolicyTest`, not a generic name), and reference app classes with a leading `::` inside nested test modules.
+- Build records with the project's record builders.
+- Stub external provider calls with the project's stubbing helper; un-stubbed provider calls raise.
+- Prefer explicit per-case assertions over data-driven graders.
 
 ## Keep test code hygienic
 
@@ -118,11 +117,11 @@ Run commands from the repository root, narrowing first:
 bin/rails test test/path/to/file_test.rb
 bin/rails test test/path/to/file_test.rb:LINE
 bin/rails test test/models
-bin/standardrb test/path/to/file_test.rb
+<project linter> test/path/to/file_test.rb
 ```
 
 Use `bin/rails test` when the change has broad impact. Do not run `bin/rails test:system`; UI
-verification is a separate browser workflow. Use `bin/ci` for broad or release-ready validation.
+verification is a separate browser workflow. Use the project's full validation command (for example `bin/ci`) for broad or release-ready validation.
 Report exact commands, failures, and anything left unverified.
 
 ## Do Not
