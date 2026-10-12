@@ -20,19 +20,19 @@ Plan a large feature with parallel read-only explorers and critics, then cut the
 
 1. **Confirm.** Get the user's agreement to the multi-agent run, because it costs tokens. State what will run: how many explorers, how many critics, and which model tier. Do not start without a yes.
 
-2. **Explore.** Dispatch several read-only explorers in parallel on the cheapest capable model (Claude: Haiku).
+2. **Explore.** Dispatch several read-only explorers in parallel on the cheapest capable model.
    - Give each a self-contained brief: one area to map (current code, callers, schema, tests, repo guidelines such as AGENTS.md or CLAUDE.md), the requirement, and a read-only instruction.
    - Explorers return facts with `path:line` and no opinions.
    - Merge the results into one fact sheet. Drop duplicates and any claim without a `path:line`.
 
 3. **Base plan.** The orchestrator drafts the simplest plan that satisfies the stated requirement, in dialogue with the user.
    - Write it to `tmp/plans/<slug>.md` in the project. Keep it untracked.
-   - Sections, in order: Goal, Non-goals, Decisions, Slices, Triage, Deferred ledger. Triage and Deferred ledger stay empty until step 5.
-   - Each slice is commit-sized and lists its files. Slices must have disjoint files.
+   - Sections, in order: Goal, Non-goals, Decisions, Slices, Out of scope / deleted, Triage, Deferred ledger. Triage and Deferred ledger stay empty until step 5.
+   - Each slice is commit-sized and lists its files. Slices meant to run in parallel must have disjoint files; sequential slices may overlap.
    - The slice order follows `../feature-sequencing/SKILL.md`: prep slice first, bottom-up layers, plumbing slice, UI last, and an Out-of-scope list.
 
-4. **Critics.** Dispatch four read-only critics in parallel on the strongest available model (Claude: Opus), one per lens: `plan-simplicity`, `plan-future-proofing`, `plan-edge-cases`, `plan-fit`.
-   - Brief each with: its lens skill, the plan file path, the fact sheet, repo guideline paths, a read-only instruction, and `references/observation-format.md`.
+4. **Critics.** Dispatch four read-only critics in parallel on the strongest available model, one per lens: `plan-simplicity`, `plan-future-proofing`, `plan-edge-cases`, `plan-fit`.
+   - Brief each with: its lens skill, the plan file path, the fact sheet, repo guideline paths (the `rails-*` skills, as paths under `skills/`), a read-only instruction, and `references/observation-format.md`.
    - Critics return observations only. They never rewrite the plan.
 
 5. **Triage.** Label every observation Adopt, Cheap hook, Defer with trigger, or Reject, using `references/triage-rubric.md`. Record each label in the plan's Triage section.
@@ -40,7 +40,7 @@ Plan a large feature with parallel read-only explorers and critics, then cut the
    - Where critics conflict (usually simplicity against future-proofing), show both sides to the user with your recommendation. Never resolve it silently.
    - Write each deferred item into the Deferred ledger with its trigger.
 
-6. **Bloat check.** Run one pass only. Send the revised plan to a `plan-simplicity` critic to catch plan creep introduced by triage. Apply or reject each cut and record the decision. Do not loop again.
+6. **Bloat check.** Run one pass only. Send the revised plan to a `plan-simplicity` critic in revision mode, with the original requirement, the revised plan and the triage table, to catch plan creep introduced by triage. Apply or reject each cut and record the decision. Any cut of an Adopt or Cheap hook item goes to the user instead of being decided silently. Do not loop again.
 
 7. **Present and gate.** Show the user the revised plan, the triage table, the deferred ledger, and the decisions that are theirs.
    - Wait for explicit agreement. Approval covers the plan as written.

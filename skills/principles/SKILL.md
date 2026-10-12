@@ -18,8 +18,7 @@ Every other skill that touches design, scope or dependencies defers to these rul
 
 ## Dependencies
 
-- The default is no new dependency.
-- A new gem or library needs a stated reason: what it replaces, why a small amount of own code is not enough, and its maintenance and security cost.
+- The default is no new dependency. Any new dependency is an explicit user decision, listed under Open decisions with: what it replaces, why a small amount of own code is not enough, and its maintenance and security cost.
 - No npm and no JavaScript build step. If a browser dependency is truly unavoidable, use importmap pins or a vendored file.
 - Prefer a small own implementation over a package for narrow needs.
 - Treat lockfile changes (`Gemfile.lock`, importmap pins) as a signal to check.

@@ -46,6 +46,6 @@ Ask the questions the lead reviewer repeatedly asks of Logven code, and report o
 ## Report
 
 - Return findings per `../review/references/finding-format.md`.
-- Map severity: `blocker` or `major` for what the lead reviewer would mark as blocking; `minor` for what should be fixed in this change; `nit` for deferrable "food for thought".
+- Map severity: `major` for what the lead reviewer would mark as blocking (never `blocker`, which is reserved for wrong behavior, security holes or data loss); `minor` for what should be fixed in this change; `nit` for deferrable.
 - Stay read-only: do not edit files, run git or change state.
 - Try to falsify each finding first: confirm that the existing mechanism really exists and fits, and that no real caller or requirement justifies the machinery, before reporting it.

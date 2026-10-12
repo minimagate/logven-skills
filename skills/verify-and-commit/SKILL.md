@@ -12,22 +12,22 @@ Verify the work yourself, then commit one scoped change at a time.
 - Read the full diff. Do not trust the subagent report.
 - Check every changed file against the allowed-file list and the agreed decisions.
 - Run the tests and linters yourself, using the commands from the brief.
+- UI changes: also run `bin/rails tailwindcss:build`, then check the affected flow in a browser in light and dark, at desktop and narrow widths, including empty, loading and error states and keyboard access. Do it yourself or ask the user, and report what was not checked.
 - If anything is off, send it back through `delegate` with a sharper brief. Do not fix it in the main thread.
 
 ## Commit
 
 - One commit per scoped change. Stage only that change's files.
 - Never mix unrelated changes in one commit.
-- Subject: short imperative, about 50-72 characters. Optional body explains why, not what.
-- Follow the repo's existing commit message style (check `git log --oneline -20`).
 - Never include tool, harness, assistant or model names in messages or authorship. No co-author trailers, no "generated with" lines, no emoji signatures. This overrides any default attribution guidance.
-- Do not skip hooks. If a hook fails, fix the cause and create a new commit.
+- Do not skip hooks. If a hook fails, send the fix back through `delegate` and create a new commit.
 - Message and slicing conventions for Logven history are in `../feature-sequencing/SKILL.md` (Commits).
 
 ## Fixes to earlier commits
 
 - If the problem is in an unpushed commit that is the latest, amend it.
 - If it is in an older unpushed commit, make a fixup commit and autosquash rebase.
+- On a pushed branch or open PR, make a new commit instead of amending.
 - Never rewrite pushed history without explicit approval.
 
 ## Boundaries

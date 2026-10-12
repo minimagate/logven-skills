@@ -20,12 +20,16 @@ Write the PR from the branch's actual commits and diff, not from memory.
 
 ## Body
 
-Use these sections:
+Body, in this order:
 
-- **Summary**: what and why, 1-3 bullets.
-- **Changes**: grouped by area (for example, API, UI, tests, config).
+- Open with a one-line intent.
+- Behavioral rules as bullets.
+- New API as a short snippet, when there is one.
+- **Out of scope / next steps (in order)**: what is deliberately not done, and the follow-up PRs in order.
+- **Trade-offs**: risks, decisions and reviewer notes, stated plainly.
 - **Testing**: what was run and the result. List anything not verified.
-- **Notes for reviewers**: risks, decisions, follow-ups. Include only if relevant.
+- Screenshots for visual changes.
+- PR scope and chaining follow `../feature-sequencing/SKILL.md`.
 
 ## Rules
 

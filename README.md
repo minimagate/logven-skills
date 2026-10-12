@@ -18,7 +18,7 @@ Logven's `AGENTS.md` describes what the repo contains. These skills describe how
 1. Plan. Use `plan` for small changes, or `plan-feature` for big features: parallel explorers, then critics, then triage to a lean plan. The user agrees the plan before any code.
 2. Delegate. Subagents on the cheapest capable model implement from self-contained briefs.
 3. Verify and commit. The orchestrator reads the full diff, runs tests and linters, and commits one scoped change at a time.
-4. Review. Six lens reviewers run in parallel on the strongest available model. The orchestrator verifies their findings and synthesizes them.
+4. Review. Lens reviewers run in parallel on the strongest available model: small diffs run conventions, cleanliness and correctness; larger diffs run all six. The orchestrator verifies their findings and synthesizes them.
 5. Pull request. Written from the branch's commits and diff, with checks reported factually.
 
 Invariants:
@@ -68,7 +68,7 @@ Invariants:
 - Reference other skills by relative path, such as `../name/SKILL.md`.
 - Every rule should be backed by evidence from the Logven repo.
 - After renames or edits, check that every `../<name>/SKILL.md` link resolves.
-- Model tiers are written abstractly: cheapest capable for implementation, strongest available for review.
+- Model tiers are written abstractly (cheapest capable for implementation, strongest available for review); the only mapping to concrete model names is a single line in `delegate`.
 
 ## Research
 

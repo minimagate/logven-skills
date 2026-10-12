@@ -1,6 +1,6 @@
 ---
 name: review
-description: Run an adversarial multi-lens code review of a branch, diff, PR or named files. Use whenever the user asks for a review, or when a branch is complete. Dispatches parallel read-only reviewer subagents, one per lens, then verifies and synthesizes their findings.
+description: Run an adversarial multi-lens code review of a branch, diff, PR or named files. Use when the user asks for a review, or when one is offered after verify-and-commit completes a branch. Dispatches parallel read-only reviewer subagents, one per lens, then verifies and synthesizes their findings.
 ---
 
 # Review
@@ -9,7 +9,7 @@ Coordinate read-only reviewer subagents, one per lens, then verify and synthesiz
 
 ## Roles
 
-- Reviews are done only by subagents on the strongest available model (Claude: Opus).
+- Reviews are done only by subagents on the strongest available model.
 - Reviewers are read-only: no file edits, no git write commands.
 - The orchestrator scopes, dispatches, verifies, filters and synthesizes.
 
@@ -30,7 +30,7 @@ Each lens is a skill that a reviewer reads and applies:
 - `review-maintainer`
 
 Choose lenses by diff size and risk:
-- Small diff (a few files, no logic change): conventions and cleanliness.
+- Small diff (a few files, no logic change): conventions, cleanliness and correctness.
 - Normal diff: all six.
 - Large diff: all six, one reviewer per lens per area.
 
@@ -42,6 +42,7 @@ Reviewers have no conversation context, so each brief must be self-contained. In
 - The lens skill to read and apply.
 - The diff scope and the exact command that produces it.
 - The guideline file paths.
+- The guideline skills as guideline paths: all `rails-*` skills and `../principles/SKILL.md`.
 - A read-only instruction: do not edit files or run git write commands.
 - An instruction to try to falsify each finding before reporting it.
 - The finding format from `references/finding-format.md`, and an instruction to return nothing else.
@@ -69,6 +70,5 @@ Reviewers have no conversation context, so each brief must be self-contained. In
 ## After the review
 
 - Do not fix anything during review.
-- Once the user picks findings, send the fixes through `delegate`.
-- Re-review only the touched files, with only the relevant lenses.
+- Once the user picks findings: `delegate` the fixes, then `verify-and-commit` (a new commit if the branch is pushed), then re-review only the touched files with only the relevant lenses.
 - Never include tool, harness or model names in PR comments or commits.

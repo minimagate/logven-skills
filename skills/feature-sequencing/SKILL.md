@@ -1,6 +1,6 @@
 ---
 name: feature-sequencing
-description: Use when ordering or slicing a feature into commits and PRs, or writing Logven commit messages and PR descriptions. Read by plan, plan-feature and verify-and-commit for layer order, plumbing slices, commit naming and PR scope.
+description: Use when ordering and slicing work into commits and PRs, and commit message conventions; PR text lives in `pull-request`. Read by plan, plan-feature and verify-and-commit for layer order, plumbing slices, commit naming and PR scope.
 ---
 
 # Feature Sequencing
@@ -47,8 +47,4 @@ Order, slice and describe a feature the way Logven history does: bottom-up, one 
 
 - One capability per PR. For a large capability, plan a chain of PRs and execute them in order.
 - Prefer independent PRs over stacks. Stacks cause repeated conflicts.
-- Open with a one-line intent, then the behavioral rules as bullets.
-- Show the new API in a short snippet when there is one.
-- Include "Out of scope" and "To do / next steps (in order)".
-- State trade-offs plainly. Give test or eval results.
-- Explain the problem, the resulting behavior and the validation. Add screenshots for visual changes.
+- Write the description per `../pull-request/SKILL.md`.
