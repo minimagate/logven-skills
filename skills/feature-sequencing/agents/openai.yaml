@@ -1,4 +1,4 @@
 interface:
   display_name: "Feature Sequencing"
-  short_description: "Order and slice features the Logven way"
-  default_prompt: "Use $feature-sequencing to order, slice and describe this change the way Logven history does."
+  short_description: "Order and slice features the project's way"
+  default_prompt: "Use $feature-sequencing to order, slice and describe this change the way the project's history does."

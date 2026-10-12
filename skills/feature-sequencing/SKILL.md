@@ -5,7 +5,7 @@ description: Use when ordering and slicing work into commits and PRs, and commit
 
 # Feature Sequencing
 
-Order, slice and describe a feature the way Logven history does: bottom-up, one concern per commit, UI last. Follow `../principles/SKILL.md` for scope.
+Order, slice and describe a feature the way the project's history does: bottom-up, one concern per commit, UI last. Follow `../principles/SKILL.md` for scope.
 
 ## Order of work
 
@@ -13,7 +13,7 @@ Order, slice and describe a feature the way Logven history does: bottom-up, one 
 2. Pure file moves (no line edits) go in their own commit, separate from edits.
 3. Migration and model together, with the model test. Keep the migration small.
 4. Domain objects or concerns, each with its own test.
-5. Integration with existing systems (runner, builder, jobs), then prompts. Prompt `.md` edits get their own commits.
+5. Integration with existing systems (background jobs, external services, other modules), then any LLM prompts or content files. Prompt and content edits get their own commits.
 6. HTTP layer as one plumbing slice: controller, policy, route, near-empty views, controller and policy tests.
 7. UI last, but complete and compliant: build the real interface with `../rails-frontend/SKILL.md` and `../rails-design/SKILL.md` (tokens, light and dark, states, keyboard access). Do not ship a rough placeholder UI.
 8. Hardening tail: N+1 queries, stricter validation, "Testing everything", lint, dead code.
@@ -22,7 +22,7 @@ Order, slice and describe a feature the way Logven history does: bottom-up, one 
 
 - Model each new verb as a singular nested resource with its own controller and policy. Do not add custom member routes.
 - Put state transitions on the model as `predicate?` plus `verb_now!` or `verb_later!`. Each job is one line calling `_now!`.
-- Reuse existing primitives before bespoke logic: Shapes, `Meterable`, chat helpers, `turbo_id`, policies.
+- Reuse existing primitives before bespoke logic: the project's shared concerns, validators, helpers and policies.
 - Simplify instead of adding concepts. Extend an existing node or object with a rule before adding a new type.
 - Delete the old path in the same PR once the new one works. Name what gets deleted in the plan.
 - Generated code (`rails g ...`) gets its own commit, whose subject is the command, kept apart from hand edits.

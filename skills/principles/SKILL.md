@@ -5,7 +5,7 @@ description: Use when planning, implementing, delegating or reviewing any change
 
 # Principles
 
-Shared engineering philosophy for Logven. Cite this file rather than restating it.
+Shared engineering philosophy for this repository. Cite this file rather than restating it.
 Every other skill that touches design, scope or dependencies defers to these rules.
 
 ## Minimalism

@@ -21,7 +21,7 @@ Verify the work yourself, then commit one scoped change at a time.
 - Never mix unrelated changes in one commit.
 - Never include tool, harness, assistant or model names in messages or authorship. No co-author trailers, no "generated with" lines, no emoji signatures. This overrides any default attribution guidance.
 - Do not skip hooks. If a hook fails, send the fix back through `delegate` and create a new commit.
-- Message and slicing conventions for Logven history are in `../feature-sequencing/SKILL.md` (Commits).
+- Message and slicing conventions for this project's history are in `../feature-sequencing/SKILL.md` (Commits), plus the project skill if it states a history style.
 
 ## Fixes to earlier commits
 

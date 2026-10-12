@@ -29,7 +29,7 @@ Agree the scope and approach with the user before any code is written.
 - Any new dependency is an explicit user decision: list it under Open decisions.
 - Keep each change small enough to review as one commit.
 - Follow `../principles/SKILL.md`: no new dependency without a stated reason.
-- Order and slice the work per `../feature-sequencing/SKILL.md`; the Logven guideline skills (`../rails-structure/SKILL.md`, `../rails-models/SKILL.md`, `../rails-controllers/SKILL.md`, `../rails-authorization/SKILL.md`, `../rails-migrations/SKILL.md`, `../rails-frontend/SKILL.md`, `../rails-design/SKILL.md`, `../rails-tests/SKILL.md`) say where code belongs.
+- Order and slice the work per `../feature-sequencing/SKILL.md`; the project's guideline skills (the `rails-*` skills and the project skill `project-*`; `../rails-structure/SKILL.md`, `../rails-models/SKILL.md`, `../rails-controllers/SKILL.md`, `../rails-authorization/SKILL.md`, `../rails-migrations/SKILL.md`, `../rails-frontend/SKILL.md`, `../rails-design/SKILL.md`, `../rails-tests/SKILL.md`) say where code belongs.
 
 ## Escalate big features
 
