@@ -13,13 +13,13 @@ The concrete Logven visual vocabulary. General design discipline lives in `../..
 
 - Palette families: neutral, blue, green, orange, pink, purple, red.
 - Semantic families: page, column, well, card, panel, table, ink, tone, status, danger, interactive.
-- Table roles: `bg-table-header-surface`, `border-divider`, `border-table-row-divider`.
+- Table roles: `bg-table-header-surface`, `border-divider`, `border-table-row-divider` for the sheet grid; `bg-table-plain-header` and `bg-table-plain-zebra` for plain tables (`.table-plain`: markdown and record previews).
 - Status color meaning: neutral = pending, unknown, not yet active; blue = running or building; orange = paused or attention without failure; red = failed, destructive, blocking; green = completed, ready, healthy.
 
 ## Radii
 
-- `rounded-card`: standalone entity cards, including kanban cards (or the role-specific card radius).
-- `rounded-well`: inset notices, quiet wells.
+- `rounded-card`: standalone entity cards (including kanban cards), and wells and notices that sit directly in a page section.
+- `rounded-well`: wells nested inside a card, and small inset elements.
 - `rounded-ctl`: buttons, fields, menus, compact controls.
 - `rounded-popover`: popovers and toasts, with `shadow-menu`.
 - `rounded-badge`: badges and tags only.
@@ -42,6 +42,7 @@ The concrete Logven visual vocabulary. General design discipline lives in `../..
 - Micro button for compact icon-only actions (start a run, row menu).
 - Icon-only segmented switchers for table and kanban (`aria-current`, labels and titles).
 - Destructive menu items use the menu's danger treatment.
+- `.btn-secondary` takes its surfaces from `control-secondary-surface` and `control-secondary-surface-hover`.
 - Icons: `svg_tag "icons/..."`. Navigation icons stay neutral.
 
 ## Status display
@@ -66,7 +67,7 @@ The concrete Logven visual vocabulary. General design discipline lives in `../..
 
 ## Tables
 
-- No zebra striping, except the sheet-cell grid.
+- No zebra striping, except the sheet-cell grid and plain tables (`.table-plain`).
 - Whole row is the primary target; secondary actions in a trailing micro menu.
 - Narrow widths keep name, current status and one secondary line; hide lower-priority columns.
 - Runs grouped by lifecycle state show a compact group heading with status icon, label and count.
