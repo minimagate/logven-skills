@@ -113,7 +113,7 @@ Logven is a Rails app for project-owned sheets, workers, workflows and workflow 
 
 ## Known legacy exceptions (do not copy)
 
-- `.badge` renders a dot; do not add status dots.
+- `.badge` renders a dot; do not add status dots. Exception: assistant tool-step rows (`.tool-call-dot` in `components/tool_call.css`) use a running/done/failed dot by design.
 - Some headings use `text-label` instead of `text-title`.
 - `components/layout.css` is 425 lines; do not grow it.
 - Some components have one caller; inline new single-use ones.
