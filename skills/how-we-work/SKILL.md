@@ -23,7 +23,7 @@ If your brief assigns you implementation, exploration, critique or review, read 
 2. **Delegate** (below): one subagent per scoped change, producing a diff. Gate: the diff stays within the allowed files.
 3. **Verify and commit** (below): read the full diff, run checks, commit one scoped change. Gate: every diff is verified before commit.
 4. **Review** (`review`): parallel read-only reviewers, once the branch is complete or the user asks. Fixes go back through Delegate.
-5. **PR** (`ship`): only when asked. Opening it is the first push; later pushes need the user's approval.
+5. **PR** (`ship`): only when asked. Run local CI and tests first. Opening it is the first push; later pushes need the user's approval.
 
 ## Which skill when
 

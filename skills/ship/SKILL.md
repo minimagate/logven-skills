@@ -73,10 +73,11 @@ Title:
 Body:
 
 - One paragraph: what the change does and why. No headings, lists or sections.
-- Mention a failing or unrun check in that paragraph, plainly. Never claim verification that was not run.
+- Then one line with the local check result, such as `Local CI and tests pass.` Name any failing or unrun check there, plainly. Never claim verification that was not run.
 
 Rules:
 
 - Open the PR only when asked. Confirm draft status if unclear.
+- Before opening, run the project's full local CI and test suite on the final branch (commands in the project skill or `AGENTS.md`). Do not open on a failure without the user's approval.
 - Opening the PR is the first push (see Pushing).
 - Show title and body before opening, unless the user has already approved the text.

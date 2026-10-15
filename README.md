@@ -24,7 +24,7 @@ Start with `how-we-work`; it routes each situation to the skill below.
 2. Delegate. Delegation briefs are a section of `how-we-work`. Subagents on the cheapest capable model implement from self-contained briefs.
 3. Verify and commit. Also a section of `how-we-work`. The orchestrator reads the full diff, runs tests and linters, and commits one scoped change at a time. Commits stay local.
 4. Review. `review` runs lens reviewers in parallel on the cheapest capable model: small diffs run conventions, cleanliness and correctness; larger diffs run all six. The orchestrator verifies their findings and synthesizes them.
-5. Pull request. `ship` writes a simple title and a one-paragraph body from the branch's commits and diff. Opening it is the first push; later pushes need the user's approval. Unrelated tweaks go in a stacked PR.
+5. Pull request. Local CI and tests run first. `ship` writes a simple title, a one-paragraph body and a one-line check result from the branch's commits and diff. Opening it is the first push; later pushes need the user's approval. Unrelated tweaks go in a stacked PR.
 
 The six lenses are `overengineering`, `over-standardisation`, `conventions`, `cleanliness`, `correctness` and `structure`, defined in `review/references/lenses.md`.
 

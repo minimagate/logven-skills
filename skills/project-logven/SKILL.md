@@ -108,6 +108,7 @@ Logven is a Rails app for project-owned sheets, workers, workflows and workflow 
 - A batch "Testing everything" commit after a plumbing slice is acceptable.
 - Layer order for Logven features: migration + model, domain objects, runner/builder/jobs, prompts, HTTP plumbing slice, UI last.
 - The one-paragraph PR body links its issue.
+- Before opening a PR, run `bin/ci` locally (it includes the tests).
 - Keep credentials and local env files out of commits.
 - Shipping rules (commit and PR shape): `ship`.
 
