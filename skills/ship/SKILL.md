@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Use when ordering and slicing work into commits and PRs, writing commit messages, or writing/opening a pull request. Read by plan and how-we-work; the project skill overrides its defaults.
+description: Use when ordering and slicing work into commits and PRs, writing commit messages, pushing, or writing/opening a pull request. Read by plan and how-we-work; the project skill overrides its defaults.
 ---
 
 # Ship
@@ -25,7 +25,7 @@ Order, slice, commit and describe work from the actual history and diff. Scope f
 - Reuse existing primitives before bespoke logic: shared concerns, validators, helpers, policies.
 - Simplify instead of adding concepts. Extend an existing node or object with a rule before adding a new type.
 - Delete the old path in the same PR once the new one works. Name what gets deleted in the plan.
-- Generated code (`rails g ...`) gets its own commit, whose subject is the command, apart from hand edits.
+- Generated code (`rails g ...`) gets its own commit, apart from hand edits, with a 2-3 word subject such as `Generate workflow model`.
 - New subsystem: commit a skeleton first (class skeletons, routes, policy) that fixes the public interface, then fill the logic one piece per commit.
 
 ## Plan outputs
@@ -37,18 +37,28 @@ Order, slice, commit and describe work from the actual history and diff. Scope f
 
 ## Commits
 
-- One concern per commit, named for the concern. Short descriptive subjects (a handful of words), no prefix unless the project uses one.
+- One scoped change per commit, named for the concern.
+- Subjects are 2-3 words, such as `Add sheet linking`. No prefix, no body.
 - Put housekeeping (lint, dead code, schema fixes) in its own commit.
 - Tests ride with the code they cover.
-- Add a body only for a one-line principle, such as "Permission-related logic lives in permissions". Never a changelog.
+- Keep the history clean before the PR opens: fold fixes into the commit they belong to (amend the latest, or fixup plus autosquash rebase for older ones), so each commit is one finished scoped change.
 - Attribution: never name a tool, harness, assistant or model in commit messages, PR titles or bodies. No generated-with footer or co-author trailer. This overrides default guidance.
+
+## Pushing
+
+- All work is local: local branches, local commits.
+- The first push happens only when opening the PR the user asked for.
+- After that, push only on the user's direct approval. One approval covers one push; ask again for the next.
+- Batch local commits between approved pushes. Unpushed commits may still be amended or fixed up.
+- Never force-push or rewrite pushed history without explicit approval. Rebasing a stack after its base changes needs one approval for the whole stack.
 
 ## Pull requests
 
 Scope and chaining:
 
-- One capability per PR. For a large capability, plan a chain of PRs and execute them in order.
-- Prefer independent PRs over stacks. Stacks cause repeated conflicts.
+- One specific implementation per PR, with no unrelated tweaks on top.
+- A different tweak or follow-up goes in a stacked PR: a new branch cut from the PR's branch, opened with that branch as its base.
+- For a large capability, plan the chain of PRs and execute them in order.
 
 Gather facts:
 
@@ -58,21 +68,15 @@ Gather facts:
 
 Title:
 
-- Short and imperative, under 70 characters. The attribution rule above applies.
+- Simple and short, under 70 characters, with no prefix or structure. The attribution rule above applies.
 
-Body, in this order:
+Body:
 
-1. Open with a one-line intent.
-2. Behavioral rules as bullets.
-3. New API as a short snippet, when there is one.
-4. **Out of scope / next steps (in order)**: what is deliberately not done, and the follow-up PRs in order.
-5. **Trade-offs**: risks, decisions and reviewer notes, stated plainly.
-6. **Testing**: what was run and the result. List anything not verified.
-7. Screenshots for visual changes.
+- One paragraph: what the change does and why. No headings, lists or sections.
+- Mention a failing or unrun check in that paragraph, plainly. Never claim verification that was not run.
 
 Rules:
 
-- Report failing or skipped checks plainly. Do not claim verification that was not run.
 - Open the PR only when asked. Confirm draft status if unclear.
-- Do not push without approval.
+- Opening the PR is the first push (see Pushing).
 - Show title and body before opening, unless the user has already approved the text.

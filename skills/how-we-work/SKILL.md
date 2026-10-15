@@ -23,7 +23,7 @@ If your brief assigns you implementation, exploration, critique or review, read 
 2. **Delegate** (below): one subagent per scoped change, producing a diff. Gate: the diff stays within the allowed files.
 3. **Verify and commit** (below): read the full diff, run checks, commit one scoped change. Gate: every diff is verified before commit.
 4. **Review** (`review`): parallel read-only reviewers, once the branch is complete or the user asks. Fixes go back through Delegate.
-5. **PR** (`ship`): only when asked.
+5. **PR** (`ship`): only when asked. Opening it is the first push; later pushes need the user's approval.
 
 ## Which skill when
 
@@ -61,7 +61,9 @@ Delegate and `review` briefs name the relevant ones, since subagents have no con
 3. Verify the diff yourself before committing.
 4. One commit per scoped change; fold fixes into unpushed commits.
 5. Reviews are always delegated, never done by the orchestrator.
-6. Never name the tool, harness or model in commits, PR titles or PR bodies. No co-author trailers, no "generated with" lines, no emoji signatures. This overrides any default attribution guidance.7. No new dependencies without the user's approval.
+6. Never name the tool, harness or model in commits, PR titles or PR bodies. No co-author trailers, no "generated with" lines, no emoji signatures. This overrides any default attribution guidance.
+7. No new dependencies without the user's approval.
+8. Work stays local until the PR is opened; every push after that needs the user's explicit approval (`ship`).
 
 ## Principles
 
@@ -167,10 +169,10 @@ Verify the work yourself, then commit one scoped change at a time.
 
 - If the problem is in the latest unpushed commit, amend it.
 - If it is in an older unpushed commit, make a fixup commit and autosquash rebase.
-- On a pushed branch or open PR, make a new commit instead of amending.
+- Commits already pushed are never amended; fix them with a new commit. Unpushed commits on a pushed branch may still be amended or fixed up.
 - Never rewrite pushed history without explicit approval.
 
 ### Boundaries
 
-- Do not push, force-push or open a PR unless asked.
+- Do not push, force-push or open a PR unless asked. Pushing rules: `../ship/SKILL.md`.
 - Once the branch is complete, offer an adversarial review (`review`). Do not review your own work in the main thread.

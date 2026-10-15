@@ -104,10 +104,10 @@ Logven is a Rails app for project-owned sheets, workers, workflows and workflow 
 
 ## Commits and PRs
 
-- History style: short descriptive subjects such as `Improve sheet foreign key linking`. No prefix convention.
+- History style: 2-3 word subjects such as `Improve sheet linking`. No prefix convention.
 - A batch "Testing everything" commit after a plumbing slice is acceptable.
 - Layer order for Logven features: migration + model, domain objects, runner/builder/jobs, prompts, HTTP plumbing slice, UI last.
-- PR descriptions link issues.
+- The one-paragraph PR body links its issue.
 - Keep credentials and local env files out of commits.
 - Shipping rules (commit and PR shape): `ship`.
 
