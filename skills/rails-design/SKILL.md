@@ -18,11 +18,11 @@ If the project has a design reference (`project-<name>/references/design.md`), r
 - Treat the app as an operational workspace: lead with the objects users act on, not chrome or summaries.
 - Prefer one continuous work surface with clear regions over freestanding dashboard cards.
 - Keep the current state and next action visible. Put dense detail behind progressive disclosure without hiding what is needed to decide.
-- Do not add summary metrics to make a page resemble a dashboard. Keep an established table or list focus unless the requirement genuinely changes.
+- Do not add summary metrics to make a page resemble a dashboard. Keep an established table or list focus unless the requirement genuinely changes. An entity's home page is the one exception: it may open with a centered identity header (a quiet gradient disc behind the entity icon is the only gradient allowed) and one compact stat strip, then its activity and working sections.
 
 ## Surfaces and geometry
 
-- The interface is flat, not divider-free. Use surface color and spacing first; add dividers only at real boundaries (app header, section header, table header, rows, cells, adjacent full-width regions). No outlined cards, nested bordered boxes or decorative divider grids.
+- The interface is flat, not divider-free. Use surface color and spacing first; add dividers only at real boundaries (app header, section header, table header, rows, cells, adjacent full-width regions). Standalone cards and inset content blocks are the exception: they sit on the page surface with one divider-colored outline and no fill or shadow of their own. No nested bordered boxes or decorative divider grids.
 - Geometry follows role:
   - Full-width panels, lists, tables and side regions: square and edge-aligned.
   - Standalone cards: the card radius.
@@ -31,6 +31,7 @@ If the project has a design reference (`project-<name>/references/design.md`), r
   - Popovers and toasts: a popover radius plus the raised shadow, since they are truly elevated.
   - Pill radii: badges and tags only.
 - Ordinary panels and cards stay shadowless. Never apply the raised shadow to static content.
+- Card lists wrap at a fixed column count with a constant card width, so a short last row keeps its size instead of stretching.
 - Preserve accessibility outlines and focus rings; they are interaction signals, not decoration.
 
 ## Scale and density
@@ -76,6 +77,7 @@ If the project has a design reference (`project-<name>/references/design.md`), r
 - Follow the project's token architecture. If it defines palette values with `light-dark(...)` and aliases semantic tokens to them, markup needs no `dark:` variants.
 - When a new distinction genuinely needs color: add or extend a raw palette token, add a purpose-named semantic token, define every supported theme together, then use the semantic utility in markup.
 - If the app supports dark mode, keep light and dark parity through tokens, never scattered `dark:` overrides; do not assume a light surface maps to the same shade in dark mode. If the app has no dark mode, do not add one.
+- Charts: axes, labels and grid lines stay quiet and neutral; color belongs to the series. Each chart family keeps its own palette; do not add one family's colors to another's. Chart only real counts or trends.
 
 ## Reject UI slop
 

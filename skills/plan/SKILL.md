@@ -1,6 +1,6 @@
 ---
 name: plan
-description: Use when a request to build, fix, change or design something arrives, before any delegation; not for implementation subagents. Small changes: analyze in the main thread and agree the plan with the user before handing off to delegate. Big features (new domain concept, schema change, external integration, public contract, or work across several areas): say so, offer multi-agent planning, and run it only after the user confirms.
+description: "Use when a request to build, fix, change or design something arrives, before any delegation; not for implementation subagents. Small changes: analyze in the main thread and agree the plan with the user before handing off to delegate. Big features (new domain concept, schema change, external integration, public contract, or work across several areas): say so, offer multi-agent planning, and run it only after the user confirms."
 ---
 
 # Plan
