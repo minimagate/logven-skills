@@ -1,0 +1,6 @@
+interface:
+  display_name: "Project Task Tracking"
+  short_description: "Project board, follow-ups and delegated reviews"
+  default_prompt: "Use $tsk to track this project’s work, capture deferred findings, manage delegated review handoffs and keep board state out of Git."
+policy:
+  allow_implicit_invocation: true

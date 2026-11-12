@@ -1,6 +1,6 @@
 interface:
   display_name: "How We Work"
   short_description: "Project collaboration, work modes and verification"
-  default_prompt: "Use $how-we-work to inspect this workspace, read all applicable workflow and specialist skills, choose the work mode and verify the result."
+  default_prompt: "Use $how-we-work to inspect this workspace, load applicable skills including tsk, track work on the project's board, choose the work mode and verify the result."
 policy:
   allow_implicit_invocation: true

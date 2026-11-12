@@ -21,6 +21,7 @@ This cycle adapts to the task. Design stays with the main agent; routine choices
 |---|---|---|
 | Entry point | [how-we-work](skills/how-we-work/SKILL.md) | Collaboration contract, discovery, work modes and shared principles |
 | Workflow | [plan](skills/plan/SKILL.md) | Outcome, ownership, sequencing and acceptance criteria |
+| Workflow | [tsk](skills/tsk/SKILL.md) | Project board, progress, deferred findings and delegated review handoffs; board state excluded from Git |
 | Workflow | [review](skills/review/SKILL.md) | One flagship adversarial pass beyond guideline compliance |
 | Workflow | [ship](skills/ship/SKILL.md) | Authorized commits, checks, pushes and PRs |
 | Structure | [rails-structure](skills/rails-structure/SKILL.md) | Placement, names and responsibility boundaries |
@@ -43,6 +44,8 @@ The [principles](skills/how-we-work/SKILL.md#principles) are the shared source o
 Verification policy belongs to [rails-tests](skills/rails-tests/SKILL.md), including interface-only work. New dependencies require approval. Commits and publication require authorization.
 
 ## Discovery and installation
+
+The workflow requires the `tsk` CLI ([installation](https://gettsk.sh/docs/install.md)). Agents use the relevant project's existing board, reuse tasks, record out-of-scope bugs/todos and hand completed work back in `review`. Delegated slices carry task IDs and update their own status. The board remains local: repository-local state must be Git ignored and untracked; the normal central store needs no project ignore entry. See [tsk](skills/tsk/SKILL.md) for setup checks, commands and handoff rules. Missing CLI or board access must be reported explicitly.
 
 Make `skills/` visible to the host's skill catalog. From a sibling project root:
 

@@ -11,7 +11,9 @@ Find substantiated defects and consequential design risks in the complete change
 
 Use **one flagship reviewer for the full scope**, following [model choice](../how-we-work/SKILL.md#model-choice). Review directly when the main agent qualifies; otherwise invoke exactly one capable reviewer with fresh context. Never split by lens, dispatch mini-reviewers or inherit the implementation model's tier. State any capability limit; a weaker pass does not satisfy this review.
 
-Review is read-only: no edits, commits, publishing or subreviewers. Standalone review ends with findings unless fixes were requested.
+Source review is read-only: no source edits, commits, publishing or subreviewers. Standalone review ends with findings unless fixes were requested.
+
+Follow [tsk](../tsk/SKILL.md) for tracking and deferred findings. A read-only delegate returns findings with originating task IDs for the parent to record; board writes require an explicit allowance in its brief. The main agent records actionable out-of-scope issues as linked follow-ups without adding them to this PR.
 
 ## Establish actual behavior
 

@@ -22,9 +22,11 @@ User instructions govern. Verified project facts override general defaults, not 
 3. Load only the matching `project-<repo>` skill, using repository identity rather than a worktree suffix. If absent, infer facts from source; creating a project skill is optional.
 4. Build the **union** of applicable skills below from the requested outcome, affected behavior and actual files/callers, not just keywords or file extensions. Read their full `SKILL.md` bodies before the corresponding work. A catalog description or remembered summary is not a loaded skill.
 5. Keep a short internal record of resolved paths read and why. Recheck before delegation, after discovering another layer, before verification/review/delivery and after context loss. Load newly relevant guidance before continuing; retain earlier applicable skills. Do not ask the user to choose skills.
+6. Read [tsk](../tsk/SKILL.md) for repository work. Reuse or create the relevant project's task before implementation, keep progress and discoveries on its board, and verify board state is excluded from Git. Use the owning project's board even when these skills are installed elsewhere.
 
 | Work or affected responsibility | Add these skills |
 |---|---|
+| Repository work, progress, findings and handoffs | [tsk](../tsk/SKILL.md) |
 | Technical implementation, debugging, refactor | [plan](../plan/SKILL.md) |
 | Visual design, layout, interaction, accessibility | [rails-design](../rails-design/SKILL.md); Rails markup/interaction also [rails-frontend](../rails-frontend/SKILL.md) |
 | Placement, namespaces, extraction, responsibility boundaries | [rails-structure](../rails-structure/SKILL.md) |
@@ -77,12 +79,15 @@ Start every subagent with fresh context (`fork_turns="none"`, `fork_context=fals
 | Context | Relevant source examples, resolved applicable skill paths and an instruction to read their bodies before acting; parent-loaded skills are not inherited |
 | Constraints | Scope, ownership, authorization and applicable specialist constraints; no unrelated cleanup, git writes or spawning |
 | Evidence | Verification commands and expected report |
+| Tracking | Canonical project path, slice and parent task IDs, owner, resolved tsk skill path; update progress/findings and move the slice to review before handoff |
 
-Read-only research and review briefs prohibit edits. Scoped delegates read the supplied skills and report which they used; they do not restart project-wide discovery or planning. If their slice crosses another responsibility, load that specialist too and report any scope conflict before editing outside their ownership. Claude custom agents may preload skills with `skills:`; otherwise explicitly read the resolved files in the fresh context.
+Read-only research and review briefs prohibit edits; those delegates return task updates for the parent unless board writes are explicitly allowed. Scoped delegates read the supplied skills and report which they used; they do not restart project-wide discovery or planning. If their slice crosses another responsibility, load that specialist too and report any scope conflict before editing outside their ownership. Claude custom agents may preload skills with `skills:`; otherwise explicitly read the resolved files in the fresh context.
 
 ### Integration
 
 Parallelize independent work only when write ownership is disjoint; sequence dependencies. Inspect actual diffs against ownership and preserve user edits. Verify reports against source, run proportionate checks and integrate fixes. The main agent remains responsible for the complete outcome.
+
+Reconcile delegated task states under [tsk](../tsk/SKILL.md#delegated-handoffs). Record out-of-scope findings as linked follow-ups, keep the overall task active through integration, and hand verified work to the user in `review` with task IDs.
 
 ## Principles
 

@@ -1,0 +1,3 @@
+# Local tsk board state must never enter project history.
+.tsk/
+.tsk-state/
