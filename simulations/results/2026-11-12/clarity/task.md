@@ -1,0 +1,1 @@
+We want teammates to try changes to a shared report without altering what everyone else sees, then save their version as a separate copy. The existing code sometimes changes the original and loses columns after renames. How would you approach this? Explain the choices simply. Do not implement yet.

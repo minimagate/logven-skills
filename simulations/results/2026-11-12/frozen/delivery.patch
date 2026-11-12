@@ -1,0 +1,84 @@
+diff --git a/lib/notification.rb b/lib/notification.rb
+index a6c0c00..09a43df 100644
+--- a/lib/notification.rb
++++ b/lib/notification.rb
+@@ -10,7 +10,9 @@ class Notification
+   end
+
+   def deliver_now(gateway:)
+-    @receipt = gateway.deliver(to: to, body: body)
++    return receipt if delivered?
++
++    @receipt = gateway.deliver(to: to, body: body, idempotency_key: "notification:#{account_id}:#{id}")
+     @state = :delivered
+     receipt
+   end
+diff --git a/test/notification_test.rb b/test/notification_test.rb
+index 807a1d4..a16a484 100644
+--- a/test/notification_test.rb
++++ b/test/notification_test.rb
+@@ -12,4 +12,64 @@ class NotificationTest < Minitest::Test
+     assert_equal "receipt-1", notification.receipt
+     assert_equal 1, gateway.messages.length
+   end
++
++  def test_repeating_a_completed_delivery_returns_the_saved_receipt
++    gateway = Gateway.new
++    notification = Notification.new(id: 7, account_id: 1, to: "ops@example.test", body: "Your report is ready")
++    job = DeliveryJob.new(gateway: gateway)
++
++    receipt = job.perform(notification)
++    gateway.timeout_before = true
++
++    assert_equal receipt, job.perform(notification)
++    assert notification.delivered?
++    assert_equal 1, gateway.messages.length
++  end
++
++  def test_timeout_after_acceptance_can_retry_a_reloaded_notification_without_resending
++    gateway = Gateway.new
++    gateway.timeout_after = true
++    job = DeliveryJob.new(gateway: gateway)
++    notification = Notification.new(id: 7, account_id: 1, to: "ops@example.test", body: "Your report is ready")
++
++    assert_raises(IOError) { job.perform(notification) }
++    refute notification.delivered?
++    assert_nil notification.receipt
++
++    reloaded = Notification.new(id: 7, account_id: 1, to: "ops@example.test", body: "Your report is ready")
++    assert_equal "receipt-1", job.perform(reloaded)
++    assert reloaded.delivered?
++    assert_equal "receipt-1", reloaded.receipt
++    assert_equal 1, gateway.messages.length
++  end
++
++  def test_timeout_before_acceptance_keeps_delivery_retryable
++    gateway = Gateway.new
++    gateway.timeout_before = true
++    job = DeliveryJob.new(gateway: gateway)
++    notification = Notification.new(id: 7, account_id: 1, to: "ops@example.test", body: "Your report is ready")
++
++    assert_raises(IOError) { job.perform(notification) }
++    refute notification.delivered?
++    assert_nil notification.receipt
++    assert_empty gateway.messages
++
++    assert_equal "receipt-1", job.perform(notification)
++    assert notification.delivered?
++    assert_equal 1, gateway.messages.length
++  end
++
++  def test_separate_notifications_and_accounts_deliver_independently
++    gateway = Gateway.new
++    job = DeliveryJob.new(gateway: gateway)
++    identities = [[1, 7], [2, 7], [1, 8]]
++
++    receipts = identities.map do |account_id, id|
++      notification = Notification.new(id: id, account_id: account_id, to: "ops@example.test", body: "Your report is ready")
++      job.perform(notification)
++    end
++
++    assert_equal ["receipt-1", "receipt-2", "receipt-3"], receipts
++    assert_equal 3, gateway.messages.length
++  end
+ end

@@ -11,7 +11,7 @@ A shared framework for moving from a human goal to a verified project change. Th
 
 The user sets the goal, scope and preferences. Ask when a missing decision materially changes scope or an irreversible outcome; ordinary planning is not an approval gate. Existing authorization persists. Commit, push or publish only within that authorization; [ship](../ship/SKILL.md) defines delivery boundaries.
 
-Explain the intended result and why it matters in plain language. Keep plans and updates short; make consequential assumptions and tradeoffs visible. Put exact commands and file ownership in briefs or supporting detail unless they help the user decide. Finish with what changed, what was checked and any material limits.
+Explain the intended result and why it matters in plain language. Default to a brief recommendation and a few plain-language steps; keep consequential assumptions, risks and tradeoffs visible. Do not paste the full internal implementation plan into the user explanation; expand technical detail only when requested or needed for a decision. Put exact commands and file ownership in briefs or supporting detail unless they help the user decide. Finish with what changed, what was checked and any material limits.
 
 User instructions govern. Verified project facts override general defaults, not explicit user requirements. Preserve existing work and keep every edit within the request.
 

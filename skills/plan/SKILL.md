@@ -11,7 +11,7 @@ Turn the request into a small, verifiable implementation contract. Follow [work 
 
 Read relevant owners, callers, tests and repository instructions. Establish the requested behavior and current failure. Define observable success, consequential assumptions and the decisions that affect scope. Resolve routine choices yourself; ask only for a missing material decision or requested approval.
 
-Explain the result, what changes, why and how it will be checked in simple words. Keep exact file ownership and commands in the implementation brief unless they help the user decide.
+Present a brief recommendation and a few simple steps: what changes, why and how it will be checked. Keep material decisions and risks visible. Put detailed schema, routes, file ownership and check commands in the internal work plan or delegate brief; do not turn a user-facing proposal into a full implementation specification unless asked.
 
 ## Define ownership
 

@@ -1,0 +1,62 @@
+diff --git a/lib/notification.rb b/lib/notification.rb
+index a6c0c00..757dfd5 100644
+--- a/lib/notification.rb
++++ b/lib/notification.rb
+@@ -10,7 +10,7 @@ class Notification
+   end
+
+   def deliver_now(gateway:)
+-    @receipt = gateway.deliver(to: to, body: body)
++    @receipt = gateway.deliver(to: to, body: body, idempotency_key: "notification:#{account_id}:#{id}")
+     @state = :delivered
+     receipt
+   end
+diff --git a/test/notification_test.rb b/test/notification_test.rb
+index 807a1d4..9fbcdad 100644
+--- a/test/notification_test.rb
++++ b/test/notification_test.rb
+@@ -12,4 +12,44 @@ class NotificationTest < Minitest::Test
+     assert_equal "receipt-1", notification.receipt
+     assert_equal 1, gateway.messages.length
+   end
++
++  def test_retry_after_lost_response_reuses_delivery_across_instances
++    gateway = Gateway.new
++    gateway.timeout_after = true
++    notification = Notification.new(id: 7, account_id: 1, to: "ops@example.test", body: "Your report is ready")
++
++    assert_raises(IOError) { notification.deliver_now(gateway: gateway) }
++    refute notification.delivered?
++    assert_nil notification.receipt
++
++    retry_notification = Notification.new(id: 7, account_id: 1, to: "ops@example.test", body: "Your report is ready")
++    assert_equal "receipt-1", retry_notification.deliver_now(gateway: gateway)
++    assert retry_notification.delivered?
++    assert_equal 1, gateway.messages.length
++  end
++
++  def test_retry_after_timeout_before_acceptance_still_delivers
++    gateway = Gateway.new
++    gateway.timeout_before = true
++    notification = Notification.new(id: 7, account_id: 1, to: "ops@example.test", body: "Your report is ready")
++
++    assert_raises(IOError) { notification.deliver_now(gateway: gateway) }
++    refute notification.delivered?
++    assert_nil notification.receipt
++    assert_empty gateway.messages
++
++    assert_equal "receipt-1", notification.deliver_now(gateway: gateway)
++    assert notification.delivered?
++    assert_equal 1, gateway.messages.length
++  end
++
++  def test_same_notification_id_in_different_accounts_delivers_separately
++    gateway = Gateway.new
++    first = Notification.new(id: 7, account_id: 1, to: "first@example.test", body: "Your report is ready")
++    second = Notification.new(id: 7, account_id: 2, to: "second@example.test", body: "Your report is ready")
++
++    assert_equal "receipt-1", first.deliver_now(gateway: gateway)
++    assert_equal "receipt-2", second.deliver_now(gateway: gateway)
++    assert_equal ["first@example.test", "second@example.test"], gateway.messages.map { |message| message[:to] }
++  end
+ end
