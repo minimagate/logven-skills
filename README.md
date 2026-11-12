@@ -69,4 +69,4 @@ Keep each skill focused on its responsibility, with a short purpose, named decis
 
 Preserve required `name`/`description` frontmatter, discriminating triggers, working relative links and aligned `agents/openai.yaml` metadata. Keep concrete model mappings in `how-we-work`.
 
-Validate every skill with skill-creator's `scripts/quick_validate.py`, check relative links and run `git diff --check`. After workflow changes, use the [simulation protocol](simulations/README.md) for realistic behavioral evaluation; report what was actually exercised and its limits.
+Validate every skill with skill-creator's `scripts/quick_validate.py`, check relative links and run `git diff --check`. After workflow changes, verify behavior in temporary workspaces and report what was exercised and its limits. Keep evaluation fixtures and results outside this repository.

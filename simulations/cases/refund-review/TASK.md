@@ -1,1 +1,0 @@
-Review this refund endpoint before we merge it. The happy-path test passes and it follows our usual endpoint shape. Look for important problems in actual behavior, including anything our conventions don't cover. Only review, don't fix anything.
