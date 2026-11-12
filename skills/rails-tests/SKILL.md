@@ -13,14 +13,25 @@ A request test may assert status, redirects, authorization, persisted state, sid
 
 ## Minimal meaningful coverage
 
-- Read the nearest tests and `test_helper` first. Use Minitest, existing authentication/setup helpers and the project's fixtures/builders. Mirror source namespaces and paths.
-- Choose the narrowest public boundary: model/domain invariants, policy permissions and tenant isolation, nonvisual HTTP behavior, jobs/mail effects or external API contracts. Do not test framework mechanics or duplicate one contract across layers.
-- Reproduce a bug with the smallest meaningful nonvisual regression case, then fix its cause and inspect shared callers. Do not add a test harness or duplicate cases where one direct assertion proves the contract.
-- Cover distinct changed behavior, material denial/failure paths and relevant retry/idempotency/concurrency risks. No automatic test-per-file, getter, page or extracted class; every case must protect a real failure.
-- Keep arrange/action/assert linear and small; straightforward setup repetition is fine. Assert exact observable outcomes; reload persisted state. Avoid helpers, factories and combinatorial cases that obscure behavior. Use public setup APIs, never private instance-variable manipulation.
-- Stub external providers and nondeterminism only; never the subject's own logic. Do not call live providers. Use Rails mail/job helpers for enqueues, deliveries and arguments, not rendered bodies.
-- Scenario/eval cases must verify the known business result, not merely that execution does not crash. Keep setup, inputs and expected outcome inspectable together.
-- Keep tests order-independent and safe under parallel execution. No fixed IDs, shared mutable state or wall-clock races.
+### Choose the contract
+
+Read the nearest tests and `test_helper` first. Use Minitest, existing authentication/setup helpers and the project's fixtures/builders. Mirror source namespaces and paths.
+
+Choose the narrowest public boundary: model/domain invariants, policy permissions and tenant isolation, nonvisual HTTP behavior, jobs/mail effects or external API contracts. Do not test framework mechanics or duplicate one contract across layers.
+
+Reproduce a bug with the smallest meaningful nonvisual regression case, then fix its cause and inspect shared callers. Do not add a test harness or duplicate cases where one direct assertion proves the contract.
+
+Cover distinct changed behavior, material denial/failure paths and relevant retry/idempotency/concurrency risks. No automatic test-per-file, getter, page or extracted class; every case must protect a real failure.
+
+### Keep evidence direct
+
+Keep arrange/action/assert linear and small; straightforward setup repetition is fine. Assert exact observable outcomes; reload persisted state. Avoid helpers, factories and combinatorial cases that obscure behavior. Use public setup APIs, never private instance-variable manipulation.
+
+Stub external providers and nondeterminism only; never the subject's own logic. Do not call live providers. Use Rails mail/job helpers for enqueues, deliveries and arguments, not rendered bodies.
+
+Scenario/eval cases must verify the known business result, not merely that execution does not crash. Keep setup, inputs and expected outcome inspectable together.
+
+Keep tests order-independent and safe under parallel execution. No fixed IDs, shared mutable state or wall-clock races.
 
 ## Failure integrity and verification
 

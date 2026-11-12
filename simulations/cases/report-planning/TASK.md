@@ -1,0 +1,1 @@
+We want users to preview changes to saved reports, save a separate copy, and use a saved report inside a read-only dashboard. Today edits sometimes alter the original unexpectedly, and column changes break old reports. Look at the code and propose the smallest coherent solution. Explain it so I can understand the choices. Don't implement yet.

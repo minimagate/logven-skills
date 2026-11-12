@@ -1,0 +1,1 @@
+Retrying a delivery sometimes sends the same notification twice. Fix it without making retries disappear when the provider times out. Keep the existing public methods and explain the change briefly in simple words. Add only useful nonvisual regression coverage. Do not commit or push.

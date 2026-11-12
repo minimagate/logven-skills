@@ -1,19 +1,59 @@
 # logven-skills
 
-Compact skills for technical orchestration, Rails implementation, design and review. The main agent plans and delegates technical work, owns design directly, and verifies the result. Complex implementation and delegated planning judgment use a mid-tier reasoning model or stronger; lightweight models handle mechanical work. Adversarial review is one whole-change pass by a flagship reasoning model, examining actual risks beyond repository rules. Concrete tier labels live in `how-we-work`.
+A compact framework for human–machine collaboration on projects. The human sets direction and scope; the main agent owns investigation, coordination and a verified result. Shared principles guide decisions, workflow skills define the stages, and layer skills define implementation responsibilities.
+
+## The collaboration cycle
+
+| Stage | Responsibility | Result |
+|---|---|---|
+| Orient | Inspect the workspace, preserve existing work and load relevant guidance | Shared context and scope |
+| Plan | Define behavior, owners, work slices and checks | A small implementation contract |
+| Build | Delegate bounded technical work; keep design and synthesis in the main agent | A coherent change |
+| Verify | Inspect the full diff and check observable behavior | Evidence and explicit limits |
+| Review | One flagship reviewer challenges the complete change and its integration | Substantiated findings |
+| Ship | Deliver only within existing authorization | Checked commits and publication |
+
+This cycle adapts to the task. Design stays with the main agent; routine choices and plans do not create approval gates. Independent technical work uses fresh-context delegates with explicit ownership. Concrete model mappings and capability requirements live in [how-we-work](skills/how-we-work/SKILL.md#model-choice).
+
+## Skills
+
+| Role | Skill | Responsibility |
+|---|---|---|
+| Entry point | [how-we-work](skills/how-we-work/SKILL.md) | Collaboration contract, discovery, work modes and shared principles |
+| Workflow | [plan](skills/plan/SKILL.md) | Outcome, ownership, sequencing and acceptance criteria |
+| Workflow | [review](skills/review/SKILL.md) | One flagship adversarial pass beyond guideline compliance |
+| Workflow | [ship](skills/ship/SKILL.md) | Authorized commits, checks, pushes and PRs |
+| Structure | [rails-structure](skills/rails-structure/SKILL.md) | Placement, names and responsibility boundaries |
+| Domain | [rails-models](skills/rails-models/SKILL.md) | Facts, invariants, lifecycle and effects |
+| HTTP | [rails-controllers](skills/rails-controllers/SKILL.md) | Request flow, parameters, resources and responses |
+| Access | [rails-authorization](skills/rails-authorization/SKILL.md) | Permissions, scopes and tenant isolation |
+| Data | [rails-migrations](skills/rails-migrations/SKILL.md) | Durable constraints, rollback and compatible rollout |
+| Interface | [rails-frontend](skills/rails-frontend/SKILL.md) | ERB, Turbo, Stimulus and explicit composition |
+| Design | [rails-design](skills/rails-design/SKILL.md) | Compact, accessible interfaces consistent with the product |
+| Evidence | [rails-tests](skills/rails-tests/SKILL.md) | Minimal nonvisual coverage; manual UI verification |
+
+`rails-design` retains its name for compatibility; its visual principles apply to any stack. Non-Rails projects skip Rails implementation defaults. Verified project facts belong in a matching project skill using the [project template](skills/how-we-work/references/project-skill-template.md).
+
+## Shared principles
+
+Think before editing, choose the least necessary code, keep changes within scope and verify an observable outcome. Foundations own intrinsic invariants; explicit callers compose behavior and choose product defaults. Model domain facts directly and derive technical representations through native framework contracts.
+
+The [principles](skills/how-we-work/SKILL.md#principles) are the shared source of guidance. [Foundations](skills/how-we-work/references/foundations.md) and [review patterns](skills/how-we-work/references/review-patterns.md) hold conditional examples and research evidence. Source adaptations: [Karpathy-inspired guidelines](https://github.com/multica-ai/andrej-karpathy-skills/blob/main/CLAUDE.md) and [Ponytail](https://github.com/DietrichGebert/ponytail).
+
+No automated UI/DOM tests, including markup assertions hidden in other test layers. Inspect UI in the browser; test domain, policy and nonvisual HTTP contracts. New dependencies require approval. Commits and publication require authorization.
 
 ## Discovery and installation
 
-Make `skills/` visible to the host's skill catalog. Existing local setup from a sibling project root:
+Make `skills/` visible to the host's skill catalog. From a sibling project root:
 
 ```sh
 mkdir -p .agents
 ln -s ../../logven-skills/skills .agents/skills
 ```
 
-Do not overwrite an existing directory/link; merge with its current configuration. Hosts that use another skills root can link or install the individual skill folders there instead.
+Preserve existing directories and links; merge with the current configuration. Hosts using another skills root can link or install individual skill folders there.
 
-In the target repository's existing `AGENTS.md` or equivalent always-loaded instructions, add:
+Add this to the target repository's existing `AGENTS.md` or equivalent always-loaded instructions:
 
 ```text
 Inspect the workspace first. Before repository work, read
@@ -21,37 +61,12 @@ Inspect the workspace first. Before repository work, read
 If unavailable, locate how-we-work in the configured skill catalog/roots.
 ```
 
-A symlink alone cannot guarantee that every host loads an entrypoint; the always-loaded instruction makes routing explicit. Each skill also has a trigger description and automatic-invocation metadata. The entrypoint lists descriptions, selects relevant skills and passes their resolved paths into delegate briefs. It never requires the user to name a skill.
+The always-loaded instruction establishes the entry point; a symlink alone cannot guarantee loading. Trigger descriptions and automatic-invocation metadata support selection. The entry point selects relevant skills and passes resolved paths into delegate briefs without requiring the user to name them.
 
-## Included skills
+## Maintaining the framework
 
-| Skill | Purpose |
-|---|---|
-| `how-we-work` | Discovery, work modes, delegation tiers, principles and verification |
-| `plan` | Short technical plan, scoped delegation, no routine approval pause |
-| `review` | One flagship adversarial reviewer, beyond guideline compliance |
-| `ship` | Coherent authorized commits, checks, pushes and PRs |
-| `rails-structure` | Placement, names and responsibility boundaries |
-| `rails-models` | Domain invariants, explicit lifecycle and effects |
-| `rails-controllers` | HTTP contracts, params and resource routes |
-| `rails-authorization` | Pundit permissions and tenant isolation |
-| `rails-migrations` | Reversible schema, constraints and data-change separation |
-| `rails-frontend` | ERB, Turbo, Stimulus and explicit UI composition |
-| `rails-design` | Stack-independent compact design consistent with the product |
-| `rails-tests` | Minimal nonvisual coverage; no UI/DOM tests anywhere |
+Keep each skill focused on its responsibility, with a short purpose, named decision areas or work stages, and a clear completion check. Use tables for contracts and numbered steps for sequences; keep conditional evidence in linked references. Do not repeat shared rules or put project-specific UI systems into general guidance.
 
-The design name remains `rails-design` for compatibility; its visual principles apply to any stack. Non-Rails projects skip Rails implementation defaults. Optional project skills use [this template](skills/how-we-work/references/project-skill-template.md); load only the matching repository's facts.
+Preserve required `name`/`description` frontmatter, discriminating triggers, working relative links and aligned `agents/openai.yaml` metadata. Keep concrete model mappings in `how-we-work`.
 
-## Operating rules
-
-- Think before editing, keep changes surgical, define observable success and verify it. Use the fewest clear lines that preserve behavior and best practices. Source adaptations: [Karpathy-inspired guidelines](https://github.com/multica-ai/andrej-karpathy-skills/blob/main/CLAUDE.md) and [Ponytail](https://github.com/DietrichGebert/ponytail).
-- Technical work: inspect, plan, delegate, verify. Design: main agent designs and edits directly without plan approval. Ask only when a material decision or actual authorization is missing.
-- Model domain facts explicitly, derive technical representations, and use native framework flows. Foundations own mechanics and intrinsic invariants; explicit callers choose defaults and apply product policy. [Sheets rewrite evidence](skills/how-we-work/references/foundations.md) and [direct review patterns](skills/how-we-work/references/review-patterns.md) explain the distinctions and their limits.
-- No UI/DOM tests, including HTML/text/selector assertions concealed in request/helper tests. Verify UI in the browser; test domain, policy and nonvisual HTTP contracts.
-- No new dependencies without approval. No automatic commits or publishing. Existing user authorization persists; external actions follow `ship`.
-
-## Maintaining the package
-
-Keep required `name`/`description` frontmatter, concise trigger descriptions, relative links and `agents/openai.yaml` aligned. Put conditional evidence/procedures in linked references, not every skill. Record concrete model mappings only in `how-we-work`; other skills refer to capability tiers. No installed project-specific UI system belongs in shared guidance.
-
-Validate every skill with the skill-creator `scripts/quick_validate.py`, check relative links and `git diff --check`, and exercise realistic routing/delegation scenarios after workflow changes.
+Validate every skill with skill-creator's `scripts/quick_validate.py`, check relative links and run `git diff --check`. After workflow changes, use the [simulation protocol](simulations/README.md) for realistic behavioral evaluation; report what was actually exercised and its limits.

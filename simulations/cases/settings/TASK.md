@@ -1,0 +1,1 @@
+Please redesign this delivery-settings screen so it feels compact, clear and consistent with the existing product. Keep all settings and keyboard access. The nested cards look awkward. Make the changes directly and tell me what improved; I don't need a plan to approve.
