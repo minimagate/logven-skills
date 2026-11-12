@@ -29,11 +29,11 @@ Keep unrelated follow-ups separate and stack only dependent work. Remove superse
 
 Check each changed line against the request. Trace one complete user path through ownership/permissions, submitted state and failure response. Passing checks alone do not prove a working flow. Remove orphaned paths, speculative knobs and unnecessary layers created by the change; preserve user edits.
 
-Run relevant tests/lint and applicable nonvisual CI checks before a PR. Inspect aggregate commands first: if they invoke forbidden system/browser/UI suites, run nonvisual equivalents without changing CI or deleting tests. Inspect UI in the browser and run the asset build. Report excluded/unrun checks and failures; never label filtered checks as full CI.
+Before committing or publishing, run relevant tests/lint and applicable nonvisual CI checks. Inspect aggregate commands first: if they invoke forbidden system/browser/UI suites, run nonvisual equivalents without changing CI or deleting tests. Inspect UI in the browser and run the asset build. Report excluded/unrun checks and failures; never label filtered checks as full CI.
 
 ## Write and publish
 
-Inspect staged changes before committing. Default subjects are short, descriptive and unprefixed unless project rules override. No tool/model names, generated-with lines or attribution trailers in commits or PRs.
+Stage only work within the authorized scope, even if a generic git helper proposes staging everything. Inspect staged changes before committing. Default subjects are short, descriptive and unprefixed unless project rules override. No tool/model names, generated-with lines or attribution trailers in commits or PRs.
 
 Build the PR title and body from all branch commits and the full diff. Default to a plain title under 70 characters and a short paragraph explaining behavior and reason, followed by one truthful check-result line. Explain meaningful representation or ownership changes so removed glue is reviewable. Follow required repository templates.
 

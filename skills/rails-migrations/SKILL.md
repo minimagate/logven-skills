@@ -1,6 +1,6 @@
 ---
 name: rails-migrations
-description: Create or review reversible Rails schema changes, indexes, foreign keys, defaults and generated schema diffs.
+description: Create or review Rails schema changes, data rollout/backfills, indexes, foreign keys, defaults and rollback compatibility.
 ---
 
 # Rails Migrations

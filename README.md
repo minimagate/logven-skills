@@ -40,7 +40,7 @@ Think before editing, choose the least necessary code, keep changes within scope
 
 The [principles](skills/how-we-work/SKILL.md#principles) are the shared source of guidance. [Foundations](skills/how-we-work/references/foundations.md) and [review patterns](skills/how-we-work/references/review-patterns.md) hold conditional examples and research evidence. Source adaptations: [Karpathy-inspired guidelines](https://github.com/multica-ai/andrej-karpathy-skills/blob/main/CLAUDE.md) and [Ponytail](https://github.com/DietrichGebert/ponytail).
 
-No automated UI/DOM tests, including markup assertions hidden in other test layers. Inspect UI in the browser; test domain, policy and nonvisual HTTP contracts. New dependencies require approval. Commits and publication require authorization.
+Verification policy belongs to [rails-tests](skills/rails-tests/SKILL.md), including interface-only work. New dependencies require approval. Commits and publication require authorization.
 
 ## Discovery and installation
 
@@ -51,17 +51,29 @@ mkdir -p .agents
 ln -s ../../logven-skills/skills .agents/skills
 ```
 
+For Claude Code, expose the same package under its native project root instead:
+
+```sh
+mkdir -p .claude
+ln -s ../../logven-skills/skills .claude/skills
+```
+
 Preserve existing directories and links; merge with the current configuration. Hosts using another skills root can link or install individual skill folders there.
 
-Add this to the target repository's existing `AGENTS.md` or equivalent always-loaded instructions:
+Add this to the target repository's always-loaded instructions (`CLAUDE.md` for Claude, `AGENTS.md` for other hosts), using the installed path:
 
 ```text
 Inspect the workspace first. Before repository work, read
-.agents/skills/how-we-work/SKILL.md and follow its discovery routes.
+.claude/skills/how-we-work/SKILL.md and follow its cumulative discovery routes.
 If unavailable, locate how-we-work in the configured skill catalog/roots.
+Read every applicable skill body before its work; pass resolved paths to fresh delegates.
 ```
 
-The always-loaded instruction establishes the entry point; a symlink alone cannot guarantee loading. Trigger descriptions and automatic-invocation metadata support selection. The entry point selects relevant skills and passes resolved paths into delegate briefs without requiring the user to name them.
+Use `.agents/skills` in the snippet for that host. If `AGENTS.md` already contains the bootstrap, Claude's `CLAUDE.md` can import it with `@AGENTS.md`, as this repository does. Audit personal and project instructions for old workflow rules that conflict with the maintained skills.
+
+The startup instruction establishes the entry point; automatic selection alone is not a guarantee. Claude uses skill frontmatter descriptions; `agents/openai.yaml` configures Codex, not Claude. The router accumulates workflow and specialist skills from actual responsibilities and rechecks as scope changes. Fresh delegates must read their own selected skills; custom Claude agents can preload them with `skills:`.
+
+In Claude, check `/memory` for the bootstrap, `/context` for the skill listing cost and `/doctor` for description-budget pressure. If a skill is absent, inspect its native root, symlink target and frontmatter before changing prompts. After changes, start a fresh session and exercise a mixed-layer task; check actual skill reads and delegate briefs, not just claimed compliance. See the official [skills](https://code.claude.com/docs/en/skills), [memory](https://code.claude.com/docs/en/memory) and [subagent](https://code.claude.com/docs/en/sub-agents) documentation.
 
 ## Maintaining the framework
 

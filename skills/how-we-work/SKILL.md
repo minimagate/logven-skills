@@ -1,6 +1,6 @@
 ---
 name: how-we-work
-description: Start repository work here. Establish the collaboration contract, discover applicable skills, choose the work mode, delegate technical work and verify outcomes.
+description: Use at the start of repository work, including implementation, debugging, design, review and delivery. Load all applicable workflow and specialist skills before acting; coordinate work and verification.
 ---
 
 # How we work
@@ -20,22 +20,25 @@ User instructions govern. Verified project facts override general defaults, not 
 1. Inspect the workspace, working-tree state and repository instructions, including scoped instructions for touched files.
 2. Locate this package in the skill catalog or `.agents/skills`, `.claude/skills`, `.codex/skills`, `skills/`; resolve symlinks. List names and frontmatter descriptions before reading selected bodies. Search configured skill roots if a path is stale.
 3. Load only the matching `project-<repo>` skill, using repository identity rather than a worktree suffix. If absent, infer facts from source; creating a project skill is optional.
-4. Select skills below, read them before work and pass their resolved paths to delegates. Re-evaluate when scope changes. The user need not name a skill.
+4. Build the **union** of applicable skills below from the requested outcome, affected behavior and actual files/callers, not just keywords or file extensions. Read their full `SKILL.md` bodies before the corresponding work. A catalog description or remembered summary is not a loaded skill.
+5. Keep a short internal record of resolved paths read and why. Recheck before delegation, after discovering another layer, before verification/review/delivery and after context loss. Load newly relevant guidance before continuing; retain earlier applicable skills. Do not ask the user to choose skills.
 
-| Task or touched layer | Read |
+| Work or affected responsibility | Add these skills |
 |---|---|
-| Technical implementation, bug, refactor | [plan](../plan/SKILL.md), then relevant layers below |
-| Visual design, layout, interaction | [rails-design](../rails-design/SKILL.md); Rails markup also [rails-frontend](../rails-frontend/SKILL.md) |
-| Placement, namespaces, abstractions | [rails-structure](../rails-structure/SKILL.md) |
-| Records, domain logic, jobs | [rails-models](../rails-models/SKILL.md) |
-| HTTP actions, routes, params | [rails-controllers](../rails-controllers/SKILL.md) |
-| Permissions, tenant isolation | [rails-authorization](../rails-authorization/SKILL.md) |
-| Schema, indexes, foreign keys | [rails-migrations](../rails-migrations/SKILL.md) |
-| Tests, coverage, regressions | [rails-tests](../rails-tests/SKILL.md) |
-| Review or completed technical branch | [review](../review/SKILL.md) |
-| Commits, push, PR | [ship](../ship/SKILL.md) |
+| Technical implementation, debugging, refactor | [plan](../plan/SKILL.md) |
+| Visual design, layout, interaction, accessibility | [rails-design](../rails-design/SKILL.md); Rails markup/interaction also [rails-frontend](../rails-frontend/SKILL.md) |
+| Placement, namespaces, extraction, responsibility boundaries | [rails-structure](../rails-structure/SKILL.md) |
+| Records, queries, domain rules, lifecycle, jobs/effects | [rails-models](../rails-models/SKILL.md) |
+| HTTP actions, routes, params, form submission handling, responses | [rails-controllers](../rails-controllers/SKILL.md) |
+| Permissions, ownership checks, roles, tenant isolation | [rails-authorization](../rails-authorization/SKILL.md) |
+| Schema, indexes, foreign keys, defaults, data rollout | [rails-migrations](../rails-migrations/SKILL.md); affected record contracts also models |
+| Behavior changes, regression fixes, verification choices, test changes or test review (including interface-only work) | [rails-tests](../rails-tests/SKILL.md) |
+| Review or completed technical branch | [review](../review/SKILL.md), plus specialists selected from the full diff and affected callers |
+| Commits, push, PR | [ship](../ship/SKILL.md), plus verification guidance for the change |
 
-Read references only when their linked condition applies. Non-Rails projects skip Rails implementation defaults; design principles apply to any stack.
+Rows accumulate: a form that changes who can update records needs frontend, controllers, authorization, models and tests; appearance changes also need design. Design and local presentation/interaction repairs proceed directly without a technical plan gate; changes to domain, persistence or access contracts use the technical mode for those pieces. Planning does not replace specialist guidance, and review/delivery do not erase earlier selections.
+
+Read linked references only when their condition applies. For non-Rails projects, retain workflow, design and applicable verification policy; skip Rails implementation defaults and use matching stack skills from the available catalog. Search available roots when a required skill is missing; report an unresolved gap and its effect rather than pretending it was loaded.
 
 ## Work mode
 
@@ -71,11 +74,11 @@ Start every subagent with fresh context (`fork_turns="none"`, `fork_context=fals
 |---|---|
 | Outcome | Goal, observable acceptance criteria, settled decisions and consequential assumptions |
 | Responsibility | Role, exact allowed files and exclusions |
-| Context | Relevant source examples and resolved skill paths |
-| Constraints | Shortest clear implementation preserving the contract; no unrelated cleanup, dependencies, git writes, spawning or UI/DOM tests |
+| Context | Relevant source examples, resolved applicable skill paths and an instruction to read their bodies before acting; parent-loaded skills are not inherited |
+| Constraints | Scope, ownership, authorization and applicable specialist constraints; no unrelated cleanup, git writes or spawning |
 | Evidence | Verification commands and expected report |
 
-Read-only research and review briefs prohibit edits. Scoped delegates follow their brief and linked principles/layer skills; they do not restart discovery or planning.
+Read-only research and review briefs prohibit edits. Scoped delegates read the supplied skills and report which they used; they do not restart project-wide discovery or planning. If their slice crosses another responsibility, load that specialist too and report any scope conflict before editing outside their ownership. Claude custom agents may preload skills with `skills:`; otherwise explicitly read the resolved files in the fresh context.
 
 ### Integration
 
@@ -102,7 +105,7 @@ Apply the [Ponytail](https://github.com/DietrichGebert/ponytail) principle: use 
 
 Foundations implement small explicit contracts and enforce intrinsic invariants. Callers choose defaults, compose collaborators, apply product policy and start work explicitly. Dependencies point down; foundations do not recognize pages, workflows or caller identities.
 
-Store explicit domain facts and derive technical representations. Use columns or child records for known structure and behavior, JSON for dynamic or opaque payloads. Prefer native assignment, validation and forms over parallel draft or synchronization protocols.
+Store explicit domain facts and derive technical representations. Choose representations and edit flows through the relevant domain and interface skills.
 
 Share actual contracts; separate interactions that change for different reasons. Distinguish real types from independent options. Deterministic derivation is useful; caller-intent guessing is not. Keep genuine choices and invariants while removing redundant forwarding and configuration.
 
@@ -112,15 +115,9 @@ Keep cross-cutting mechanics locally composable rather than propagating feature 
 
 ### Change boundaries
 
-Prefer existing code, frameworks and standard libraries. New dependencies require user approval; do not add an npm/build pipeline to Rails defaults. Each rule, effect and failure has one owner. Log actionable failures once at that boundary; remove debug output.
+Prefer existing code, frameworks and standard libraries. New dependencies require user approval. Each rule, effect and failure has one owner. Log actionable failures once at that boundary; remove debug output.
 
 Protect costly-to-reverse data shapes, permissions and public contracts with cheap deliberate choices. Defer hypothetical machinery with a concrete trigger.
-
-### Verification boundary
-
-No automated UI or DOM tests, including rendered HTML/text/selector/class/template/component assertions, snapshots, system/browser tests or equivalent assertions hidden in request/helper tests. Test domain, policy and nonvisual HTTP contracts; inspect UI manually in the browser. Existing UI tests are not precedent. Carry the rule into briefs and review criteria; [rails-tests](../rails-tests/SKILL.md) defines the full policy.
-
-No tool/model attribution in commits or PRs. No automatic commits, pushes or unrelated cleanup.
 
 ## Project context
 

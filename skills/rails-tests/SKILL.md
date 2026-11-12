@@ -1,9 +1,11 @@
 ---
 name: rails-tests
-description: Write, repair or review minimal Rails domain, policy and HTTP-contract tests. Forbid UI/DOM assertions in every test location; verify appearance and browser behavior manually.
+description: Choose verification for behavior changes, bug fixes, interface-only work and reviews; write minimal Rails domain, policy and HTTP-contract tests. Own the no UI/DOM test policy across stacks.
 ---
 
 # Rails tests
+
+Load before choosing checks, even when no test file will change. The presentation-testing boundary applies in any stack; Rails-specific commands and helpers apply only to Rails.
 
 ## Hard boundary: no UI or DOM tests
 

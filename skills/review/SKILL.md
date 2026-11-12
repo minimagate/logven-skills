@@ -23,7 +23,7 @@ Form an independent account of what the code does. Challenge the implementation 
 
 Trace plausible counterexamples through permissions, tenant isolation, hostile inputs, state transitions, retries/races, partial failure, migration/compatibility, realistic load and recovery. Inspect unchanged code when needed to prove integration defects. Use [adversarial prompts](references/adversarial.md) as questions, not separate assignments.
 
-Check whether better representation, ownership or existing framework behavior removes glue. Prefer the fewest clear lines preserving the contract; retain necessary safety. Enforce the no UI/DOM test policy, including assertions hidden in request tests.
+Check whether better representation, ownership or existing framework behavior removes glue. Prefer the fewest clear lines preserving the contract; retain necessary safety. Assess verification against [rails-tests](../rails-tests/SKILL.md), including assertions hidden in other test layers.
 
 Try to disprove each candidate using guards, callers, framework guarantees and coverage. Run proportionate safe reproductions when useful. Discard speculative concerns and personal taste.
 

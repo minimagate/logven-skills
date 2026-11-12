@@ -1,6 +1,6 @@
 interface:
   display_name: "Rails Tests"
   short_description: "Minimal nonvisual tests; no UI or DOM assertions"
-  default_prompt: "Use $rails-tests for the smallest meaningful domain, policy or HTTP tests. Never add UI/DOM assertions in any test layer."
+  default_prompt: "Use $rails-tests to choose verification, including interface-only work, and the smallest meaningful domain, policy or HTTP tests. Never add UI/DOM assertions in any test layer."
 policy:
   allow_implicit_invocation: true

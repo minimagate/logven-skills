@@ -31,4 +31,4 @@ For costly schema/contracts, security, concurrency or a new subsystem, use bound
 
 Proceed through the [delegation and verification loop](../how-we-work/SKILL.md#delegate-and-verify). A plan is ready when its outcome, owners, slices and checks are clear; it is complete when the full result is verified. Re-plan when evidence changes the approach or scope.
 
-Checks cover nonvisual behavior; inspect UI in the browser. No UI/DOM tests. Dependencies require approval; [ship](../ship/SKILL.md) governs authorized commits and PRs.
+Choose checks under [rails-tests](../rails-tests/SKILL.md), including for interface-only work. Dependencies require approval; [ship](../ship/SKILL.md) governs authorized commits and PRs.
