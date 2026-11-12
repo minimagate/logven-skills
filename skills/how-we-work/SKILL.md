@@ -1,178 +1,87 @@
 ---
 name: how-we-work
-description: Entrypoint for a coding session in the main thread of a repo that has these skills. Holds the roles, the plan -> delegate -> verify -> review -> PR loop, skill routing, the shared principles, the delegation brief and the verify-and-commit procedure. Subagents read only its Principles section, when their brief points to it.
+description: Start every repository task here. Discover applicable skills, plan and delegate technical work, keep design in the main agent, choose model tiers, and verify results.
 ---
 
-# How We Work
+# How we work
 
-The main thread plans and orchestrates; subagents build and review.
+Scoped delegates follow their brief and read only the linked principles and assigned layer skills; they do not restart discovery/planning, spawn agents or perform git writes. The workflow below is for the main agent.
 
-## If you are a subagent
+## Discover before acting
 
-If your brief assigns you implementation, exploration, critique or review, read only the Principles section below (when your brief or a guideline skill points to it), then follow the brief and the skills it lists. Do not re-plan, commit or spawn work.
+1. Inspect the workspace, working-tree state and repository instructions, including scoped instructions for touched files. Preserve user changes.
+2. Locate this package in the available skill catalog or `.agents/skills`, `.claude/skills`, `.codex/skills`, `skills/`; resolve symlinks. List skill names and frontmatter descriptions, not every full body. If a path is stale, search the configured skill roots before declaring it missing.
+3. Load the matching `project-<repo>` skill if present (use repository identity, not a worktree suffix). Never load another project's skill. If absent, infer facts from the repository; creation is optional.
+4. Use the routing table; read the selected skills before work and pass their resolved paths to delegates. Re-evaluate when scope changes. No need for the user to name a skill.
 
-## Roles
-
-- **Orchestrator** (main thread): plans with the user, briefs subagents, verifies their diffs, commits and synthesizes. Writes no code.
-- **Implementers**: subagents on the cheapest capable model, working from self-contained briefs. They never run git.
-- **Explorers, critics and reviewers**: subagents on the cheapest capable model, read-only. Critics and reviewers take one lens each and are never the orchestrator.
-
-## The loop
-
-1. **Plan** (`plan`): agree scope and approach. Gate: the user approves the plan as written. Big features escalate to its critic lenses once the user confirms.
-2. **Delegate** (below): one subagent per scoped change, producing a diff. Gate: the diff stays within the allowed files.
-3. **Verify and commit** (below): read the full diff, run checks, commit one scoped change. Gate: every diff is verified before commit.
-4. **Review** (`review`): parallel read-only reviewers, once the branch is complete or the user asks. Fixes go back through Delegate.
-5. **PR** (`ship`): only when asked. Run local CI and tests first. Opening it is the first push; later pushes need the user's approval.
-
-## Which skill when
-
-| Situation | Load |
+| Task or touched layer | Read |
 |---|---|
-| New request to build, fix or change something | `plan` |
-| Big feature: new concept, schema change, integration, public contract, several areas | `plan`, which escalates to its critic lenses after the user confirms |
-| Plan agreed | Delegate (this file) |
-| Subagent returned work | Verify and commit (this file) |
-| Branch complete, or user asks for a review | `review` |
-| Asked to write or open a PR; ordering or slicing work; commit or PR scope and messages | `ship` |
-| Deciding where code belongs or how to write it | the `rails-*` skill for the layer: `rails-structure`, `rails-models`, `rails-controllers`, `rails-authorization`, `rails-migrations`, `rails-frontend`, `rails-design`, `rails-tests` |
-| Anything about this app's names, paths and decisions | the project skill `project-<name>` |
-| No project skill for this repo, or asked to start one | follow [references/project-skill-template.md](references/project-skill-template.md): explorers gather facts with `path:line`, the orchestrator fills the template, a subagent writes it, and it is committed in the shared skills repo (the project's `.agents/skills` links into it) |
+| Technical implementation, bug, refactor | [plan](../plan/SKILL.md), then relevant layers below |
+| Visual design, layout, interaction | [rails-design](../rails-design/SKILL.md); Rails markup also [rails-frontend](../rails-frontend/SKILL.md) |
+| Placement, namespaces, abstractions | [rails-structure](../rails-structure/SKILL.md) |
+| Records, domain logic, jobs | [rails-models](../rails-models/SKILL.md) |
+| HTTP actions, routes, params | [rails-controllers](../rails-controllers/SKILL.md) |
+| Permissions, tenant isolation | [rails-authorization](../rails-authorization/SKILL.md) |
+| Schema, indexes, foreign keys | [rails-migrations](../rails-migrations/SKILL.md) |
+| Tests, coverage, regressions | [rails-tests](../rails-tests/SKILL.md) |
+| Review or completed technical branch | [review](../review/SKILL.md) |
+| Commits, push, PR | [ship](../ship/SKILL.md) |
 
-## Where knowledge lives (lowest to highest precedence)
+Read references only when their linked condition applies. Non-Rails projects skip Rails implementation defaults; design principles still apply. User instructions govern; project facts override general defaults, not explicit user requirements.
 
-- This file's Principles: minimalism, no new dependencies, cheap-option future-proofing.
-- `rails-*` skills: general defaults per layer.
-- Project skill `project-<name>`: this app's facts.
-- The repo's `AGENTS.md`: what the repository contains and its commands.
+## Work mode
 
-Delegate and `review` briefs name the relevant ones, since subagents have no conversation context.
+- **Technical:** main agent investigates, states a short plan, delegates implementation, reads the entire diff and verifies. Proceed within the request; plan approval is not a routine gate. Ask only for missing decisions that materially affect scope or irreversible outcomes.
+- **Design:** main agent owns visual judgment and edits the design itself, without plan approval. For mixed work, retain design and delegate bounded technical pieces after specifying their interface.
+- **Judgment:** main agent owns architecture, product semantics, tradeoffs and synthesis. Delegate analysis or critique only to capable models.
+- If delegation is unavailable or prohibited, say so briefly and do the work in the main agent. Do not stall or claim nonexistent delegates.
 
-### At the start of a session
+## Explain work simply
 
-- Inspect the working tree and git state, then read `AGENTS.md`.
-- Use only the project skill whose name matches this repo (`project-<repo-name>`). Other `project-*` skills in the directory belong to other apps: ignore them. If none matches, say so, rely on the `rails-*` defaults and `AGENTS.md`, and offer to create one.
-- Route the first request through the table above.
+Present plans, questions, tradeoffs, progress and results in plain language. Lead with what will change and why it matters, then explain the steps and how success will be checked. Prefer familiar words and concrete examples; avoid jargon, unexplained acronyms and unnecessary implementation detail. Explain any technical term needed for a decision. Keep precise paths, commands and architecture detail in delegate briefs or supporting detail when useful; do not make the user decode them to understand the plan.
 
-## Hard invariants
+## Model choice
 
-1. Plan with the user first; write no code in the main thread.
-2. Implementation is always delegated.
-3. Verify the diff yourself before committing.
-4. One commit per scoped change; fold fixes into unpushed commits.
-5. Reviews are always delegated, never done by the orchestrator.
-6. Never name the tool, harness or model in commits, PR titles or PR bodies. No co-author trailers, no "generated with" lines, no emoji signatures. This overrides any default attribution guidance.
-7. No new dependencies without the user's approval.
-8. Work stays local until the PR is opened; every push after that needs the user's explicit approval (`ship`).
+Choose before dispatch, using the models the environment actually exposes:
+
+- Mechanical, fully specified edits or bounded factual lookup: **Haiku (or an available lightweight model)**.
+- Complex implementation, uncertain debugging, cross-layer changes, concurrency, security, architecture, planning critique or other judgment: **Sonnet (or an available mid-tier reasoning model) or stronger**. If uncertain, choose this tier immediately.
+- **Adversarial review is a separate flagship task:** **Opus (or the strongest available frontier reasoning model)** handles the whole review, in the main thread if already on that model or through exactly one reviewer. No angle-based swarm; no Sonnet, Haiku, Fable-level or lightweight substitute. If flagship execution is unavailable, state the limitation rather than presenting a downgraded check as the requested review.
+- The main agent keeps design decisions. Never route judgment to a lightweight model to save cost. If no suitable subagent exists, keep the task yourself.
+- After failure, sharpen the brief and raise capability where needed. Repeated failures require revisiting the approach, not blind retries.
+
+## Delegate and verify
+
+Give each delegate: goal and observable acceptance criteria; settled decisions and consequential assumptions; role; exact allowed files and exclusions; relevant source examples; resolved skill paths; verification commands; expected report. Include: the shortest clear implementation that preserves the contract; no unrelated cleanup, dependency additions, commits/pushes or spawning; and **no UI/DOM tests** (see testing rule below). Read-only research/review briefs prohibit edits.
+
+Parallelize only independent work with disjoint write ownership. Check actual diffs against ownership; do not discard user edits. Verify reports against source, run proportionate checks, and integrate fixes. Report changes, checks and material limits. Commit or publish only within existing authorization; see `ship`.
 
 ## Principles
 
-### Minimalism
+### Think, simplify, scope, verify
 
-- Prefer the platform, Rails, the standard library and what the repo already has.
-- Build the simplest thing that meets the current requirement.
-- Prefer direct, readable code over indirection, DSLs, registries, generic wrappers and one-method objects.
-- Give each rule, query, presentation decision, side effect and failure one owner.
-- Prefer deletion over addition: remove superseded code, aliases and compatibility paths in the same change.
+Adapted from the [Karpathy-inspired guidelines](https://github.com/multica-ai/andrej-karpathy-skills/blob/main/CLAUDE.md), a community distillation of his observations:
 
-### Dependencies
+- **Think:** inspect the real flow; state consequential assumptions and tradeoffs. Resolve routine choices yourself; clarify material ambiguity before dependent work. Push back on unnecessary complexity.
+- **Simplify:** implement the requested behavior without speculative flexibility. Fix the representation or owner before adding coordination code.
+- **Stay surgical:** every edit serves the request. Preserve neighboring style and user work; remove leftovers your change creates, not unrelated pre-existing code.
+- **Verify an outcome:** define observable acceptance criteria and checks before editing; reproduce defects, fix their cause and inspect affected callers. Continue until verified or a concrete blocker is explained. UI verification remains manual; do not generate forbidden tests.
 
-- The default is no new dependency. A new dependency is an explicit user decision, listed under Open decisions with: what it replaces, why a small amount of own code is not enough, and its maintenance and security cost.
-- No npm and no JavaScript build step. If a browser dependency is truly unavoidable, use importmap pins or a vendored file.
-- Prefer a small own implementation over a package for narrow needs.
-- Treat lockfile changes (`Gemfile.lock`, importmap pins) as a signal to check.
-- A subagent never adds a dependency on its own. It stops and reports, and the orchestrator brings the question to the user.
+### Least necessary code
 
-### Future-proofing
+Apply the [Ponytail](https://github.com/DietrichGebert/ponytail) principle: **write as few clear lines as possible while preserving correctness and best practices**. After reading the flow, check necessity, existing owners, standard library/platform/framework and installed dependencies before writing new code. Prefer a direct expression or small method when sufficient. Remove redundant state, branches, knobs, wrappers and files; do not compress formatting, hide control flow, weaken validation/security/accessibility or erase useful boundaries to lower a line count. Before finishing, simplify any solution that can meet the same contract with materially less code.
 
-- Use cheap options, not machinery.
-- Spend effort only to avoid a costly reversal. One-way doors: schema and data shape, identifiers, public URLs and API contracts, events and external contracts, the permission model, and names that leak into data.
-- Also cover a plausible costly edge case, but only when the cost now is small.
-- Everything else is deferred with a named trigger. Triage rules: `../plan/references/critics.md`.
-- Before adding a provision, ask whether the door is really one-way. If not, keep it simple.
+### Contracts and ownership
 
-### Logging and tests
+- Prefer existing code, framework and standard library. No new dependency without user approval; no npm/build pipeline added to Rails defaults. Remove superseded paths in scope.
+- **Dumb foundations, opinionated composition:** a primitive implements a small explicit contract and enforces its own invariants. A caller chooses defaults, assembles collaborators, applies product policy and starts work explicitly. Dependencies point down; foundations do not recognize pages, workflows or caller identities.
+- **Fix representation before adding glue:** store explicit domain facts and derive technical representations; use columns/child records for known structure and behavior, JSON for dynamic/opaque payloads. Prefer native assignment, validation and forms over parallel draft/synchronization protocols.
+- Share actual contracts; separate interactions that change for different reasons. Distinguish a real type from an independent option. Remove redundant knobs and forwarding layers; deterministic derivation is useful, caller-intent guessing is not. Keep genuine user choices and invariants.
+- Avoid hidden workflow initialization, caller-specific validation bypasses and speculative registries. A meaningful boundary can have one caller; small duplication or one concrete feature view can beat a generalized abstraction. Evidence and before/after examples: [Paul's sheets rewrites](references/foundations.md).
+- Keep cross-cutting mechanics locally composable, not spread as feature/transport flags through unrelated callers. Preserve framework defaults and intentional APIs; missing textual callers alone do not prove code dead. More evidence: [recurring review corrections](references/review-patterns.md).
+- Each rule, effect and failure has one owner. Log actionable failures once at their owning boundary; remove debug output.
+- Protect costly-to-reverse data shapes, permissions and public contracts with cheap deliberate choices; defer hypothetical machinery with a concrete trigger.
+- **No automated UI or DOM tests:** no rendered HTML/text/selector/class/template/component assertions, snapshots, system/browser tests, or equivalent tests hidden in request/helper tests. Test domain, policy and nonvisual HTTP contracts; inspect UI manually in the browser. Carry this rule into briefs and review acceptance criteria. Existing UI tests are not precedent; do not expand them. Full policy: [rails-tests](../rails-tests/SKILL.md).
+- No tool/model attribution in commits or PRs. No automatic commits, pushes or unrelated cleanup.
 
-- Log an actionable failure once, at the boundary that owns it. Do not log it again at every layer above.
-- Leave no debug output behind.
-- Test meaningful behavior at its narrowest public boundary.
-- Never test framework behavior or the same contract twice. See `../rails-tests/SKILL.md`.
-
-### Conflicts
-
-- When minimalism and future-proofing disagree, show both sides to the user with a recommendation.
-- Do not resolve the conflict silently in either direction.
-
-## Delegate
-
-Implementation is always done by subagents. The orchestrator briefs, reviews and commits. Briefs follow the Principles above.
-
-### Model choice
-
-- Every subagent (implementer, explorer, critic, reviewer) runs on the cheapest capable model.
-- Claude: Haiku, latest version; middle tier Sonnet. For another model family, use that family's cheapest and middle tiers.
-- If the same brief fails twice, retry once on the middle tier with a sharper brief. This is the only exception.
-- Do not use the strongest available model for any subagent.
-
-### Brief contents (required)
-
-Subagents have no conversation context. Each brief must include:
-
-- **Goal**: one sentence.
-- **Role**: "You are the implementer: do not re-plan; if the brief is wrong or incomplete, stop and report."
-- **Decisions made**: everything already agreed in `plan`.
-- **Allowed files**: exact paths to edit or create.
-- **Off-limits**: files and areas not to touch.
-- **Conventions**: paths to existing files to read for style and patterns.
-- **Guideline skills**: the `rails-*` skills for the layers touched (paths under the project's skills directory, for example `.agents/skills/`; `rails-models` and `rails-tests` for a model change; `rails-frontend` and `rails-design` for UI), the project skill `project-*` if one exists, and this file's Principles section. The subagent reads them before editing.
-- **Verification**: exact test and lint commands. UI briefs also name `bin/rails tailwindcss:build`.
-- **Dependencies**: "Do not add any dependency (gem, package, JavaScript build step). If one seems needed, stop and report instead."
-- **Git**: "Do not run any git commands. Do not commit."
-- **Report back**: files changed, verification commands and results, anything skipped or uncertain, concerns.
-
-### Parallelism
-
-- Run subagents in parallel only when their allowed-file lists are disjoint.
-- Otherwise run them sequentially, including when overlap is unavoidable.
-
-### After the report
-
-- Treat the report as claims to check, not facts.
-- Scope guard: compare the actual diff against the allowed-file list. Revert or reject anything outside it.
-- Small fixes, including those found during review, also go through a subagent with a minimal brief. Do not edit in the main thread.
-- Then verify and commit (below).
-
-### Failure
-
-- After the middle-tier retry also fails, or when any finding changes scope, stop the remaining briefs, update the plan file, and return to the `plan` gate.
-
-## Verify and commit
-
-Verify the work yourself, then commit one scoped change at a time.
-
-### Verify
-
-- Read the full diff. Do not trust the subagent report.
-- Check every changed file against the allowed-file list and the agreed decisions.
-- Run the tests and linters yourself, using the commands from the brief.
-- UI changes: also run `bin/rails tailwindcss:build`, then check the affected flow in a browser (in light and dark if the app supports both), at desktop and narrow widths, including empty, loading and error states and keyboard access. Do it yourself or ask the user, and report what was not checked.
-- For mail or documents, check the mailer preview or the generated file rather than asserting its content in tests.
-- If anything is off, send it back through Delegate with a sharper brief. Do not fix it in the main thread.
-
-### Commit
-
-- One commit per scoped change. Stage only that change's files. Never mix unrelated changes.
-- Message and slicing conventions: `../ship/SKILL.md`, plus the project skill if it states a history style.
-- Do not skip hooks. If a hook fails, send the fix back through Delegate and create a new commit.
-
-### Fixes to earlier commits
-
-- If the problem is in the latest unpushed commit, amend it.
-- If it is in an older unpushed commit, make a fixup commit and autosquash rebase.
-- Commits already pushed are never amended; fix them with a new commit. Unpushed commits on a pushed branch may still be amended or fixed up.
-- Never rewrite pushed history without explicit approval.
-
-### Boundaries
-
-- Do not push, force-push or open a PR unless asked. Pushing rules: `../ship/SKILL.md`.
-- Once the branch is complete, offer an adversarial review (`review`). Do not review your own work in the main thread.
+For a new project skill, copy the [project template](references/project-skill-template.md); record verified project facts only.

@@ -1,65 +1,18 @@
 ---
 name: review
-description: Run an adversarial multi-lens code review of a branch, diff, PR or named files. Use when the user asks for a review, or when one is offered after verify and commit (how-we-work) completes a branch. Dispatches parallel read-only reviewer subagents, one per lens, then verifies and synthesizes their findings.
+description: Single flagship adversarial review of a branch, PR or diff. Challenge behavior, assumptions and integration beyond repository guidelines; no swarm of angle-specific reviewers.
 ---
 
-# Review
+# Adversarial review
 
-Coordinate read-only reviewer subagents, one per lens, then verify and synthesize their findings. The orchestrator never reviews the code itself.
+**One flagship reviewer, full scope.** Follow [flagship model choice](../how-we-work/SKILL.md#model-choice). Review directly when the main agent meets that requirement; otherwise invoke exactly one suitably capable reviewer, preferably with fresh context. Never split by lens, dispatch mini-reviewers or inherit the implementation model's tier. Do not claim a weaker pass satisfies this review if the required capability is unavailable.
 
-## Roles
+1. Establish the request, intended behavior and exact diff/base. Read the complete diff plus affected callers, consumers, data model, tests and relevant runtime/dependency contracts. Use [discovery](../how-we-work/SKILL.md#discover-before-acting) for applicable local instructions.
+2. Form an independent account of what the code actually does. Challenge the implementation and plan's assumptions, not just compliance. Repository guidelines are context, not the limit of review: a real bug needs no written rule to be a finding.
+3. Trace plausible counterexamples end to end: permissions and tenant isolation, hostile inputs, state transitions, retries/races, partial failure, data migration/compatibility, realistic load, performance and operational recovery. Inspect unchanged code when needed to prove integration defects. Use [adversarial prompts](references/adversarial.md) as questions, not separate agent assignments.
+4. Check whether better representation/ownership or existing framework behavior removes glue. Prefer the fewest clear lines that preserve the contract; never reward code golf or remove necessary safety. Enforce the explicit no UI/DOM test policy, including assertions hidden in request tests.
+5. Try to disprove every candidate: inspect guards, actual callers, framework guarantees and existing coverage. Run proportionate safe reproductions/checks where useful. Report substantiated defects and consequential design risks, not speculative concerns or personal taste.
 
-- Reviews are done only by subagents on the cheapest capable model, never the orchestrator.
-- Reviewers are read-only: no file edits, no git write commands.
-- The orchestrator scopes, dispatches, verifies, filters and synthesizes.
-- Keep each reviewer to one lens and a small diff scope. Require evidence and falsification, and spot-check high-severity findings yourself.
+Return findings first, ranked by impact: `path:line`, concrete trigger and consequence, evidence and smallest remedy. Distinguish demonstrated defects, consequential tradeoffs and unverified questions; do not invent findings to fill a quota. Mention related pre-existing defects separately from introduced regressions. State scope, checks and material gaps; say plainly when no findings survive.
 
-## Scope
-
-- Determine the exact diff: branch against its base, uncommitted changes, or named files.
-- If the base branch is unclear, ask before dispatching reviewers.
-- Give every reviewer the same diff scope, as an exact command or file list.
-
-## Lenses
-
-Each lens is defined in `references/lenses.md`: `overengineering`, `over-standardisation`, `conventions`, `cleanliness`, `correctness`, `structure`.
-
-- Small diff (a few files, no logic change): conventions, cleanliness, correctness.
-- Normal diff: all six.
-- Large diff: all six, one reviewer per lens per area.
-
-Dispatch one reviewer per lens in parallel. State which lenses ran and why.
-
-## Reviewer brief
-
-Reviewers have no conversation context, so each brief is self-contained and includes:
-- `references/lenses.md` and the lens name. The reviewer applies the shared rules and its own lens section.
-- A read-only instruction (no file edits, no git write commands) and an instruction to falsify each finding before reporting it.
-- The diff scope and the exact command that produces it.
-- Guideline paths: the repo's contributor and agent instruction files (AGENTS.md, CLAUDE.md or equivalent), all `rails-*` skills, the project skill `project-*` if present, and `how-we-work/SKILL.md`.
-- An instruction to return findings in the format at the end of `references/lenses.md`, and nothing else.
-
-## Verification
-
-- Spot-check every blocker and major finding, and every doubtful finding, against the actual code. Use a quick read yourself or a cheap subagent.
-- Drop findings that do not hold up. Report how many were dropped.
-
-## Synthesis
-
-- Merge duplicate findings from several lenses into one, listing all lenses.
-- Rank by severity. Group by file or theme.
-- Surface conflicts between lenses explicitly. Example: overengineering says inline it, over-standardisation says keep it separate.
-- Give a recommendation for each conflict, but leave the decision to the user.
-
-## Output
-
-1. Overview: verdict, counts by severity, top themes, lenses run and why.
-2. Findings grouped by severity, each with `path:line`.
-3. Conflicts between lenses.
-4. Recommended action list.
-
-## After the review
-
-- Do not fix anything during review.
-- Once the user picks findings: delegate the fixes and verify and commit them (`how-we-work`). Use a new commit if the branch is pushed. Then re-review only the touched files, with the relevant lenses.
-- Never include tool, harness or model names in PR comments or commits.
+Review is read-only: no edits, commits, publishing or subreviewers. Standalone review ends with findings unless fixes were requested. During authorized implementation, route fixes through its work mode and have the same flagship reviewer recheck affected paths.

@@ -1,47 +1,20 @@
 ---
 name: rails-controllers
-description: Use when adding or changing Rails controllers, routes, strong params, responses or Turbo Stream templates. Hands off policies to rails-authorization, domain logic to rails-models and views to rails-frontend.
+description: Implement Rails request flow, resourceful routes, strong parameters, redirects and Turbo Stream responses.
 ---
 
 # Rails Controllers
 
-Keep controllers thin: load, authorize, call the model and render, following the [Principles](../how-we-work/SKILL.md) section.
+Apply the [shared principles](../how-we-work/SKILL.md#principles): load, authorize, invoke domain behavior, respond.
 
-Project-specific names, paths and decisions live in the project skill (`project-<name>`); where it differs, it wins.
+- Find nested records through their authorized parent. Authorize every action; scope indexes through Pundit ([authorization](../rails-authorization/SKILL.md)). Shared base controllers may load common context; route nesting alone grants no access.
+- If controller glue grows, first question the model, constraints and request contract; fix the mismatch rather than add coercion, fallback branches or another adapter. Keep the happy/failure paths direct.
+- Keep domain rules in [models](../rails-models/SKILL.md). Controllers may explicitly select defaults and compose request inputs without teaching primitives about this page. Expose a coherent object to the view instead of distributing computed state across many variables.
+- Permit parameters through one private `*_params`, using `params.expect` on supported Rails versions. Declare nested arrays/hashes explicitly, never `permit!`; keep keys consistent across sibling forms. Use assignment, nested IDs and `_destroy` instead of manual reconciliation or delete/recreate loops.
+- Use standard resources with explicit `only:`. A distinct state-changing operation gets a singular resource, controller and policy, rather than custom member/collection actions or conditional operation dispatch inside `update`.
+- Match parent-owned controllers to route hierarchy. Put identity/ownership context in explicit resource URLs; sessions may remember a preference but must not silently select a different owner. Query parameters may carry filters, pagination/sort and transient form/view state; keep ownership context explicit. Use plain identifiers and avoid unnecessary `controller:`, `as:` or route constraints. Reuse an existing page/form.
+- Consolidate genuinely shared resource lifecycles; split different use cases instead of adding caller flags. Preview with the real unsaved/assigned model and render its form; persist only on explicit save. Apply URL state in memory on GET without writes.
+- Ordinary flows redirect; invalid submissions render the form with `:unprocessable_entity`. Add response formats only for real callers; use action templates rather than scattering pagination-specific frame/stream branches across unrelated controllers and components. In-place changes use action-named Turbo Stream templates reusing canonical record/form partials ([frontend](../rails-frontend/SKILL.md)).
+- Route changes update redirects, links, forms, templates and relevant request tests together. Keep partials under the resource they render. Do not log request parameters or records.
 
-## Controllers stay thin
-
-- Load nested records through the parent, as rails-authorization (Scoping) describes. Route nesting is not authorization.
-- Authorize every action; `index` also calls `policy_scope` (rails-authorization).
-- Use base controllers for shared loading (`Accounts::BaseController` sets the account).
-- Keep controllers short (a screen or so) and extract to the model. The view gets one object (`@summary`) built from model methods (rails-models), not many ivars.
-- One success path, one failure path: `if @approval.update` redirects with a short notice, otherwise `render :edit, status: :unprocessable_entity`.
-- No `respond_to` scaffolding or format forks.
-
-## Params
-
-- Permit through one private `*_params` built on `params.expect(model: [...])`; `new` reuses it.
-- Declare nested arrays and hashes explicitly. Never use `permit!`.
-- Keep param keys identical across sibling forms.
-
-## Routes
-
-- Give every `resources` and `resource` an `only:` option. Use plain id URLs: no slugs, no clever constraints.
-- Model each state change as a singular resource with its own controller and policy: `resource :approval, only: %i[create]`.
-- No `member`, `collection` or extra custom actions on a broad controller.
-- Put parent-owned controllers in a matching module (`Billing::InvoicesController`). Use `controller:` or `as:` sparingly.
-- Reuse the existing page and form before adding a route. A different operation gets its own controller, not a conditional inside `update`.
-- A route change updates controllers, redirects, `form_with` arrays, links, Turbo templates and tests in the same change.
-
-## Responses
-
-- Redirect for ordinary flows.
-- In-place updates use Turbo Stream templates named after the action (`create`, `update`, `destroy`) that render the same `_show` and `_form` partials as the full pages.
-- Place templates under the resource they render: `billing/invoices/approvals/_form`, not `billing/invoices/_approval_form`.
-- Do not log params or records. The owning boundary logs a failure once.
-
-## Verify
-
-- `bin/rails routes` to confirm route names, nesting and `only:` options.
-- `bin/rails test test/controllers/<path>` for each touched controller.
-- The project's linter on the changed files.
+Check `bin/rails routes`, narrow request contracts and lint. Follow [rails-tests](../rails-tests/SKILL.md): status, redirects, permissions and effects; no rendered-markup or DOM assertions.

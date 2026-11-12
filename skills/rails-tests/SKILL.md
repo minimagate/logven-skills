@@ -1,75 +1,29 @@
 ---
 name: rails-tests
-description: Plan, write, repair, or review tests for any Rails code change, including questions about coverage or regressions and deciding what belongs in Minitest. Enforce minimal logic and HTTP-contract tests; never add UI, DOM, rendered-markup, ViewComponent, system, or browser tests.
+description: Write, repair or review minimal Rails domain, policy and HTTP-contract tests. Forbid UI/DOM assertions in every test location; verify appearance and browser behavior manually.
 ---
 
-# Rails Tests
+# Rails tests
 
-Write the smallest maintainable Minitest coverage that proves requested application behavior. Generated tests use the fewest lines that prove the contract; add no setup, helpers, assertions, cases or abstractions beyond that.
+## Hard boundary: no UI or DOM tests
 
-Test logic and non-visual application contracts only. Never test presentation or browser behavior, even when the request concerns UI code; verify UI in the browser (see `../rails-design/SKILL.md`).
+Never add or expand tests for presentation or browser behavior, regardless of filename or test framework. Forbidden: `assert_select`, `css_select`, Nokogiri/DOM parsing, HTML or rendered-text assertions, CSS classes, element attributes, templates/partials, component rendering, visual snapshots, screenshots as automated assertions, system/Capybara/Playwright tests. This also applies inside request, helper, mailer and model tests; renaming the test does not change the rule.
 
-Project-specific names, paths and decisions live in the project skill (`project-<name>`); where it differs, it wins.
+A request test may assert status, redirects, authorization, persisted state, side effects and a nonvisual API payload/media type. It must not inspect HTML or Turbo Stream markup. UI-only changes need browser inspection and an asset build, not an automated test. Never run `bin/rails test:system`. Existing UI tests are not permission to copy them; replace touched presentation coverage with a real logic contract only when in scope. A later explicit user instruction can change this policy; ordinary UI work cannot.
 
-## Workflow
+## Minimal meaningful coverage
 
-1. Establish the intended behavior from the request, application code and existing tests. Read `test/test_helper.rb`, the nearest related tests and relevant helpers first.
-2. Run the narrow existing test file first when practical. Distinguish a pre-existing failure from one the change introduced.
-3. Decide whether a non-visual behavioral contract exists. Purely visual, markup-only, CSS and component-composition changes need no automated test. Otherwise choose the narrowest layer:
-   - Model, plain domain object or policy: inherit `ActiveSupport::TestCase`, under `test/models/` or `test/policies/`. Every policy has a test that proves the meaningful permission matrix and policy-scope membership, including denial and isolation boundaries where they differ by role or ownership.
-   - Controller or HTTP contract: inherit `ActionDispatch::IntegrationTest`, under `test/controllers/`. Assert authentication, authorization, status or redirect, persistence, side effects, and response format where it is an API contract. Never assert HTML bodies, rendered text, selectors, CSS classes, DOM structure, templates, partials or components.
-   - Mailer or job: use the matching Rails non-system test API and location. Assert delegation and resulting application state, not Active Job internals.
-   - External provider or tool: isolate the network boundary and prove the request/response contract. Never call a live provider.
-   - No `ApplicationSystemTestCase`, `ViewComponent::TestCase`, view, browser or other render-based tests. If presentation code holds important business rules, move them to a non-presentation object when that is in scope, and test that object's public logic.
-4. Arrange only the records and inputs the scenario requires, perform one meaningful action, and assert observable outcomes in the shortest clear form. Cover the requested happy path and the material failure or authorization boundary without building a combinatorial suite.
-5. Run the changed test file, then the smallest relevant directory or broader suite the change warrants. Run the project's linter (for example `bin/standardrb` or `bin/rubocop`) on changed Ruby test files.
+- Read the nearest tests and `test_helper` first. Use Minitest, existing authentication/setup helpers and the project's fixtures/builders. Mirror source namespaces and paths.
+- Choose the narrowest public boundary: model/domain invariants, policy permissions and tenant isolation, nonvisual HTTP behavior, jobs/mail effects or external API contracts. Do not test framework mechanics or duplicate one contract across layers.
+- Reproduce a bug with the smallest meaningful nonvisual regression case, then fix its cause and inspect shared callers. Do not add a test harness or duplicate cases where one direct assertion proves the contract.
+- Cover distinct changed behavior, material denial/failure paths and relevant retry/idempotency/concurrency risks. No automatic test-per-file, getter, page or extracted class; every case must protect a real failure.
+- Keep arrange/action/assert linear and small; straightforward setup repetition is fine. Assert exact observable outcomes; reload persisted state. Avoid helpers, factories and combinatorial cases that obscure behavior. Use public setup APIs, never private instance-variable manipulation.
+- Stub external providers and nondeterminism only; never the subject's own logic. Do not call live providers. Use Rails mail/job helpers for enqueues, deliveries and arguments, not rendered bodies.
+- Scenario/eval cases must verify the known business result, not merely that execution does not crash. Keep setup, inputs and expected outcome inspectable together.
+- Keep tests order-independent and safe under parallel execution. No fixed IDs, shared mutable state or wall-clock races.
 
-## Conventions
+## Failure integrity and verification
 
-- Use Minitest's `test "behavior" do` style and `require "test_helper"`. Mirror source namespaces and paths in `test/`.
-- One test file per class, mirroring the source path (`test/models/billing/invoice_test.rb` for `app/models/billing/invoice.rb`). An extracted plain Ruby object gets its own test in the same change. A deleted feature's tests are deleted with it.
-- Name test classes after their unit (`InvoicePolicyTest`, not a generic name). Reference app classes with a leading `::` inside nested test modules.
-- Records: fixtures by default in a fresh Rails app; builders or factories only if the project skill names them. Keep scenario-specific values in the test. Authenticated request tests use the application's existing authentication helper.
-- Every controller gets at least one request test per page and one per action branch (valid and invalid), even if it only does `get path; assert_response :ok`. That test is what catches a missing template.
-- Stub external interactions (HTTP, mail delivery, payment or LLM providers) with Minitest stubs or WebMock unless the project skill names a stubbing helper. Preserve any contract that rejects missing or unused stubbed responses. Stub only true boundaries or nondeterminism (external services, time, randomness), never the behavior under test.
-- Assert mail and jobs through `ActionMailer::TestHelper` and `ActiveJob::TestHelper` (enqueued, delivered, arguments), and use `assert_enqueued_with` or `perform_enqueued_jobs` for asynchronous boundaries. Do not assert rendered bodies or PDF contents beyond a contract the model owns.
-- Prefer precise assertions (`assert_difference`, `assert_no_difference`, `assert_changes`, `assert_raises`, `assert_predicate`, exact persisted values, policy scope results). Reload records before asserting persisted state. Prefer explicit per-case assertions over data-driven graders.
-- Test claim, resume and idempotency behavior when concurrent or duplicate work could create duplicate children or repeat side effects.
-- Keep tests isolated and order-independent, since the suite runs in parallel. Do not depend on fixed database IDs, wall-clock races, global ordering, records from another test, or shared mutable registries without cleanup.
+Reproduce narrowly and identify application, test, requirement or environment defects. Fix application code when the test correctly expresses the requested behavior. Never weaken assertions, skip tests or over-stub to manufacture a pass. Change expectations only with evidence that the test or requirement changed. For tests-only work exposing an application bug, report it without silently expanding scope.
 
-## Keep test code hygienic
-
-- Use the project's existing setup helper and the direct public API. No factory DSL, shared context, test harness, custom assertion or helper abstraction unless repeated setup becomes materially shorter and clearer.
-- Keep every test linear: arrange, perform one action, assert the contract. No branching, loops, metaprogrammed cases, deep helper chains, or setup shared by unrelated scenarios.
-- Assert public behavior, not private methods, incidental SQL shape, callback order or other implementation details.
-- Prefer one strong boundary assertion over overlapping tests at multiple layers. Each additional case must protect a distinct failure mode, permission boundary, invariant or regression. Do not add redundant tests to raise coverage.
-- Never add production logging or instrumentation merely to make a test observable. Do not assert logs unless a log entry is an explicit operational contract, and remove temporary diagnostic output.
-
-## Failure Integrity
-
-Treat a test that accurately expresses intended application behavior as the contract. When it fails:
-
-1. Re-read the requirement and reproduce the failure with the narrowest command.
-2. Determine the cause: an application defect, an invalid test setup or assertion, an explicitly changed requirement, or an environment problem.
-3. If the test expresses intended behavior, do not change its expected value, remove or dilute assertions, add a skip, over-stub the subject, or otherwise adjust it to pass. Fix the application code when implementation is in scope.
-4. Change the test only with concrete evidence that it is wrong or that the requested behavior changed, and explain that evidence.
-5. If the user requested tests only and a correct regression test exposes an application bug, leave the meaningful failing test intact and report the failure. Do not silently modify production code or weaken the test.
-
-## Validation
-
-Run commands from the repository root, narrowing first:
-
-```sh
-bin/rails test test/path/to/file_test.rb
-bin/rails test test/path/to/file_test.rb:LINE
-bin/rails test test/models
-<project linter> test/path/to/file_test.rb
-```
-
-Use `bin/rails test` when the change has broad impact, and the project's full validation command (for example `bin/ci`) for broad or release-ready validation. Do not run `bin/rails test:system`. Report exact commands, failures and anything left unverified.
-
-## Do Not
-
-- Do not make exceptions for an explicit UI-test request without first changing this repository policy; explain the conflict instead.
-- Do not modify unrelated tests or user-owned working-tree changes.
-- Do not add route-recognition tests; controller tests already prove routes work.
+Run changed tests and the project linter, then broader checks proportionate to impact. Release work follows [ship](../ship/SKILL.md). Report exact results and verification limits.

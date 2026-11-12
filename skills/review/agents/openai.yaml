@@ -1,4 +1,6 @@
 interface:
-  display_name: "Review"
-  short_description: "Adversarial multi-lens code review"
-  default_prompt: "Use $review to run an adversarial review of this change across the six lenses, with parallel reviewers."
+  display_name: "Adversarial Review"
+  short_description: "One flagship reviewer; challenge behavior beyond repo rules"
+  default_prompt: "Use $review for one flagship adversarial pass over the full change and its integration. Challenge assumptions beyond repo guidelines; do not split into angle-specific agents."
+policy:
+  allow_implicit_invocation: true
