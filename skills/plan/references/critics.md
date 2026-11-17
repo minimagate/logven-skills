@@ -1,6 +1,6 @@
 # Planning critique
 
-Use only the lenses relevant to a consequential technical decision. This is optional planning analysis, not code review; code review uses one flagship under [review](../../review/SKILL.md). Critics are read-only and use mid-tier reasoning or stronger; each receives the requirement, plan, concrete source paths and applicable skills.
+Use only the lenses relevant to a consequential technical decision. This is optional planning analysis, not code review; code review uses one reviewer subagent under [review](../../review/SKILL.md). Critics are read-only and use mid-tier reasoning or stronger; each receives the requirement, plan, concrete source paths and applicable skills.
 
 | Lens | Question |
 |---|---|

@@ -22,4 +22,4 @@ These are generalized decision criteria, not mandates to add a component, counte
 
 Paul also challenges unsupported automated findings: [#56 schema](https://github.com/logvenhq/logven/pull/56#discussion_r3837041452) and [focus](https://github.com/logvenhq/logven/pull/56#discussion_r3837051121) trace actual migration/interaction behavior. Falsify a claim against real execution and contracts before changing code; never reset a shared database just to investigate it.
 
-Older requests for render-smoke coverage (#58) and incidental DOM tests are historical context, not an override of the user's explicit no UI/DOM tests rule. Use meaningful nonvisual request contracts and manual browser checks. The single-flagship review and main-agent design workflow remain unchanged.
+Older requests for render-smoke coverage (#58) and incidental DOM tests are historical context, not an override of the user's explicit no UI/DOM tests rule. Use meaningful nonvisual request contracts and manual browser checks. The single reviewer-subagent review and main-agent design workflow remain unchanged.

@@ -1,6 +1,6 @@
 ---
 name: review
-description: Single flagship adversarial review of a branch, PR or diff. Challenge behavior, assumptions and integration beyond repository guidelines; no swarm of angle-specific reviewers.
+description: Single adversarial review of a branch, PR or diff by one fresh-context reviewer subagent. Challenge behavior, assumptions and integration beyond repository guidelines; no swarm of angle-specific reviewers.
 ---
 
 # Adversarial review
@@ -9,7 +9,7 @@ Find substantiated defects and consequential design risks in the complete change
 
 ## Review contract
 
-Use **one flagship reviewer for the full scope**, following [model choice](../how-we-work/SKILL.md#model-choice). Review directly when the main agent qualifies; otherwise invoke exactly one capable reviewer with fresh context. Never split by lens, dispatch mini-reviewers or inherit the implementation model's tier. State any capability limit; a weaker pass does not satisfy this review.
+Use **one reviewer for the full scope**: a mid-tier subagent with fresh context, following [model choice](../how-we-work/SKILL.md#model-choice). The main agent that built or integrated the change never reviews it itself; it briefs the reviewer and records the findings. Never split by lens or dispatch mini-reviewers. State any capability limit; a lightweight-model pass does not satisfy this review.
 
 Source review is read-only: no source edits, commits, publishing or subreviewers. Standalone review ends with findings unless fixes were requested.
 
@@ -33,4 +33,4 @@ Try to disprove each candidate using guards, callers, framework guarantees and c
 
 Return findings first, ranked by impact. Each needs a `path:line`, concrete trigger and consequence, evidence and smallest remedy. Distinguish demonstrated defects, consequential tradeoffs and unverified questions; report related pre-existing defects separately from introduced regressions.
 
-State scope, checks and material gaps. Say plainly when no findings survive; there is no quota. During authorized implementation, route fixes through its work mode and have the same flagship reviewer recheck affected paths.
+State scope, checks and material gaps. Say plainly when no findings survive; there is no quota. During authorized implementation, route fixes through its work mode and have the same reviewer recheck affected paths.

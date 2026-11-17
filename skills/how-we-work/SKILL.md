@@ -58,11 +58,12 @@ Choose from models the environment actually exposes before dispatch. Concrete ma
 
 | Work | Required capability |
 |---|---|
-| Mechanical edits or bounded factual lookup | Haiku or an available lightweight model |
-| Complex implementation, uncertain debugging, cross-layer work, concurrency, security, architecture or planning critique | Sonnet or an available mid-tier reasoning model, or stronger; use this tier when uncertain |
-| Adversarial review | Opus or the strongest available frontier reasoning model; one whole-change pass |
+| Fully scoped implementation with no judgment calls, or bounded factual lookup | Haiku or an available lightweight model |
+| Work that may be very sensitive: permissions, security, data integrity, schema, concurrency; also uncertain debugging or planning critique | Sonnet or an available mid-tier reasoning model, or stronger |
+| UI implementation, or a really quick change where a subagent would only waste time | The main agent builds it itself |
+| Adversarial review | Sonnet or an available mid-tier reasoning model, as one subagent with fresh context; one whole-change pass |
 
-Keep design decisions in the main agent. Never assign judgment to a lightweight model to save cost. Keep work yourself if no suitable delegate exists. Adversarial review runs in the main thread if it meets the flagship requirement, otherwise through exactly one reviewer; no angle-based swarm or weaker substitute. State a capability limit honestly.
+Keep design decisions in the main agent. Never assign judgment to a lightweight model to save cost. Keep work yourself if no suitable delegate exists. Adversarial review always runs through exactly one fresh-context reviewer subagent, never in the main thread that built the change; no angle-based swarm or lightweight substitute. State a capability limit honestly.
 
 After failure, sharpen the brief and raise capability where needed. Repeated failure calls for revisiting the approach rather than blind retries.
 
