@@ -23,7 +23,7 @@ Distinguish a shared lifecycle from different interactions. Name the entity each
 
 Choose the least code that satisfies the contract. Define ordered slices with file ownership, a check per slice and superseded paths to remove. Exclude speculative options and adjacent cleanup.
 
-Use [tsk](../tsk/SKILL.md) to track the requested outcome and independently owned slices on the canonical project's board. Include task IDs in delegate briefs; record actionable out-of-scope discoveries as linked follow-ups instead of widening the plan.
+Write the plan on the canonical project's [tsk](../tsk/SKILL.md) board as one task per focused commit, with spec, steps and checks on the task, and brief delegates with the task ID; record actionable out-of-scope discoveries as linked follow-ups instead of widening the plan.
 
 Choose capability before dispatch using [model choice](../how-we-work/SKILL.md#model-choice). Complex work and judgment start at mid-tier or stronger. Independent slices get disjoint files; dependent slices run in sequence.
 

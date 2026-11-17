@@ -21,9 +21,9 @@ Work stays local until push or PR publication is authorized. Prepare a concrete 
 
 ## Shape the change
 
-Give each commit and PR one coherent concern. Sequence necessary preparation, schema/domain contracts, integration, HTTP/policies and complete UI. Tests travel with the behavior they protect. Separate pure moves from edits when useful; avoid empty skeletons and a commit for every method.
+While building, make each slice one focused commit on a single branch and keep going until the implementation is finished; do not pause for review between commits. Split into a stack of PRs only when the user asks. Give each commit and PR one coherent concern. Sequence necessary preparation, schema/domain contracts, integration, HTTP/policies and complete UI. Tests travel with the behavior they protect. Separate pure moves from edits when useful; avoid empty skeletons and a commit for every method.
 
-Keep unrelated follow-ups separate and stack only dependent work. Remove superseded paths within scope. Fold fixes into unpushed commits only when history cleanup is authorized.
+Keep unrelated follow-ups separate. Remove superseded paths within scope. Fold fixes into unpushed commits only when history cleanup is authorized.
 
 ## Verify the result
 

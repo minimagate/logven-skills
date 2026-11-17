@@ -5,7 +5,7 @@ description: Track repository work on the relevant project's tsk board, capture 
 
 # Track work with tsk
 
-The project's tsk board is the shared record of active work, blockers, review handoffs and deferred findings. Update it as work happens; a chat summary alone is not enough. This workflow authorizes routine tracking of the requested work and capture of discoveries without separate approval for every board update. Recording a follow-up does not authorize implementing it.
+The project's tsk board is the shared record of active work, blockers, review handoffs and deferred findings. Keep the work visible there at all times: progress, the current slice and what is next, so the user can watch it move. Update it as work happens; a chat summary alone is not enough. This workflow authorizes routine tracking of the requested work and capture of discoveries without separate approval for every board update. Recording a follow-up does not authorize implementing it.
 
 ## Connect to the right board
 
@@ -26,7 +26,7 @@ The parent owns exclusion changes. Delegates whose file ownership or read-only b
 
 ## Track the work
 
-Use one task for a coherent requested outcome, and separate tasks for independently owned delegated slices or deferred findings. Avoid a task for every command or tiny edit. Notes should carry scope, acceptance criteria, owner identity, branch/PR when known, and related task IDs so another agent can resume.
+Use one task for a coherent requested outcome, and separate tasks for independently owned delegated slices or deferred findings. When building, express the plan as one task per focused commit on a shared thread ("Commit 1: …", "Commit 2: …"). Set each to `started` when work on it begins and to `review` as soon as it is committed, then carry on to the next without waiting. The task is also the plan and brief: its notes hold the spec (outcome, settled decisions, constraints, owned files), its steps (`tsk steps`) hold the work sequence, and its notes list the checks (verification commands and expected results). Tick steps as they finish. Avoid a task for every command or tiny edit. Notes should carry scope, acceptance criteria, owner identity, branch/PR when known, and related task IDs so another agent can resume.
 
 | Event | Board action |
 |---|---|
@@ -34,11 +34,12 @@ Use one task for a coherent requested outcome, and separate tasks for independen
 | Meaningful progress or changed plan | Read first, then `tsk edit T12 --append-notes "Owner: …; progress/evidence: …; next: …"`; preserve existing notes |
 | Concrete blocker | `tsk status T12 blocked --why "Reason" --needs "What unblocks it"`; use `--on T13` for a task dependency or the actual person/profile |
 | Work ready for review | `tsk status T12 review --done "What changed" --check "What to verify" --next "Remaining handoff"`; include actual verification results and gaps in notes |
+| Commit made | Move that commit's task to `review` as above and start the next; do not wait for the user between commits |
 | Human accepts completion | Set `done` only when the user authorizes that task's completion; finishing code, passing review or opening a PR alone is not approval |
 
 Always read lists as JSON and verify writes with `tsk list T12 --json`. Use `--no-dispatch` when starting work in this session: plain `started` on an assigned task can launch another agent. Use known agent profiles for `--assignee`; otherwise record the actual agent/session identity in notes without inventing a profile. Never override another worker's status or ownership silently. Do not unblock or approve your own task without authorization.
 
-Read before retrying uncertain writes, especially `--append-notes`, replies and step toggles, which can duplicate or invert updates. Follow refusal codes and installed help. Add steps only when the user wants the work sequence tracked. Dispatch, merge, cleanup, archive and backup operations require their own authorization; tracking does not imply it.
+Read before retrying uncertain writes, especially `--append-notes`, replies and step toggles, which can duplicate or invert updates. Follow refusal codes and installed help. Add steps to commit tasks, where the user wants the sequence tracked; elsewhere add them only when asked. Dispatch, merge, cleanup, archive and backup operations require their own authorization; tracking does not imply it.
 
 ## Capture discoveries without expanding scope
 
@@ -48,10 +49,10 @@ Each finding needs a concrete title, observed behavior and consequence, source p
 
 ## Delegated handoffs
 
-The parent creates or reuses a task for each independently owned slice before dispatch and includes its ID, canonical project path, owner, related parent task, scope, checks and this skill's resolved path in the fresh-context brief. Do not invoke tsk dispatch merely because host subagents are in use.
+The parent creates or reuses a task for each independently owned slice before dispatch, with the spec, steps and checks on the task. The fresh-context brief carries the task ID, canonical project path, owner, this skill's resolved path and only what the board cannot hold. The builder reads the task with `tsk list T<n> --json` and works from it. Do not invoke tsk dispatch merely because host subagents are in use.
 
 Each builder reads its task, marks it `started --no-dispatch`, records discoveries and blockers, and moves **its own task** to `review` with implementation and verification evidence before reporting back. Direct the review to the actual parent/reviewer using `--on <profile-or-name>`. A blocked or incomplete slice must report its real state instead. If board access is unavailable to the delegate, it returns exact pending updates for the parent to apply and verify.
 
-The parent inspects each slice and the integrated result, records review evidence and follow-up IDs, and leaves the overall task `started` until integration and required verification finish. Read-only research/review delegates may read the board but return findings and task updates for the parent to record unless explicitly allowed board writes. Rejected work goes back through the authorized feedback/resumption flow. Delegates never approve their own work or mark it `done`; the parent also leaves completed tasks in `review` for the user unless completion was authorized.
+The parent inspects each slice and the integrated result, records review evidence and follow-up IDs, and leaves the overall task `started` until integration and required verification finish. Read-only research/review delegates may read the board but return findings and task updates for the parent to record unless explicitly allowed board writes. Rejected work goes back through the authorized feedback/resumption flow. Delegates never approve their own work or mark it `done`; the parent also leaves completed tasks in `review` for the user unless completion was authorized. `review` on a commit task is a marker, not a pause: work continues.
 
 At handoff, reconcile task states with reality and report task IDs, what is ready for review, outstanding blockers and deferred findings. Board unavailability is a reported limitation, never a successful update.

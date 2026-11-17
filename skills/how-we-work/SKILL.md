@@ -71,15 +71,15 @@ After failure, sharpen the brief and raise capability where needed. Repeated fai
 
 ### Brief
 
-Start every subagent with fresh context (`fork_turns="none"`, `fork_context=false`, or the host equivalent); never fork the main conversation. Supply a self-contained brief and relevant file paths. If fresh context is unavailable, keep the work in the main thread and report the limitation.
+Start every subagent with fresh context (`fork_turns="none"`, `fork_context=false`, or the host equivalent); never fork the main conversation. Supply a self-contained brief: the task ID plus what the board cannot hold, such as resolved skill paths, environment variables and constraints. If fresh context is unavailable, keep the work in the main thread and report the limitation.
 
 | Brief field | Required content |
 |---|---|
-| Outcome | Goal, observable acceptance criteria, settled decisions and consequential assumptions |
-| Responsibility | Role, exact allowed files and exclusions |
+| Outcome | The task ID; the task's notes hold goal, acceptance criteria, settled decisions and consequential assumptions. Do not repeat them in chat |
+| Responsibility | Role; the task holds the exact allowed files and exclusions |
 | Context | Relevant source examples, resolved applicable skill paths and an instruction to read their bodies before acting; parent-loaded skills are not inherited |
 | Constraints | Scope, ownership, authorization and applicable specialist constraints; no unrelated cleanup, git writes or spawning |
-| Evidence | Verification commands and expected report |
+| Evidence | Checks live on the task; ask for the expected report |
 | Tracking | Canonical project path, slice and parent task IDs, owner, resolved tsk skill path; update progress/findings and move the slice to review before handoff |
 
 Read-only research and review briefs prohibit edits; those delegates return task updates for the parent unless board writes are explicitly allowed. Scoped delegates read the supplied skills and report which they used; they do not restart project-wide discovery or planning. If their slice crosses another responsibility, load that specialist too and report any scope conflict before editing outside their ownership. Claude custom agents may preload skills with `skills:`; otherwise explicitly read the resolved files in the fresh context.
