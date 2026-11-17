@@ -10,5 +10,6 @@ Read the [atlas](../atlas/SKILL.md) skill first for addresses, statuses and evid
 1. `atlas review <branch|file.diff>` gives the brief for each touched subsystem: invariants, extension points, active decisions, conventions, Paul's patterns and mechanical flags (added code comments).
 2. Read the full diff against `origin/main`. Run `atlas show <path>` for touched files and `atlas show D-…` for any decision you rely on.
 3. For every hunk that rewrites or deletes existing lines, run `atlas why <path>:<from>-<to>` on the old line numbers (they are main's). If a commit message or decision gives a reason for those lines, check that the change still honours it or deliberately overturns it. Undoing a stated choice without saying so is a finding.
-4. Report findings, most severe first: `file:line` · what · why (address and source URL, stated/inferred) · fix. Keep breakages of invariants or decisions apart from "Paul would likely flag". Say plainly when nothing is wrong.
-5. If the branch intentionally changes a decision, recommend `atlas pending add … --supersedes D-…`.
+4. For each touched file, compare its "usually changes with" partners (`atlas show <path>`) with the diff. A partner the diff left alone, most often its test, is worth a look, not automatically a finding.
+5. Report findings, most severe first: `file:line` · what · why (address and source URL, stated/inferred) · fix. Keep breakages of invariants or decisions apart from "Paul would likely flag". Say plainly when nothing is wrong.
+6. If the branch intentionally changes a decision, recommend `atlas pending add … --supersedes D-…`.
