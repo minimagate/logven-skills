@@ -6,7 +6,7 @@ description: Maintenance. Update Atlas from origin/main (new merged PRs and dire
 # Atlas sync
 
 1. Only main. If the user asks to sync any other branch, refuse: Atlas follows `origin/main` only. The Atlas repo itself must be on its `main` branch.
-   It also runs daily at 07:30 (launchd `com.minimagate.atlas-sync`, `tools/daily.sh`): sync from logven `main`, then push the Atlas repo's `main`. Its log is `reports/daily.log`.
+   It also runs daily at 09:00 (launchd `com.minimagate.atlas-sync`, `tools/daily.sh`): sync from logven `main`, then push the Atlas repo's `main`. Its log is `reports/daily.log`.
 2. Run `atlas sync` (takes a lock; safe to re-run; idempotent). It:
    - fetches the mirror, finds PRs merged into main and direct commits since the cursor in `~/.atlas/logven/state.json`;
    - harvests, triages and extracts only the new items (resumable checkpoints);
