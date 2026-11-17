@@ -2,7 +2,7 @@
 
 A compact framework for human–machine collaboration on projects. The human sets direction and scope; the main agent owns investigation, coordination and a verified result. Shared principles guide decisions, workflow skills define the stages, and layer skills define implementation responsibilities.
 
-It is the agent guidance behind [Logven](https://github.com/logvenhq/logven), which centralises a team's data work into one central data lake, and its sibling repositories link it as `.agents/skills` and `.claude/skills`. The skills themselves stay product-neutral: facts about Logven belong in that repository's README and `AGENTS.md`, not here.
+It is the agent guidance behind [Logven](https://github.com/logvenhq/logven), which centralises teams' data work into one central data lake, and its sibling repositories link it as `.agents/skills` and `.claude/skills`. The skills themselves stay product-neutral: facts about Logven belong in that repository's README and `AGENTS.md`, not here.
 
 ## The collaboration cycle
 
