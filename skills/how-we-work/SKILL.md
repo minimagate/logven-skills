@@ -27,6 +27,7 @@ User instructions govern. Verified project facts override general defaults, not 
 | Work or affected responsibility | Add these skills |
 |---|---|
 | Repository work, progress, findings and handoffs | [tsk](../tsk/SKILL.md) |
+| Work that starts from a Linear issue key, a PR for one, or findings on a project tracked in Linear | [linear](../linear/SKILL.md) |
 | Technical implementation, debugging, refactor | [plan](../plan/SKILL.md) |
 | Visual design, layout, interaction, accessibility | [rails-design](../rails-design/SKILL.md); Rails markup/interaction also [rails-frontend](../rails-frontend/SKILL.md) |
 | Placement, namespaces, extraction, responsibility boundaries | [rails-structure](../rails-structure/SKILL.md) |

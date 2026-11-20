@@ -47,6 +47,8 @@ Record bugs, problems, missing tests, todos and other actionable follow-ups as s
 
 Each finding needs a concrete title, observed behavior and consequence, source path or reproduction evidence, suggested next action, why it is deferred, and a backlink to the originating task/branch/PR. Distinguish confirmed defects from suspected issues needing investigation. Do not create vague speculative cleanup tasks or bury deferred work only in PR prose. Link the follow-up ID from the active task and mention material discoveries in the handoff. Fix in-scope defects under the active task; capture out-of-scope work without silently doing it.
 
+On a project that tracks issues in Linear, out-of-scope bugs go to its backlog per [linear](../linear/SKILL.md) instead of becoming deferred tsk tasks; link their keys from the active task.
+
 ## Delegated handoffs
 
 The parent creates or reuses a task for each independently owned slice before dispatch, with the spec, steps and checks on the task. The fresh-context brief carries the task ID, canonical project path, owner, this skill's resolved path and only what the board cannot hold. The builder reads the task with `tsk list T<n> --json` and works from it. Do not invoke tsk dispatch merely because host subagents are in use.

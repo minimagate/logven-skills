@@ -24,6 +24,7 @@ This cycle adapts to the task. Design stays with the main agent; routine choices
 | Entry point | [how-we-work](skills/how-we-work/SKILL.md) | Collaboration contract, discovery, work modes and shared principles |
 | Workflow | [plan](skills/plan/SKILL.md) | Outcome, ownership, sequencing and acceptance criteria |
 | Workflow | [tsk](skills/tsk/SKILL.md) | Project board, progress, deferred findings and delegated review handoffs; board state excluded from Git |
+| Workflow | [linear](skills/linear/SKILL.md) | Start from a Linear issue, keep its status and PR link current, file findings in the backlog |
 | Workflow | [review](skills/review/SKILL.md) | One flagship adversarial pass beyond guideline compliance |
 | Workflow | [ship](skills/ship/SKILL.md) | Authorized commits, checks, pushes and PRs |
 | Structure | [rails-structure](skills/rails-structure/SKILL.md) | Placement, names and responsibility boundaries |

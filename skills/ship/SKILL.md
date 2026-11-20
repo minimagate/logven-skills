@@ -50,6 +50,6 @@ Skip the rebuild when the PR already exists with review activity or another pers
 
 Stage only work within the authorized scope, even if a generic git helper proposes staging everything. Inspect staged changes before committing. Default subjects are short, descriptive and unprefixed unless project rules override; bodies follow [Open a PR](#open-a-pr). No tool/model names, generated-with lines or attribution trailers in commits or PRs.
 
-Build the PR title and body from all branch commits and the full diff. Default to a plain title under 70 characters and a short paragraph explaining behavior and reason, followed by one truthful check-result line. Explain meaningful representation or ownership changes so removed glue is reviewable. Follow required repository templates.
+Build the PR title and body from all branch commits and the full diff. Default to a plain title under 70 characters and a short paragraph explaining behavior and reason, followed by one truthful check-result line. Work for a Linear issue names it in the body and updates the issue per [linear](../linear/SKILL.md#link-the-pr). Explain meaningful representation or ownership changes so removed glue is reviewable. Follow required repository templates.
 
 After an authorized commit or push, verify the resulting git state and report what was delivered, checks and material limits.

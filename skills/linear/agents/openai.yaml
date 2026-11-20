@@ -1,0 +1,6 @@
+interface:
+  display_name: "Linear Issues"
+  short_description: "Start from an issue, link PRs, file findings"
+  default_prompt: "Use $linear to start from this Linear issue, keep its status and PR link in step with the work, and file out-of-scope bugs in the backlog."
+policy:
+  allow_implicit_invocation: true
