@@ -32,7 +32,7 @@ Check each changed line against the request. Trace one complete user path throug
 
 Before committing or publishing, run relevant tests/lint and applicable nonvisual CI checks. Inspect aggregate commands first: if they invoke forbidden system/browser/UI suites, run nonvisual equivalents without changing CI or deleting tests. Inspect UI in the browser and run the asset build. Report excluded/unrun checks and failures; never label filtered checks as full CI.
 
-Apply [tsk's Git exclusion check](../tsk/SKILL.md#keep-board-state-out-of-git): board state must be ignored and absent from the index, including any local exports or backups. Reconcile active and delegated tasks, link deferred findings and record branch/PR and verification evidence. Leave verified tasks in `review` unless the user authorized completion; committing or opening a PR does not itself mark work done.
+Apply [tsk's Git exclusion check](../tsk/SKILL.md#keep-board-state-out-of-git): board state must be ignored and absent from the index, including any local exports or backups. Reconcile active and delegated tasks, link deferred findings and record branch/PR and verification evidence. Mark verified tasks `done`.
 
 ## Open a PR
 

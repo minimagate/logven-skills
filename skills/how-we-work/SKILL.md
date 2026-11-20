@@ -81,7 +81,7 @@ Start every subagent with fresh context (`fork_turns="none"`, `fork_context=fals
 | Context | Relevant source examples, resolved applicable skill paths and an instruction to read their bodies before acting; parent-loaded skills are not inherited |
 | Constraints | Scope, ownership, authorization and applicable specialist constraints; no unrelated cleanup, git writes or spawning |
 | Evidence | Checks live on the task; ask for the expected report |
-| Tracking | Canonical project path, slice and parent task IDs, owner, resolved tsk skill path; update progress/findings and move the slice to review before handoff |
+| Tracking | Canonical project path, slice and parent task IDs, owner, resolved tsk skill path; update progress/findings and mark the slice `done` before handoff |
 
 Read-only research and review briefs prohibit edits; those delegates return task updates for the parent unless board writes are explicitly allowed. Scoped delegates read the supplied skills and report which they used; they do not restart project-wide discovery or planning. If their slice crosses another responsibility, load that specialist too and report any scope conflict before editing outside their ownership. Claude custom agents may preload skills with `skills:`; otherwise explicitly read the resolved files in the fresh context.
 
@@ -89,7 +89,7 @@ Read-only research and review briefs prohibit edits; those delegates return task
 
 Parallelize independent work only when write ownership is disjoint; sequence dependencies. Inspect actual diffs against ownership and preserve user edits. Verify reports against source, run proportionate checks and integrate fixes. The main agent remains responsible for the complete outcome.
 
-Reconcile delegated task states under [tsk](../tsk/SKILL.md#delegated-handoffs). Record out-of-scope findings as linked follow-ups, keep the overall task active through integration, and hand verified work to the user in `review` with task IDs.
+Reconcile delegated task states under [tsk](../tsk/SKILL.md#delegated-handoffs). Record out-of-scope findings as linked follow-ups, keep the overall task active through integration, then mark verified work `done` and report the task IDs.
 
 ## Principles
 

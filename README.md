@@ -23,7 +23,7 @@ This cycle adapts to the task. Design stays with the main agent; routine choices
 |---|---|---|
 | Entry point | [how-we-work](skills/how-we-work/SKILL.md) | Collaboration contract, discovery, work modes and shared principles |
 | Workflow | [plan](skills/plan/SKILL.md) | Outcome, ownership, sequencing and acceptance criteria |
-| Workflow | [tsk](skills/tsk/SKILL.md) | Project board, progress, deferred findings and delegated review handoffs; board state excluded from Git |
+| Workflow | [tsk](skills/tsk/SKILL.md) | Project board, progress, deferred findings and delegated handoffs; board state excluded from Git |
 | Workflow | [linear](skills/linear/SKILL.md) | Start from a Linear issue, keep its status and PR link current, file findings in the backlog |
 | Workflow | [review](skills/review/SKILL.md) | One flagship adversarial pass beyond guideline compliance |
 | Workflow | [ship](skills/ship/SKILL.md) | Authorized commits, checks, pushes and PRs |
@@ -48,7 +48,7 @@ Verification policy belongs to [rails-tests](skills/rails-tests/SKILL.md), inclu
 
 ## Discovery and installation
 
-The workflow requires the `tsk` CLI ([installation](https://gettsk.sh/docs/install.md)). Agents use the relevant project's existing board, reuse tasks, record out-of-scope bugs/todos and hand completed work back in `review`. Delegated slices carry task IDs and update their own status. The board remains local: repository-local state must be Git ignored and untracked; the normal central store needs no project ignore entry. See [tsk](skills/tsk/SKILL.md) for setup checks, commands and handoff rules. Missing CLI or board access must be reported explicitly.
+The workflow requires the `tsk` CLI ([installation](https://gettsk.sh/docs/install.md)). Agents use the relevant project's existing board, reuse tasks, record out-of-scope bugs/todos and mark finished work `done`. Delegated slices carry task IDs and update their own status. The board remains local: repository-local state must be Git ignored and untracked; the normal central store needs no project ignore entry. See [tsk](skills/tsk/SKILL.md) for setup checks, commands and handoff rules. Missing CLI or board access must be reported explicitly.
 
 Make `skills/` visible to the host's skill catalog. From a sibling project root:
 
